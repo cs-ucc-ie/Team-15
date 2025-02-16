@@ -1,0 +1,239 @@
+body {
+    font-family: 'Georgia', serif;
+    color:#c83349;
+}
+
+/* Nav Bar */
+nav {
+    background-color: grey;
+    padding: 15px 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #000000; 
+    font-weight: bold;
+    font-size: 18px;
+    transition: color 0.3s ease-in-out;
+}
+
+
+nav ul li a:hover {
+    color: #C8D5B9; 
+}
+
+
+div {
+    box-sizing: border-box;
+}
+
+h2 {
+    color:#c83349; 
+    border-bottom: 2px solid #c83349;
+    padding-bottom: 5px;
+}
+
+
+div[style*="display: flex"] {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+}
+
+div[style*="width: 75%"] {
+    width: 70%;
+    background-color: #C8D5B9; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+div[style*="width: 25%"] {
+    width: 25%;
+    background-color:#eeac99; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+
+div a {
+    text-decoration: none;
+    color: #eeac99; 
+}
+
+div a img {
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+div a img:hover {
+    transform: scale(1.05);
+}
+
+
+.login-container {
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} 
+
+.register-container {
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} 
+
+input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 80%;
+    padding: 10px;
+    background-color: #eeac99;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #C8D5B9;
+}
+
+#error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+.login-container a:hover {
+    color: #C8D5B9; 
+}
+
+.beverage-creation-container {
+    float: center;
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    width: 100%;    
+}
+
+.cocktail-container {
+    margin-top: 80px; 
+    padding : 20px;
+    text-align: center;  
+    overflow-x: hidden; 
+}
+
+.cocktail-grid {
+    display: flex;            
+    overflow-x: auto;         
+    gap: 20px;               
+    padding: 20px 0;         
+    scroll-snap-type: x mandatory;
+    justify-content: flex-start;  
+    width: 100%;             
+    scroll-padding-left: 20px;
+}
+
+.cocktail-card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 250px;          
+    flex: 0 0 auto;         
+    scroll-snap-align: start; 
+}
+
+.cocktail-card img {
+    width: 100%;
+    border-radius: 10px;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.cocktail-card img:hover {
+    transform: scale(1.05); 
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    background-color: #68B0AB;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.tab-button:hover {
+    background-color: #4A7C59;
+}
+
+.tab-button.active {
+    background-color: #4A7C59;
+}
+
+/* Tab content */
+.tab-content {
+    display: none;
+    text-align: center;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+form {
+    margin-bottom: 20px;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+    <title>Creat a Cocktail</title>
+</head>
+
+<body>
+    <!-- Nav Bar -->
+    <nav>
+        <ul>
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="pantry.html"> What's in your Pantry?</a></li>
+            <li><a href="creation.html">Upload your Own</a></li>
+
+            {% if session.user_id %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="beverage-creation-container">
+        <h2>Create your own Beverage</h2>
+        <form id="beverageCreationForm">
+            <label for="name">Drink Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter the name of your beverage" required>
+
+            <label>Ingredients</label>
+            <div id="ingredientsList"></div>
+            <input type="text" id="ingredientInput" placeholder="Enter an ingredient">
+            <button type="button" id="addIngredient">Add Ingredient</button>
+
+            <p>
+            <label for="method">Method</label>
+            </p>
+            <p>
+            <textarea id="method" name="method" rows="4" required></textarea>
+            </p>
+
+
+            <label for="image">Upload a Picture</label>
+            <input type="file" id="image" name="image" accept="image/*">
+
+            <button type="submit">Submit recipe</button>
+        </form>
+    </div>
+
+
+</body>
+</html>

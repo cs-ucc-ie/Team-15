@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+    <title>Creat a Cocktail</title>
+</head>
+
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="pantry.html"> What's in your Pantry?</a></li>
+            <li><a href="creation.html">Upload your Own</a></li>
+
+            {% if session.user_id %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="tabs">
+        <button class="tab-button" onclick="openTab(event, 'addIngredients')">Add Ingredients</button>
+        <button class="tab-button" onclick="openTab(event, 'searchIngredients')">Search Ingredients</button>
+    </div>
+
+    <div id="addIngredients" class="tab-content">
+        <h2>Add Ingredients</h2>
+
+        <form id="ingredient-form">
+            <label for="password">Enter ingredient</label>
+            <input type="text" id="ingredient-name" placeholder="Enter ingredient" required>
+            <button type="submit">Add Ingredient</button>
+        </form>
+
+        <h3>Ingredients List</h3>
+        <ul id="ingredients-list">
+        </ul>
+    </div>
+
+    <div id="searchIngredients" class="tab-content">
+        <h2>Search Ingredients</h2>
+        
+        <input type="text" id="search-bar" placeholder="Search for an ingredient" oninput="searchIngredients()">
+
+        <h3>Filtered Ingredients</h3>
+        <ul id="filtered-ingredients-list">
+        </ul>
+    </div>
+
+
+
+
+</body>
+</html>

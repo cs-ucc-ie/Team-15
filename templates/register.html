@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+    <title>Register</title>
+</head>
+
+<body>
+    <!-- Nav Bar -->
+    <nav>
+        <ul>
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="pantry.html"> What's in your Pantry?</a></li>
+            <li><a href="creation.html">Upload your Own</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="register.html">Register</a></li>
+        </ul>
+    </nav>
+
+    <div class="register-container">
+        <h2>Register</h2>
+        <form action="/register.html" method="POST">
+            <label for="username">Username: </label>
+            <input type="username" class="form-control" id="username" placeholder="Enter username" name="username" required>
+            
+            <label for="email">Email: </label>
+            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
+
+            <label for="password">Password: </label>
+            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+
+            <button type="submit">Register</button>
+            <p id="error-message"></p>
+        </form>
+        <a href="/login.html"> I have an account!</a>
+    </div>
+
+
+</body>
+</html>

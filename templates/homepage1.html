@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+    <title>Home</title>
+</head>
+
+<body>
+    <!-- Nav Bar -->
+    <nav>
+        <ul>
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="pantry.html"> What's in your Pantry?</a></li>
+            <li><a href="creation.html">Upload your Own</a></li>
+
+            {% if session.user_id %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="intro-grid">
+        <h2> About Perfect Cocktail</h2>
+        <p>Ever feel frustrated by a lack of ideas for cocktails?</p>
+        <p>Ever feel like you don't know what to make with your ingredients on hand?</p>
+        <p>Ever want to share your feedback on a cocktail, but don't have a community to do that with?</p>
+        <p></p>
+        <p>Well, if you've answered yes to any of the following <i>Perfect Cocktail</i> is the <b>PERFECT</b> place for you!</p>
+        <p></p>
+    </div>
+
+    <div class="cocktail-container">
+        <h2>Trending Now</h2>
+
+        <div class="cocktail-grid" id="cocktail-grid">
+            {% for cocktail in top_cocktails %}
+                <div class="cocktail-card">
+                    <img src="{{ url_for('static', filename=cocktail['image']) }}" alt="{{ cocktail['name'] }}">
+                    <h3>{{ cocktail['name'] }}</h3>
+                    <p>Popularity: {{ cocktail['popularity'] / (cocktail['reviews_number'] * 5) }}</p>
+                    <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
+                    <p>Alcoholic: {% if cocktail['alcohol_content'] == 'yes' %} Yes {% else %} No {% endif %}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>    
+    
+        <h3><a href="explore.html">Explore More</a></h3>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
