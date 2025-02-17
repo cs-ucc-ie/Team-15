@@ -8,6 +8,16 @@
 </head>
 
 <body>
+    <!--Age verification Pop Up Section-->
+    <div id="age-overlay">
+        <div class="age-container">
+            <h2>Age Verification</h2>
+            <p>Please enter your date of birth:</p>
+            <input type="date" id="dobInput" class="form-control">
+            <button class="btn btn-primary mt-3" onclick="checkAge()">Submit</button>
+        </div>
+    </div>
+    <div id="main-content">
     <!-- Nav Bar -->
     <nav>
         <ul>
@@ -25,6 +35,7 @@
         </ul>
     </nav>
 
+    <!--About Website Section-->
     <div class="intro-grid">
         <h2> About Perfect Cocktail</h2>
         <p>Ever feel frustrated by a lack of ideas for cocktails?</p>
@@ -35,6 +46,7 @@
         <p></p>
     </div>
 
+    <!--Trending Cocktails Section-->
     <div class="cocktail-container">
         <h2>Trending Now</h2>
 
@@ -53,6 +65,8 @@
     
         <h3><a href="explore.html">Explore More</a></h3>
     </div>
+</div>
+    <!--Javascript & Bootstrap for the age verfication pop up-->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

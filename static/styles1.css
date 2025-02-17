@@ -88,7 +88,34 @@ div a img:hover {
     transform: scale(1.05);
 }
 
+/*Age verification pop up css */
+#age-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
 
+.age-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+#main-content {
+    display: none; /*Hides the homepage until age is verified */
+}
+
+
+/*login css */
 .login-container {
     background: white;
     padding: 20px;
