@@ -2,6 +2,7 @@ import sqlite3
 import os
 from flask import Flask, request, redirect, url_for, render_template, g, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, date
 
 app = Flask(__name__)
 app.secret_key = "my_secret_key" #for sessions
@@ -27,15 +28,24 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         email = request.form["email"]
-        password = request.form["password"]  # Store plain text (NOT RECOMMENDED)
+        password = request.form["password"]
+        dob = request.form["dob"]
         print(username,email,password)
         db = get_db()
         existing_user = db.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
-        
 
+        #calculation for the date to make sure the user is over 18
+        dob = datetime.strptime(dob,'%Y-%m-%d').date()
+        today = date.today()
+
+        age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+        
+        #conditions for registering
+        if age < 18:
+            return render_template("register.html", error="Must be at least 18 years old to register")
+        
         if existing_user:
-            flash("Email already registered!", "danger")
-            return redirect(url_for("register"))
+            return render_template("register.html", error="This email is already in use")
 
         hashed_password = generate_password_hash(password)
 
@@ -120,22 +130,28 @@ def pantry():
 def creation():
     return render_template('creation.html')
 
-# user profile page [My profile]
-# @app.route('/userpage.html')
-# def user_profile():
-#     db = get_db()
-#     user_id = session["user_id"]
+@app.route('/userpage.html')
+def user_profile():
 
-#     if "user_id" not in session:
-#         flash("You need to log in to view your profile!", "danger")
-#         return redirect(url_for("login"))
+     if "user_id" not in session:
+         flash("You need to log in to view your profile!", "danger")
+         return redirect(url_for("login"))
+     
+     db = get_db()
+     user_id = session["user_id"]
 
-#     # Fetch cocktails created by the logged in user 
-#     user_cocktails = db.execute(
-#         "SELECT * FROM cocktails WHERE user_id = ?", (user_id,)
-#     ).fetchall()
+     user_info = db.execute("SELECT *  FROM users WHERE id = ?", (user_id,)).fetchone()
 
-#     return render_template("userpage.html", user_cocktails=user_cocktails)
+     # Fetch cocktails created by the logged in user 
+     user_cocktails = db.execute(
+        "SELECT * FROM cocktails WHERE user_id = ?", (user_id,)
+     ).fetchall()
+
+     if user_info is None:
+        flash("User not found!", "danger")
+        return redirect(url_for("login"))
+
+     return render_template("userpage.html", user_cocktails=user_cocktails)
 
 
 if __name__ == '__main__':

@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS cocktails (
     reviews_number INTEGER DEFAULT 0,
     alcohol_content INTEGER NOT NULL,
     recipe TEXT NOT NULL,
-    recipe_by TEXT NOT NULL
+    recipe_by TEXT NOT NULL,
 );
 
 INSERT INTO cocktails (name,image,popularity, reviews_number, alcohol_content,recipe_by) VALUES
