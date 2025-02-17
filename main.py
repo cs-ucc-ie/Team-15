@@ -120,6 +120,23 @@ def pantry():
 def creation():
     return render_template('creation.html')
 
+# user profile page [My profile]
+# @app.route('/userpage.html')
+# def user_profile():
+#     db = get_db()
+#     user_id = session["user_id"]
+
+#     if "user_id" not in session:
+#         flash("You need to log in to view your profile!", "danger")
+#         return redirect(url_for("login"))
+
+#     # Fetch cocktails created by the logged in user 
+#     user_cocktails = db.execute(
+#         "SELECT * FROM cocktails WHERE user_id = ?", (user_id,)
+#     ).fetchall()
+
+#     return render_template("userpage.html", user_cocktails=user_cocktails)
+
 
 if __name__ == '__main__':
     app.run(debug = True)
