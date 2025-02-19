@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS cocktails (
     alcohol_content INTEGER NOT NULL,
     recipe TEXT NOT NULL,
     recipe_by TEXT NOT NULL,
+    FOREIGN KEY (created_by) REFERENCES users (id) ON DELETE CASCADE 
 );
 
 INSERT INTO cocktails (name,image,popularity, reviews_number, alcohol_content,recipe_by) VALUES
@@ -29,3 +30,25 @@ SELECT * FROM users;
 SELECT * FROM cocktails;
 
 SELECT name,popularity/reviews_number FROM cocktails ORDER BY popularity/reviews_number DESC;
+
+ALTER TABLE cocktails ADD COLUMN created_by INTEGER NOT NULL DEFAULT 1;
+
+UPDATE cocktails SET created_by = 1 WHERE name = 'Cosmopolitan';
+UPDATE cocktails SET created_by = 2 WHERE name = 'Old Fashioned';
+UPDATE cocktails SET created_by = 3 WHERE name = 'Aperol Spritz';
+UPDATE cocktails SET created_by = 4 WHERE name = 'Dirty Martini';
+UPDATE cocktails SET created_by = 5 WHERE name = 'Vodka with coke';
+UPDATE cocktails SET created_by = 6 WHERE name = 'Whiskey with coke';
+
+CREATE TABLE IF NOT EXISTS favorites (
+    favorites_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    cocktail_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (cocktail_id) REFERENCES cocktails (id) ON DELETE CASCADE
+);
+
+INSERT INTO favorites (user_id, cocktail_id) VALUES
+(3, 1);
+
+SELECT * from Favorites;
