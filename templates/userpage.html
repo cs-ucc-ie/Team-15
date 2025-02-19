@@ -13,12 +13,12 @@
     <!-- Navigation bar -->
     <nav>
         <ul>
-            <li><a href="homepage1.html">Home</a></li>
+            <li><a href="{{ url_for('homepage') }}">Home</a></li>
             <li><a href="explore.html">Explore</a></li>
             <li><a href="pantry.html">Pantry</a></li>
             <li><a href="creation.html">Upload your Own</a></li>
-            <li><a href="userpage.html">My Profile</a></li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            <li><a href="userpage.html">My Profile</a></li>
         </ul>
     </nav>
 
@@ -44,13 +44,13 @@
         </div>
 
         <!-- cocktails what the user has added to the favorites-->
-        <!-- <h3>My Favorites</h3>
-        <div class="cocktail-grid"> -->
+        <h3>My Favorites</h3>
+        <div class="cocktail-grid">
             <!-- display all user's favorite cocktails -->
-            <!-- {% for cocktail in cocktails %} 
+            {% for cocktail in favorite_cocktails %}
             <div class="cocktail-card">
                 <img src="{{ url_for('static', filename = cocktail['image']) }}" alt="{{ cocktail['name'] }}">
-                <h3>{{ cocktails['name'] }}</h3>
+                <h3>{{ cocktail['name'] }}</h3>
                 <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
                 <p>Popularity: {{ cocktail['popularity'] / cocktail['reviews_number'] }}</p>
             </div>
@@ -58,7 +58,7 @@
             {% else %}
             <p>You don't have any favorites yet.</p>
             {% endfor %}
-        </div> -->
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename = 'srcipt.js') }}"></script>
