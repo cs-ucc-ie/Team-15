@@ -19,37 +19,82 @@
     </div>
     <div id="main-content">
     <!-- Nav Bar -->
-    <nav>
-        <ul>
-            <li><a href="homepage.html">Home</a></li>
-            <li><a href="explore.html">Explore</a></li>
-            <li><a href="pantry.html"> What's in your Pantry?</a></li>
-            <li><a href="userpage.html">My Profile</a></li>
-            <li><a href="creation.html">Upload your Own</a></li>
+    <section>
+        <div class="custom-shape-divider-top-1739903469">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M892.25 114.72L0 0 0 120 1200 120 1200 0 892.25 114.72z" class="shape-fill"></path>
+            </svg>
+        </div>
+    
+    <!-- Nav Bar -->
+        <div class="top-nav">
+            <ul>
+                <li><a href="login.html"><img src="{{ url_for('static', filename='user.png') }}" alt="User Image"></a></li>
+                <li><a href="questions.html"><img src="{{ url_for('static', filename='questions.png') }}" alt="Questions Image"></a></li>
+            </ul>
+        </div>
+        <div class = slogan>
+            <p><i>Shake Things Up with Pourfect Cocktail<br>Your Perfect Drink, Every Time</i></p>
+            <h1>Pourfect Cocktail</h1>
+        </div>
 
-            {% if session.user_id %}
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% else %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-                <li><a href="{{ url_for('register') }}">Register</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-
-    <!--About Website Section-->
-    <div class="intro-grid">
-        <h2> About Perfect Cocktail</h2>
-        <p>Ever feel frustrated by a lack of ideas for cocktails?</p>
-        <p>Ever feel like you don't know what to make with your ingredients on hand?</p>
-        <p>Ever want to share your feedback on a cocktail, but don't have a community to do that with?</p>
-        <p></p>
-        <p>Well, if you've answered yes to any of the following <i>Perfect Cocktail</i> is the <b>PERFECT</b> place for you!</p>
-        <p></p>
-    </div>
-
-    <!--Trending Cocktails Section-->
-    <div class="cocktail-container">
-        <h2>Trending Now</h2>
+        <div class="main-nav">
+            <nav>
+                <ul>
+                    <li>
+                        <a href="homepage.html">
+                            <img src="/static/home.png" alt="Home Image">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="explore.html">
+                            <img src="/static/search.png" alt="Magnifying Glass">
+                            Explore
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pantry.html">
+                            <img src="/static/pantry.png" alt="Pantry">
+                            What's in your Pantry?
+                        </a>
+                    </li>
+                    <li>
+                        <a href="creation.html">
+                            <img src="/static/bev.png" alt="Upload Image">
+                            Upload your Own
+                        </a>
+                    </li>
+        
+                    {% if session.user_id %}
+                        <li>
+                            <a href="{{ url_for('logout') }}">
+                                <img src="/static/logout.png" alt="Logout Image">
+                                Logout
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ url_for('login') }}">
+                                <img src="/static/login.png" alt="Login Image">
+                                Login
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </section>
+  
+` <h2>
+    <span style="--j:1">Trending</span>
+    <br>
+    <br>
+    <span style="--j:2">Cocktails</span>	
+</h2>
+   <div class="cocktail-container">
+    <div class="cocktail-grid">
+        <button id="prevBtn">←</button>
 
         <div class="cocktail-grid" id="cocktail-grid">
             {% for cocktail in top_cocktails %}
@@ -62,12 +107,22 @@
                 </div>
             {% endfor %}
         </div>
-    </div>    
-    
-        <h3><a href="explore.html">Explore More</a></h3>
+        <button id="nextBtn">→</button>
+    </div>  
     </div>
-</div>
-    <!--Javascript & Bootstrap for the age verfication pop up-->
+    
+    <h3><a href="explore.html">Explore More</a></h3>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    
+
+        <div class="intro-grid">
+        <h2> About Pourfect Cocktail</h2>
+        <p>Ever feel frustrated by a lack of ideas for cocktails?</p>
+        <p>Ever feel like you don't know what to make with your ingredients on hand?</p>
+        <p>Ever want to share your feedback on a cocktail, but don't have a community to do that with?</p>
+        <p></p>
+        <p>Well, if you've answered yes to any of the following <i>Pourfect Cocktail</i> is the <b>PERFECT</b> place for you!</p>
+        <p></p>
+    </div>
 </body>
 </html>

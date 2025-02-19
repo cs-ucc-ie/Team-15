@@ -41,3 +41,19 @@ function checkAge() {
         window.location.href = "https://www.google.com"; // Redirect underage users
     }
 }
+//for carousel
+document.addEventListener("DOMContentLoaded", function () {
+    const grid = document.getElementById("cocktail-grid");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    let scrollAmount = 300;
+
+    nextBtn.addEventListener("click", function () {
+        grid.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    });
+
+    prevBtn.addEventListener("click", function () {
+        grid.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    });
+});
