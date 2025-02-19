@@ -3,54 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
-    <title>Creat a Cocktail</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Create a Cocktail</title>
+    <style>
+        .ingredient-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        #ingredientList {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        #ingredientButton {
+            width: 100%;
+        }
+
+        #ingredientButton:focus + #ingredientList,
+        #ingredientList:hover {
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
     <!-- Nav Bar -->
-    <nav>
-        <ul>
-            <li><a href="homepage.html">Home</a></li>
-            <li><a href="explore.html">Explore</a></li>
-            <li><a href="pantry.html"> What's in your Pantry?</a></li>
-            <li><a href="creation.html">Upload your Own</a></li>
-
-            {% if session.user_id %}
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% else %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-                <li><a href="{{ url_for('register') }}">Register</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+    {% include 'navbar.html' %} 
 
     <div class="beverage-creation-container">
-        <h2>Create your own Beverage</h2>
-        <form id="beverageCreationForm">
+        <h2>Create Your Own Cocktail</h2>
+        <form action="{{ url_for('creation') }}" method="POST">
             <label for="name">Drink Name</label>
-            <input type="text" id="name" name="name" placeholder="Enter the name of your beverage" required>
-
-            <label>Ingredients</label>
-            <div id="ingredientsList"></div>
-            <input type="text" id="ingredientInput" placeholder="Enter an ingredient">
-            <button type="button" id="addIngredient">Add Ingredient</button>
-
-            <p>
-            <label for="method">Method</label>
-            </p>
-            <p>
+            <input type="text" id="name" name="name" placeholder="Enter the name of your cocktail" required>
+            <br>
+            <label for="alcohol_content">Alcohol Content</label>
+            <select id="alcohol_content" name="alcohol_content" required>
+                <option value="0">Non-Alcoholic</option>
+                <option value="1">Alcoholic</option>
+            </select>
+            <br>
+            <label for="method">Preparation Method</label>
             <textarea id="method" name="method" rows="4" required></textarea>
-            </p>
+            <br>
 
-
-            <label for="image">Upload a Picture</label>
-            <input type="file" id="image" name="image" accept="image/*">
-
-            <button type="submit">Submit recipe</button>
+            <div class="ingredient-container">
+                <button type="button" id="ingredientButton">View Available Ingredients</button>
+                <div id="ingredientList">
+                    <ul>
+                        {% for ingredient in ingredients %}
+                            <li>{{ ingredient.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <button type="submit">Submit</button>
         </form>
     </div>
-
-
 </body>
 </html>
+

@@ -3,24 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>Login</title>
 </head>
 
 <body>
     <!-- Nav Bar -->
-    <nav>
-        <ul>
-            <li><a href="homepage.html">Home</a></li>
-            <li><a href="explore.html">Explore</a></li>
-            <li><a href="pantry.html"> What's in your Pantry?</a></li>
-            <li><a href="creation.html">Upload your Own</a></li>
-            <li><a href="login.html">Login</a></li>
-            <li><a href="register.html">Register</a></li>
-        </ul>
-    </nav>
+    {% include 'navbar.html' %} 
 
     <div class="login-container">
+        {% if session.user_id %}
+        <p>You are already logged in, dummy</p>  
+        {% else %}
         <h2>Login</h2>
         <form action="/login.html" method="POST">
             <label for="email">Email: </label>
@@ -32,7 +26,8 @@
             <button type="submit">Login</button>
             <p id="error-message"></p>
         </form>
-        <a href="/register.html"> Don't have an account? Sign up here!</a>
+        <a href="/register.html"> Don't have an account? Sign up here!</a>           
+        {% endif %}
     </div>
 
 
