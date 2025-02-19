@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Login</title>
+</head>
+
+<body>
+    <!-- Nav Bar -->
+    {% include 'navbar.html' %} 
+
+    <div class="login-container">
+        {% if session.user_id %}
+        <p>You are already logged in, dummy</p>  
+        {% else %}
+        <h2>Login</h2>
+        <form action="/login.html" method="POST">
+            <label for="email">Email: </label>
+            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
+
+            <label for="password">Password: </label>
+            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+
+            <button type="submit">Login</button>
+            <p id="error-message"></p>
+        </form>
+        <a href="/register.html"> Don't have an account? Sign up here!</a>           
+        {% endif %}
+    </div>
+
+
+</body>
+</html>
