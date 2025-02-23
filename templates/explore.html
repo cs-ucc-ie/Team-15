@@ -4,25 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explore Cocktails</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('homepage') }}">Home</a></li>
-            <li><a href="{{ url_for('explore') }}">Explore</a></li>
-            <li><a href="{{ url_for('pantry') }}"> What's in your Pantry?</a></li>
-            <li><a href="{{ url_for('creation') }}">Upload your Own</a></li>
-
-            {% if session.user_id %}
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% else %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-                <li><a href="{{ url_for('register') }}">Register</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+    <!-- Nav Bar -->
+    {% include 'navbar.html' %} 
 
     <div class="explore-container">
         <h2>Explore Cocktails</h2>
@@ -46,11 +32,6 @@
                 <h3>{{ cocktail.name }}</h3>
                 <p>Popularity: {{ cocktail.popularity / cocktail.reviews_number }}</p>
                 <p>Recipe by: {{ cocktail.recipe_by }}</p>
-
-                <!-- add to favorite button-->
-                <form action="{{ url_for('add_favorite', cocktail_id = cocktail.id) }}" method = "POST">
-                    <button type="submit" class = "favorite-button">Add to favorites</button>
-                </form>
             </div>
             {% endfor %}
         </div>

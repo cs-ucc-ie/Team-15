@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
+=======
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+>>>>>>> master
     <title>Creat a Cocktail</title>
 </head>
 
 
 <body>
+<<<<<<< HEAD
     <nav>
         <ul>
             <li><a href="homepage.html">Home</a></li>
@@ -24,21 +29,44 @@
             {% endif %}
         </ul>
     </nav>
+=======
+    <!-- Nav Bar -->
+    {% include 'navbar.html' %} 
+>>>>>>> master
 
     <div class="tabs">
         <button class="tab-button" onclick="openTab(event, 'addIngredients')">Add Ingredients</button>
         <button class="tab-button" onclick="openTab(event, 'searchIngredients')">Search Ingredients</button>
     </div>
 
+<<<<<<< HEAD
     <div id="addIngredients" class="tab-content">
         <h2>Add Ingredients</h2>
 
+=======
+    <div class="ingredient-list" id="ingredient-list">
+        {% for ingredient in ingredients %}
+        <h3>{{ ingredient.name }}</h3>
+        {% endfor %}
+    </div>
+
+    <div id="addIngredients" class="tab-content">
+        <h2>Add Ingredients</h2>
+
+
+        
+        <!--
+>>>>>>> master
         <form id="ingredient-form">
             <label for="password">Enter ingredient</label>
             <input type="text" id="ingredient-name" placeholder="Enter ingredient" required>
             <button type="submit">Add Ingredient</button>
         </form>
+<<<<<<< HEAD
 
+=======
+        -->
+>>>>>>> master
         <h3>Ingredients List</h3>
         <ul id="ingredients-list">
         </ul>

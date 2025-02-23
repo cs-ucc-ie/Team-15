@@ -1,0 +1,45 @@
+<section>
+    <div class="custom-shape-divider-top-1739903469">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M892.25 114.72L0 0 0 120 1200 120 1200 0 892.25 114.72z" class="shape-fill"></path>
+        </svg>
+    </div>
+
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <ul>
+            <li>
+                {% if session.user_id %}
+                <a href="userpage.html"><img src="{{ url_for('static', filename='user.png') }}" alt="User Image"></a>
+                {% else %}
+                <a href="login.html"><img src="{{ url_for('static', filename='user.png') }}" alt="User Image"></a>
+                {% endif %}
+            </li>
+            <li><a href="questions.html"><img src="{{ url_for('static', filename='questions.png') }}" alt="Questions Image"></a></li>
+        </ul>
+    </div>
+
+    <div class="slogan">
+        <p><i>Shake Things Up with Pourfect Cocktail<br>Your Perfect Drink, Every Time</i></p>
+        <h1>Pourfect Cocktail</h1>
+    </div>
+
+    <!-- Main Navigation -->
+    <div class="main-nav">
+        <nav>
+            <ul>
+                <li><a href="homepage.html"><img src="/static/home.png" alt="Home Image"> Home</a></li>
+                <li><a href="explore.html"><img src="/static/search.png" alt="Explore"> Explore</a></li>
+                <li><a href="pantry.html"><img src="/static/pantry.png" alt="Pantry"> Pantry?</a></li>
+                <li><a href="creation.html"><img src="/static/bev.png" alt="Create"> Create</a></li>
+
+                {% if session.user_id %}
+                    <li><a href="{{ url_for('logout') }}"><img src="/static/logout.png" alt="Logout"> Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}"><img src="/static/login.png" alt="Login"> Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</section>

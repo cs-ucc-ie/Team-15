@@ -87,19 +87,33 @@ def logout():
 def index():
     db = get_db()
     top_cocktails = db.execute(
+<<<<<<< HEAD
         "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 4"
     ).fetchall()
 
     return render_template('homepage1.html', top_cocktails=top_cocktails)
+=======
+        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 5"
+    ).fetchall()
+
+    return render_template('homepage.html', top_cocktails=top_cocktails)
+>>>>>>> master
 
 @app.route('/homepage.html')
 def homepage():
     db = get_db()
     top_cocktails = db.execute(
+<<<<<<< HEAD
         "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 4"
     ).fetchall()
 
     return render_template('homepage1.html', top_cocktails=top_cocktails)
+=======
+        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 5"
+    ).fetchall()
+
+    return render_template('homepage.html', top_cocktails=top_cocktails)
+>>>>>>> master
 
 @app.route('/explore.html')
 def explore():
@@ -124,6 +138,7 @@ def explore():
 
 @app.route('/pantry.html')
 def pantry():
+<<<<<<< HEAD
     return render_template('pantry.html')
 
 @app.route('/creation.html')
@@ -182,3 +197,60 @@ def add_favorite(cocktail_id):
 
 if __name__ == '__main__':
     app.run(debug = True)
+=======
+    db = get_db()
+    query = "SELECT * FROM ingredients"
+    ingredients = db.execute(query).fetchall()
+
+    return render_template('pantry.html', ingredients = ingredients)
+
+@app.route('/creation.html', methods=['GET', 'POST'])
+def creation():
+    db = get_db()
+
+    if request.method == 'POST':
+        name = request.form['name']
+        alcohol_content = int(request.form['alcohol_content'])
+        method = request.form['method']
+        recipe_by = session.get('username', 'Anonymous')
+
+        selected_ingredients = request.form.get('selected_ingredients', '')
+
+        db.execute(
+            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, ingredients) VALUES (?, '', 5, 1, ?, ?, ?)",
+            (name, alcohol_content, recipe_by, selected_ingredients)
+        )
+        db.commit()
+        flash("Cocktail added successfully!", "success")
+        return redirect(url_for('explore'))
+
+    ingredients = db.execute("SELECT * FROM ingredients").fetchall()
+    return render_template('creation.html', ingredients=ingredients)
+
+@app.route('/userpage.html')
+def user_profile():
+
+     if "user_id" not in session:
+         flash("You need to log in to view your profile!", "danger")
+         return redirect(url_for("login"))
+     
+     db = get_db()
+     user_id = session["user_id"]
+
+     user_info = db.execute("SELECT *  FROM users WHERE id = ?", (user_id,)).fetchone()
+
+     # Fetch cocktails created by the logged in user 
+     user_cocktails = db.execute(
+        "SELECT * FROM cocktails WHERE user_id = ?", (user_id,)
+     ).fetchall()
+
+     if user_info is None:
+        flash("User not found!", "danger")
+        return redirect(url_for("login"))
+
+     return render_template("userpage.html", user_cocktails=user_cocktails)
+
+
+if __name__ == '__main__':
+    app.run(debug = True)
+>>>>>>> master

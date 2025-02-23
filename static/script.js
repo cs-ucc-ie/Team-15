@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //script for age verification pop up 
 document.addEventListener("DOMContentLoaded", function () {
     let overlay = document.getElementById("age-overlay");
@@ -42,6 +43,15 @@ function checkAge() {
     }
 }
 //for carousel
+=======
+//function scrollLeft() {
+//    document.getElementById('scrollContainer').scrollBy({ left: -220, behavior: 'smooth' });
+//}
+
+//function scrollRight() {
+//    document.getElementById('scrollContainer').scrollBy({ left: 220, behavior: 'smooth' });
+//}
+>>>>>>> master
 document.addEventListener("DOMContentLoaded", function () {
     const grid = document.getElementById("cocktail-grid");
     const prevBtn = document.getElementById("prevBtn");
@@ -57,3 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
         grid.scrollBy({ left: -scrollAmount, behavior: "smooth" });
     });
 });
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
