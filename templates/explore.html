@@ -24,7 +24,7 @@
                 <option value="advanced" {% if filter_option == 'advanced' %}selected{% endif %}>Highest-to-lowest rated</option>
             </select>
         </div>
-
+        
         <div class="cocktail-grid" id="cocktail-list">
             {% for cocktail in cocktails %}
             <div class="cocktail-card">
@@ -35,10 +35,10 @@
             </div>
             {% endfor %}
         </div>
-
+        
         <a href="all-explore.html" class="see-more">See More →</a>
     </div>
-
+    
     <script>
         function applyFilter() {
             let filter = document.getElementById("filter-select").value;
