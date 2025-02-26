@@ -28,18 +28,36 @@
     <div class="main-nav">
         <nav>
             <ul>
-                <li><a href="homepage.html"><img src="/static/home.png" alt="Home Image"> Home</a></li>
-                <li><a href="explore.html"><img src="/static/search.png" alt="Explore"> Explore</a></li>
-                <li><a href="pantry.html"><img src="/static/pantry.png" alt="Pantry"> Pantry?</a></li>
-                <li><a href="creation.html"><img src="/static/bev.png" alt="Create"> Create</a></li>
+                <li><a href="{{ url_for('homepage') }}"><img src="{{ url_for('static', filename='home.png') }}" alt="Home Image"> Home</a></li>
+                <li><a href="{{ url_for('explore') }}"><img src="{{ url_for('static', filename='search.png') }}" alt="Explore"> Explore</a></li>
+                <li><a href="{{ url_for('pantry') }}"><img src="{{ url_for('static', filename='pantry.png') }}" alt="Pantry"> Pantry?</a></li>
+                <li><a href="{{ url_for('creation') }}"><img src="{{ url_for('static', filename='bev.png') }}" alt="Create"> Create</a></li>
 
                 {% if session.user_id %}
-                    <li><a href="{{ url_for('logout') }}"><img src="/static/logout.png" alt="Logout"> Logout</a></li>
+                    <li><a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='logout.png') }}" alt="Logout"> Logout</a></li>
                 {% else %}
-                    <li><a href="{{ url_for('login') }}"><img src="/static/login.png" alt="Login"> Login</a></li>
+                    <li><a href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='login.png') }}" alt="Login"> Login</a></li>
                     <li><a href="{{ url_for('register') }}">Register</a></li>
                 {% endif %}
             </ul>
         </nav>
     </div>
+
+    <div id="flash-messages">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll("#flash-messages .alert").forEach(alert => {
+                alert.style.display = "none";
+            });
+        }, 3000);
+    </script>
+
 </section>

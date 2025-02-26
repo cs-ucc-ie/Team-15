@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS cocktails (
     alcohol_content INTEGER NOT NULL,
     recipe_by TEXT NOT NULL
 );
-
+ALTER TABLE cocktails ADD COLUMN method TEXT NOT NULL DEFAULT '';
 ALTER TABLE cocktails ADD COLUMN created_by INTEGER NOT NULL DEFAULT 1;
 
 CREATE TABLE IF NOT EXISTS ingredients (
@@ -202,3 +202,8 @@ SELECT name FROM ingredients;
 
 
 SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC;
+
+SELECT * FROM cocktail_ingredients;
+SELECT * FROM cocktails;
+
+

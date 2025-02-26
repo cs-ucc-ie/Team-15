@@ -30,7 +30,6 @@ def register():
         email = request.form["email"]
         password = request.form["password"]
         dob = request.form["dob"]
-        print(username,email,password)
         db = get_db()
         existing_user = db.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
 
@@ -133,7 +132,7 @@ def get_cocktails():
     selected_ingredients = request.json.get("ingredients", [])
     
     if not selected_ingredients:
-        return jsonify([])  # No ingredients selected
+        return jsonify([])  #No ingredients selected
 
     db = get_db()
     placeholders = ",".join("?" * len(selected_ingredients))
@@ -146,8 +145,6 @@ def get_cocktails():
         GROUP BY c.id
         HAVING COUNT(DISTINCT ci.ingredient_id) >= ?
     """
-
-    print("Selected Ingredients:", selected_ingredients)  # Debugging print
 
     cocktails = db.execute(query, selected_ingredients + [len(selected_ingredients)]).fetchall()
 
@@ -163,12 +160,24 @@ def creation():
         method = request.form['method']
         recipe_by = session.get('username', 'Anonymous')
 
-        selected_ingredients = request.form.get('selected_ingredients', '')
+        #Get ingredients ids
+        selected_ingredient_ids = request.form.get('selected_ingredients', '')
+        selected_ingredient_ids = [int(i) for i in selected_ingredient_ids.split(',') if i.isdigit()]
 
-        db.execute(
-            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, ingredients) VALUES (?, '', 5, 1, ?, ?, ?)",
-            (name, alcohol_content, recipe_by, selected_ingredients)
+        #Insert into cocktails table
+        cursor = db.execute(
+            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, method) VALUES (?, '', 5, 1, ?, ?, ?)",
+            (name, alcohol_content, recipe_by, method)
         )
+        cocktail_id = cursor.lastrowid
+
+        #Insert into cocktail_ingredients table
+        for ingredient_id in selected_ingredient_ids:
+            db.execute(
+                "INSERT INTO cocktail_ingredients (cocktail_id, ingredient_id) VALUES (?, ?)",
+                (cocktail_id, ingredient_id)
+            )
+
         db.commit()
         flash("Cocktail added successfully!", "success")
         return redirect(url_for('explore'))
