@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="" width=device-width, initial-scale="1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'styles1.css') }}">
     <title>My Profile</title>
 </head>
 
@@ -35,13 +35,13 @@
         </div>
 
         <!-- cocktails what the user has added to the favorites-->
-        <!-- <h3>My Favorites</h3>
-        <div class="cocktail-grid"> -->
+        <h3>My Favorites</h3>
+        <div class="cocktail-grid">
             <!-- display all user's favorite cocktails -->
-            <!-- {% for cocktail in cocktails %} 
+            {% for cocktail in favorite_cocktails %}
             <div class="cocktail-card">
                 <img src="{{ url_for('static', filename = cocktail['image']) }}" alt="{{ cocktail['name'] }}">
-                <h3>{{ cocktails['name'] }}</h3>
+                <h3>{{ cocktail['name'] }}</h3>
                 <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
                 <p>Popularity: {{ cocktail['popularity'] / cocktail['reviews_number'] }}</p>
             </div>
@@ -49,7 +49,7 @@
             {% else %}
             <p>You don't have any favorites yet.</p>
             {% endfor %}
-        </div> -->
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename = 'srcipt.js') }}"></script>

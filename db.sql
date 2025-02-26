@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS cocktails (
     recipe_by TEXT NOT NULL
 );
 
+ALTER TABLE cocktails ADD COLUMN created_by INTEGER NOT NULL DEFAULT 1;
+
 CREATE TABLE IF NOT EXISTS ingredients (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(255) NOT NULL UNIQUE
@@ -103,6 +105,17 @@ CREATE TABLE IF NOT EXISTS cocktail_ingredients (
     UNIQUE (cocktail_id, ingredient_id) 
 );
 
+CREATE TABLE IF NOT EXISTS favorites (
+    favorites_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    cocktail_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (cocktail_id) REFERENCES cocktails (id) ON DELETE CASCADE
+);
+
+INSERT INTO favorites (user_id, cocktail_id) VALUES
+(3, 1);
+
 INSERT INTO cocktail_ingredients (cocktail_id, ingredient_id) VALUES
 -- Cosmopolitan
 (1, 1),
@@ -182,6 +195,8 @@ INSERT INTO cocktail_ingredients (cocktail_id, ingredient_id) VALUES
 (18, 11),
 (18, 24);
 
+INSERT INTO favorites (user_id, cocktail_id) VALUES
+(3, 1);
 
 SELECT name FROM ingredients;
 

@@ -178,27 +178,50 @@ def creation():
 
 @app.route('/userpage.html')
 def user_profile():
+    db = get_db()
+    user_id = session["user_id"]
 
-     if "user_id" not in session:
-         flash("You need to log in to view your profile!", "danger")
-         return redirect(url_for("login"))
-     
-     db = get_db()
-     user_id = session["user_id"]
-
-     user_info = db.execute("SELECT *  FROM users WHERE id = ?", (user_id,)).fetchone()
-
-     # Fetch cocktails created by the logged in user 
-     user_cocktails = db.execute(
-        "SELECT * FROM cocktails WHERE user_id = ?", (user_id,)
-     ).fetchall()
-
-     if user_info is None:
-        flash("User not found!", "danger")
+    if "user_id" not in session:
+        flash("You need to log in to view your profile!", "danger")
         return redirect(url_for("login"))
 
-     return render_template("userpage.html", user_cocktails=user_cocktails)
+    # Fetch cocktails created by the logged in user 
+    user_cocktails = db.execute(
+        "SELECT * FROM cocktails WHERE created_by = ?", (user_id,)
+    ).fetchall()
 
+    # Fetch user's favorite cocktails by joining with cocktails table
+    favorite_cocktails = db.execute("""
+        SELECT c.* FROM cocktails as c
+        JOIN favorites as f ON c.id = f.cocktail_id
+        WHERE f.user_id = ?
+    """, (user_id,)).fetchall()
+
+    return render_template("userpage.html", user_cocktails=user_cocktails, favorite_cocktails=favorite_cocktails)
+
+def add_favorite(cocktail_id):
+    if "user_id" not in session:
+        flash ("You need to log in first!", "danger")
+        return redirect(url_for("login"))
+    
+    user_id = session["user_id"]
+    db = get_db()
+
+    # check if it already exists in favorites
+    exists = db.execute(
+        "SELECT favorites_id from favorites WHERE user_id = ? AND cocktail_id = ?", (user_id, cocktail_id)
+    ).fetchone()
+    
+    if not exists:
+        db.execute(
+            "INSERT INTO favorites (user_id, cocktail_id) VALUES (?, ?)", (user_id, cocktail_id)
+        )
+        db.commit()
+        flash("Added to favorites!", "success")
+    else:
+        flash("Already in favorites!", "warning")
+    
+    return redirect(url_for("user_profile"))    
 
 if __name__ == '__main__':
     app.run(debug = True)
