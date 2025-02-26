@@ -5,37 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Chatbox</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .chat-container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8f8f8;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #chatbox {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .chat-message {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: #d1e7ff;
+            text-align: right;
+            align-self: flex-end;
+        }
+
+        .ai-message {
+            background: #e2e2e2;
+            text-align: left;
+        }
+
+        #user-input {
+            width: calc(100% - 80px);
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     {% include 'navbar.html' %} 
 
     <div class="chat-container">
         <h2>Chat with AI</h2>
-        <div id="chatbox">
-            <div id="chat-messages"></div>
+        <div id="chatbox"></div>
+        <div>
             <input type="text" id="user-input" placeholder="Type a message...">
             <button onclick="sendMessage()">Send</button>
         </div>
     </div>
 
     <script>
-        async function sendMessage() {
-            let userInput = document.getElementById("user-input").value;
+        function sendMessage() {
+            let userInput = document.getElementById("user-input").value.trim();
             if (!userInput) return;
     
-            let chatMessages = document.getElementById("chat-messages");
-            chatMessages.innerHTML += `<div class='user-message'>${userInput}</div>`;
-    
+            let chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML += `<div class='chat-message user-message'>${userInput}</div>`;
             document.getElementById("user-input").value = "";
     
-            let response = await fetch("/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userInput })
-            });
-    
-            let data = await response.json();
-            chatMessages.innerHTML += `<div class='ai-message'>${data.response}</div>`;
+            setTimeout(() => {
+                chatbox.innerHTML += `<div class='chat-message ai-message'>Thinking...</div>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }, 500);
         }
     </script>
 </body>
