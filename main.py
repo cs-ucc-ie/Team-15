@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from flask import Flask, request, redirect, url_for, render_template, g, session, flash, jsonify
+from flask import Flask, request, redirect, url_for, render_template, g, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, date
 
@@ -30,6 +30,7 @@ def register():
         email = request.form["email"]
         password = request.form["password"]
         dob = request.form["dob"]
+        print(username,email,password)
         db = get_db()
         existing_user = db.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
 
@@ -86,19 +87,19 @@ def logout():
 def index():
     db = get_db()
     top_cocktails = db.execute(
-        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 5"
+        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 4"
     ).fetchall()
 
-    return render_template('homepage.html', top_cocktails=top_cocktails)
+    return render_template('homepage1.html', top_cocktails=top_cocktails)
 
 @app.route('/homepage.html')
 def homepage():
     db = get_db()
     top_cocktails = db.execute(
-        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 5"
+        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 4"
     ).fetchall()
 
-    return render_template('homepage.html', top_cocktails=top_cocktails)
+    return render_template('homepage1.html', top_cocktails=top_cocktails)
 
 @app.route('/explore.html')
 def explore():
@@ -121,116 +122,37 @@ def explore():
 
     return render_template("explore.html", cocktails=cocktails, filter_option=filter_option)
 
-@app.route('/pantry.html', methods=['GET'])
+@app.route('/pantry.html')
 def pantry():
-    db = get_db()
-    ingredients = db.execute("SELECT * FROM ingredients").fetchall()
-    return render_template("pantry.html", ingredients=ingredients)
+    return render_template('pantry.html')
 
-@app.route('/get_cocktails', methods=['POST'])
-def get_cocktails():
-    selected_ingredients = request.json.get("ingredients", [])
-    
-    if not selected_ingredients:
-        return jsonify([])  #No ingredients selected
-
-    db = get_db()
-    placeholders = ",".join("?" * len(selected_ingredients))
-
-    query = f"""
-        SELECT c.id, c.name 
-        FROM cocktails c
-        JOIN cocktail_ingredients ci ON c.id = ci.cocktail_id
-        WHERE ci.ingredient_id IN ({placeholders})
-        GROUP BY c.id
-        HAVING COUNT(DISTINCT ci.ingredient_id) >= ?
-    """
-
-    cocktails = db.execute(query, selected_ingredients + [len(selected_ingredients)]).fetchall()
-
-    return jsonify([{"id": c["id"], "name": c["name"]} for c in cocktails])
-
-@app.route('/creation.html', methods=['GET', 'POST'])
+@app.route('/creation.html')
 def creation():
-    db = get_db()
-
-    if request.method == 'POST':
-        name = request.form['name']
-        alcohol_content = int(request.form['alcohol_content'])
-        method = request.form['method']
-        recipe_by = session.get('username', 'Anonymous')
-
-        #Get ingredients ids
-        selected_ingredient_ids = request.form.get('selected_ingredients', '')
-        selected_ingredient_ids = [int(i) for i in selected_ingredient_ids.split(',') if i.isdigit()]
-
-        #Insert into cocktails table
-        cursor = db.execute(
-            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, method) VALUES (?, '', 5, 1, ?, ?, ?)",
-            (name, alcohol_content, recipe_by, method)
-        )
-        cocktail_id = cursor.lastrowid
-
-        #Insert into cocktail_ingredients table
-        for ingredient_id in selected_ingredient_ids:
-            db.execute(
-                "INSERT INTO cocktail_ingredients (cocktail_id, ingredient_id) VALUES (?, ?)",
-                (cocktail_id, ingredient_id)
-            )
-
-        db.commit()
-        flash("Cocktail added successfully!", "success")
-        return redirect(url_for('explore'))
-
-    ingredients = db.execute("SELECT * FROM ingredients").fetchall()
-    return render_template('creation.html', ingredients=ingredients)
+    return render_template('creation.html')
 
 @app.route('/userpage.html')
 def user_profile():
-    db = get_db()
-    user_id = session["user_id"]
 
-    if "user_id" not in session:
-        flash("You need to log in to view your profile!", "danger")
+     if "user_id" not in session:
+         flash("You need to log in to view your profile!", "danger")
+         return redirect(url_for("login"))
+     
+     db = get_db()
+     user_id = session["user_id"]
+
+     user_info = db.execute("SELECT *  FROM users WHERE id = ?", (user_id,)).fetchone()
+
+     # Fetch cocktails created by the logged in user 
+     user_cocktails = db.execute(
+        "SELECT * FROM cocktails WHERE user_id = ?", (user_id,)
+     ).fetchall()
+
+     if user_info is None:
+        flash("User not found!", "danger")
         return redirect(url_for("login"))
 
-    # Fetch cocktails created by the logged in user 
-    user_cocktails = db.execute(
-        "SELECT * FROM cocktails WHERE created_by = ?", (user_id,)
-    ).fetchall()
+     return render_template("userpage.html", user_cocktails=user_cocktails)
 
-    # Fetch user's favorite cocktails by joining with cocktails table
-    favorite_cocktails = db.execute("""
-        SELECT c.* FROM cocktails as c
-        JOIN favorites as f ON c.id = f.cocktail_id
-        WHERE f.user_id = ?
-    """, (user_id,)).fetchall()
-
-    return render_template("userpage.html", user_cocktails=user_cocktails, favorite_cocktails=favorite_cocktails)
-
-def add_favorite(cocktail_id):
-    if "user_id" not in session:
-        flash ("You need to log in first!", "danger")
-        return redirect(url_for("login"))
-    
-    user_id = session["user_id"]
-    db = get_db()
-
-    # check if it already exists in favorites
-    exists = db.execute(
-        "SELECT favorites_id from favorites WHERE user_id = ? AND cocktail_id = ?", (user_id, cocktail_id)
-    ).fetchone()
-    
-    if not exists:
-        db.execute(
-            "INSERT INTO favorites (user_id, cocktail_id) VALUES (?, ?)", (user_id, cocktail_id)
-        )
-        db.commit()
-        flash("Added to favorites!", "success")
-    else:
-        flash("Already in favorites!", "warning")
-    
-    return redirect(url_for("user_profile"))    
 
 if __name__ == '__main__':
     app.run(debug = True)
