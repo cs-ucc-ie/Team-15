@@ -5,71 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>Create a Cocktail</title>
-    <style>
-        .ingredient-container {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-        }
-
-        #ingredientList {
-            display: none;
-            position: absolute;
-            background-color: white;
-            border: 1px solid #ccc;
-            padding: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-            width: 100%;
-            box-sizing: border-box;
-            z-index: 10;
-        }
-
-        #ingredientButton {
-            width: 100%;
-        }
-
-        #ingredientButton:focus + #ingredientList,
-        #ingredientList:hover {
-            display: block;
-        }
-    </style>
 </head>
 
 <body>
-    <!-- Nav Bar -->
-    {% include 'navbar.html' %} 
+    {% include 'navbar.html' %}
+
 
     <div class="beverage-creation-container">
         <h2>Create Your Own Cocktail</h2>
         <form action="{{ url_for('creation') }}" method="POST">
             <label for="name">Drink Name</label>
             <input type="text" id="name" name="name" placeholder="Enter the name of your cocktail" required>
-            <br>
+            
             <label for="alcohol_content">Alcohol Content</label>
             <select id="alcohol_content" name="alcohol_content" required>
                 <option value="0">Non-Alcoholic</option>
                 <option value="1">Alcoholic</option>
             </select>
-            <br>
+
             <label for="method">Preparation Method</label>
             <textarea id="method" name="method" rows="4" required></textarea>
-            <br>
 
             <div class="ingredient-container">
-                <button type="button" id="ingredientButton">View Available Ingredients</button>
+                <h3>Available Ingredients (Click to Select)</h3>
                 <div id="ingredientList">
-                    <ul>
-                        {% for ingredient in ingredients %}
-                            <li>{{ ingredient.name }}</li>
-                        {% endfor %}
-                    </ul>
+                    {% for ingredient in ingredients %}
+                        <div class="ingredient-item" onclick="toggleIngredient({{ ingredient.id }}, '{{ ingredient.name }}')">
+                            {{ ingredient.name }}
+                        </div>
+                    {% endfor %}
                 </div>
+
+                <h3>Selected Ingredients</h3>
+                <div id="selectedIngredientsList"></div>
+                
+                <!-- Hidden Input to Send Selected Ingredients -->
+                <input type="hidden" name="selected_ingredients" id="selectedIngredientsInput">
             </div>
-            <br>
+
             <button type="submit">Submit</button>
         </form>
     </div>
+
+    <script>
+        let selectedIngredients = [];
+
+        function toggleIngredient(id, name) {
+            const index = selectedIngredients.findIndex(ing => ing.id === id);
+            if (index > -1) {
+                selectedIngredients.splice(index, 1);
+            } else {
+                selectedIngredients.push({ id, name });
+            }
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById("selectedIngredientsList").innerHTML = 
+                selectedIngredients.map(ing => `<li onclick="toggleIngredient(${ing.id}, '${ing.name}')">${ing.name}</li>`).join("");
+
+            document.getElementById("selectedIngredientsInput").value = selectedIngredients.map(ing => ing.id).join(",");
+        }
+    </script>
 </body>
 </html>
 

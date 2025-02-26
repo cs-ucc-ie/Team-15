@@ -3,87 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles1.css') }}">
-=======
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
->>>>>>> master
-    <title>Creat a Cocktail</title>
+    <title>Pantry</title>
 </head>
-
-
 <body>
-<<<<<<< HEAD
-    <nav>
-        <ul>
-            <li><a href="homepage.html">Home</a></li>
-            <li><a href="explore.html">Explore</a></li>
-            <li><a href="pantry.html"> What's in your Pantry?</a></li>
-            <li><a href="creation.html">Upload your Own</a></li>
 
-            {% if session.user_id %}
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% else %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-                <li><a href="{{ url_for('register') }}">Register</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-=======
     <!-- Nav Bar -->
     {% include 'navbar.html' %} 
->>>>>>> master
+    <h1>Pantry</h1>
 
-    <div class="tabs">
-        <button class="tab-button" onclick="openTab(event, 'addIngredients')">Add Ingredients</button>
-        <button class="tab-button" onclick="openTab(event, 'searchIngredients')">Search Ingredients</button>
-    </div>
-
-<<<<<<< HEAD
-    <div id="addIngredients" class="tab-content">
-        <h2>Add Ingredients</h2>
-
-=======
-    <div class="ingredient-list" id="ingredient-list">
+    <!-- Ingredients List -->
+    <h2>Available Ingredients</h2>
+    <ul id="ingredient-list">
         {% for ingredient in ingredients %}
-        <h3>{{ ingredient.name }}</h3>
+        <li onclick="toggleIngredient({{ ingredient.id }}, '{{ ingredient.name }}')">
+            {{ ingredient.name }}
+        </li>
         {% endfor %}
-    </div>
+    </ul>
 
-    <div id="addIngredients" class="tab-content">
-        <h2>Add Ingredients</h2>
+    <!-- Selected Ingredients -->
+    <h2>Selected Ingredients</h2>
+    <ul id="selected-ingredients-list"></ul>
 
+    <!-- Matching Cocktails -->
+    <h2>Matching Cocktails</h2>
+    <ul id="cocktail-list"></ul>
 
-        
-        <!--
->>>>>>> master
-        <form id="ingredient-form">
-            <label for="password">Enter ingredient</label>
-            <input type="text" id="ingredient-name" placeholder="Enter ingredient" required>
-            <button type="submit">Add Ingredient</button>
-        </form>
-<<<<<<< HEAD
+    <script>
+        let selectedIngredients = [];
 
-=======
-        -->
->>>>>>> master
-        <h3>Ingredients List</h3>
-        <ul id="ingredients-list">
-        </ul>
-    </div>
+        function toggleIngredient(id, name) {
+            const index = selectedIngredients.findIndex(ing => ing.id === id);
+            if (index > -1) {
+                selectedIngredients.splice(index, 1);
+            } else {
+                selectedIngredients.push({ id, name });
+            }
+            updateUI();
+        }
 
-    <div id="searchIngredients" class="tab-content">
-        <h2>Search Ingredients</h2>
-        
-        <input type="text" id="search-bar" placeholder="Search for an ingredient" oninput="searchIngredients()">
+        function updateUI() {
+            document.getElementById("selected-ingredients-list").innerHTML = 
+                selectedIngredients.map(ing => `<li onclick="toggleIngredient(${ing.id}, '${ing.name}')">${ing.name}</li>`).join("");
 
-        <h3>Filtered Ingredients</h3>
-        <ul id="filtered-ingredients-list">
-        </ul>
-    </div>
-
-
-
+            fetch('/get_cocktails', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ingredients: selectedIngredients.map(ing => ing.id) })
+            })
+            .then(response => response.json())
+            .then(cocktails => {
+                document.getElementById("cocktail-list").innerHTML = 
+                    cocktails.length ? cocktails.map(c => `<li>${c.name}</li>`).join("") : "<li>No matches found</li>";
+            });
+        }
+    </script>
 
 </body>
 </html>
