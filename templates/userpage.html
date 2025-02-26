@@ -44,12 +44,32 @@
                 <h3>{{ cocktail['name'] }}</h3>
                 <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
                 <p>Popularity: {{ cocktail['popularity'] / cocktail['reviews_number'] }}</p>
+
+                <!-- button to remove cocktails -->
+                <form action="{{ url_for('remove_favorite', cocktail_id=cocktail['id']) }}" method="POST">
+                    <button type="submit" class="remove-favorite-button">Remove from favorites</button>
+                </form>
             </div>
 
             {% else %}
             <p>You don't have any favorites yet.</p>
             {% endfor %}
         </div>
+
+        <!-- Showing people that the users follow -->
+        <!-- <h3>My Following</h3>
+        <div class="followed-users">
+            {% if followed_users %}
+            <ul>
+                {% for user in followed_users %}
+                <li>{{ user['username'] }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>You haven't followed anyone yet.</p>
+            <p>Check out <a href="community.html">Community.</a></p>
+            {% endif %}
+        </div> -->
     </div>
 
     <script src="{{ url_for('static', filename = 'srcipt.js') }}"></script>

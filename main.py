@@ -208,6 +208,8 @@ def user_profile():
 
     return render_template("userpage.html", user_cocktails=user_cocktails, favorite_cocktails=favorite_cocktails)
 
+# Adding the cocktails to favorites
+@app.route('/add_favorite/<int:cocktail_id>', methods=['POST'])
 def add_favorite(cocktail_id):
     if "user_id" not in session:
         flash ("You need to log in first!", "danger")
