@@ -11,8 +11,9 @@
     <!-- Nav Bar -->
     {% include 'navbar.html' %} 
     <h1>Pantry</h1>
-
+<div class="pantry-container">
     <!-- Ingredients List -->
+    <div class="pantry-left-col"
     <h2>Available Ingredients</h2>
     <ul id="ingredient-list">
         {% for ingredient in ingredients %}
@@ -21,14 +22,20 @@
         </li>
         {% endfor %}
     </ul>
-
+    </div>
+    <div class="pantry-right-col">
+    <div class="pantry-top-right">
     <!-- Selected Ingredients -->
     <h2>Selected Ingredients</h2>
     <ul id="selected-ingredients-list"></ul>
+    </div>
+    </div>
 
     <!-- Matching Cocktails -->
+    <div class="pantry-bottom-right">
     <h2>Matching Cocktails</h2>
     <ul id="cocktail-list"></ul>
+    </div>
 
     <script>
         let selectedIngredients = [];
@@ -59,6 +66,6 @@
             });
         }
     </script>
-
+</div>
 </body>
 </html>

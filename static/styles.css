@@ -1,3 +1,29 @@
+/*Age verification pop up css */
+#age-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.age-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+#main-content {
+    display: none; /*Hides the homepage until age is verified */
+}
+
 body {
     background-color: rgb(248, 235, 197);
     font-family: "Tinos", serif;
@@ -259,7 +285,7 @@ h2 span{
 }
 
 button {
-    background: transparent;
+    background-color: white;
     size: 20px;
     padding: 10px;
     color: rgb(17, 16, 12);
@@ -268,8 +294,12 @@ button {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    font-family: "Tinos", serif;
 }
 
+.form-control{
+    font-family: "Tinos", serif;
+}
 
 div[style*="display: flex"] {
     display: flex;
@@ -482,3 +512,35 @@ form {
     margin-bottom: 20px;
 }
 
+/* css for pantry page */
+
+.pantry-container{
+    display: flex;
+    width: 80%;
+    max-width: 1200px;
+}
+
+.pantry-left-col {
+    flex: 3; 
+    padding: 20px;
+    border: 2px solid #ddd;
+}
+.pantry-right-col {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+.pantry-top-right{
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 2px solid #ddd;
+}
+
+.pantry-bottom-right{
+    flex: 1; 
+    padding: 10px;
+    border: 2px solid #ddd;
+}

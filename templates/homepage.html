@@ -10,6 +10,16 @@
 <header></header>
 
 <body>
+        <!--Age verification Pop Up Section-->
+        <div id="age-overlay">
+            <div class="age-container">
+                <h2>Age Verification</h2>
+                <p>Please enter your date of birth:</p>
+                <input type="date" id="dobInput" class="form-control">
+                <button class="btn btn-primary mt-3" onclick="checkAge()">Submit</button>
+            </div>
+        </div>
+        
     <!-- Nav Bar -->
     {% include 'navbar.html' %} 
   
