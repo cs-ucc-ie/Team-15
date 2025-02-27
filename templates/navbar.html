@@ -37,7 +37,6 @@
                     <li><a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='logout.png') }}" alt="Logout"> Logout</a></li>
                 {% else %}
                     <li><a href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='login.png') }}" alt="Login"> Login</a></li>
-                    <li><a href="{{ url_for('register') }}">Register</a></li>
                 {% endif %}
             </ul>
         </nav>

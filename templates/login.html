@@ -9,21 +9,14 @@
 
 <body class="login-page">
     <!-- Nav Bar -->
-    <nav>
-        <ul>
-            <li><a href="homepage.html">Home</a></li>
-            <li><a href="explore.html">Explore</a></li>
-            <li><a href="pantry.html"> What's in your Pantry?</a></li>
-            <li><a href="creation.html">Upload your Own</a></li>
-            <li><a href="login.html">Login</a></li>
-        </ul>
-    </nav>
+    {% include 'navbar.html' %} 
+
 
     <div class="login-container">
         <div class="col col-1">
             <h2>Login</h2>
             <div class="image-layer">
-             <img src="/static/mixologist.jpeg" alt="martini glass" class="form-image-main">
+             <img src="/static/mixologist.jpeg" alt="mixologist" class="form-image-main">
             </div>
         </div>
         <div class="col col-2">

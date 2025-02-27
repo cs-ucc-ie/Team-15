@@ -11,8 +11,14 @@
     <!-- Nav Bar -->
     {% include 'navbar.html' %} 
 
-    <div class="register-container">
+    <div class="login-container">
+        <div col col1>
         <h2>Register</h2>
+        <div class="image-layer">
+            <img src="/static/champagne.jpg" alt="champagne glasses" class="form-image-main">
+           </div>
+       </div>
+       <div class="col col-2">
         <form action="/register.html" method="POST">
             <label for="username">Username </label>
             <input type="username" class="form-control" id="username" placeholder="Enter username" name="username" required>
@@ -35,6 +41,7 @@
             <p id="error-message"></p>
         </form>
         <a href="/login.html"> I have an account!</a>
+        </div>
     </div>
 
 
