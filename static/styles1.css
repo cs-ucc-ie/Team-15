@@ -27,8 +27,8 @@
 }
 
 body {
-    background-color: rgb(248, 235, 197);
-    font-family: 'Courier New', Courier, monospace;
+    background-color: white;
+    font-family: "Tinos", serif;
     color: #504f4f;
 }
 
@@ -335,19 +335,55 @@ div a img:hover {
     transform: scale(1.05);
 }
 
-
+/* login css */
 .login-container {
-    background: white;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    text-align: center;
-    width: 400px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: flex;
+    width: 800px;
+    height: 500px;
+    border: 3px solid white;
+    border-radius: 30px;
+    backdrop-filter: blur;
+    margin: auto;
+    margin-top: 50px;
 } 
+
+.col-1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 55%;
+    backdrop-filter: blur;
+    border-radius: 0 30% 20% 0;
+    transition: border-radius .3s;
+    margin-top: -40px;
+}
+
+.image-layer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+}
+
+.form-image-main {
+    width: auto; 
+    max-width: 80%; 
+    max-height: 300px; 
+    object-fit: contain; 
+}
+
+.col-2{
+    position: relative;
+    width: 45%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .register-container {
     background: white;
