@@ -232,7 +232,25 @@ def add_favorite(cocktail_id):
     else:
         flash("Already in favorites!", "warning")
     
-    return redirect(url_for("user_profile"))    
+    return redirect(url_for("user_profile"))  
+
+# Removing the cocktails from favorites
+@app.route('/remove_favorite/<int:cocktail_id>', methods=['POST'])  
+def remove_favorite(cocktail_id):
+    if "user_id" not in session:
+        flash ("You need to log in first!", "danger")
+        return redirect(url_for("login"))
+    
+    user_id = session["user_id"]
+    db = get_db()
+
+    db.execute(
+        "DELETE FROM favorites WHERE user_id = ? AND cocktail_id = ?", (user_id, cocktail_id)
+    )
+    db.commit()
+    flash("Removed from favorites!", "success")
+
+    return redirect(url_for("user_profile"))
 
 if __name__ == '__main__':
     app.run(debug = True)

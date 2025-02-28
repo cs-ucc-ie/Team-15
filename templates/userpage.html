@@ -11,7 +11,7 @@
 
 <body>
     <!-- Nav Bar -->
-    {% include 'navbar.html' %} 
+    {% include 'navbar.html' %}
 
     <div class="profile-container">
         <h2>Welcome, {{ session['username'] }}</h2>
@@ -46,7 +46,7 @@
                 <p>Popularity: {{ cocktail['popularity'] / cocktail['reviews_number'] }}</p>
 
                 <!-- button to remove cocktails -->
-                <form action="{{ url_for('remove_favorite', cocktail_id=cocktail['id']) }}" method="POST">
+                <form action="{{ url_for('remove_favorite', cocktail_id=cocktail.id) }}" method="POST">
                     <button type="submit" class="remove-favorite-button">Remove from favorites</button>
                 </form>
             </div>

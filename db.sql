@@ -96,6 +96,32 @@ INSERT INTO cocktails (name,image,popularity, reviews_number, alcohol_content,re
 ('Boulevardier', 'boulevardier.jpg', 62, 27, 1, 'WhiskeyAficionado'),
 ('Sazerac', 'sazerac.jpg', 55, 20, 1, 'NewOrleansMixologist');
 
+-- UPDATE cocktails SET created_by = 1 WHERE id = 1;
+-- UPDATE cocktails SET created_by = 2 WHERE id = 2;
+-- UPDATE cocktails SET created_by = 3 WHERE id = 3;
+-- UPDATE cocktails SET created_by = 4 WHERE id = 4;
+-- UPDATE cocktails SET created_by = 5 WHERE id = 5;
+-- UPDATE cocktails SET created_by = 6 WHERE id = 6;
+-- UPDATE cocktails SET created_by = 7 WHERE id = 7;
+-- UPDATE cocktails SET created_by = 8 WHERE id = 8;
+-- UPDATE cocktails SET created_by = 9 WHERE id = 9;
+-- UPDATE cocktails SET created_by = 10 WHERE id = 10;
+-- UPDATE cocktails SET created_by = 11 WHERE id = 11;
+-- UPDATE cocktails SET created_by = 12 WHERE id = 12;
+-- UPDATE cocktails SET created_by = 13 WHERE id = 13;
+-- UPDATE cocktails SET created_by = 14 WHERE id = 14;
+-- UPDATE cocktails SET created_by = 15 WHERE id = 15;
+-- UPDATE cocktails SET created_by = 16 WHERE id = 16;
+-- UPDATE cocktails SET created_by = 17 WHERE id = 17;
+-- UPDATE cocktails SET created_by = 18 WHERE id = 18;
+-- UPDATE cocktails SET created_by = 19 WHERE id = 19;
+-- UPDATE cocktails SET created_by = 20 WHERE id = 20;
+-- UPDATE cocktails SET created_by = 21 WHERE id = 21;
+-- UPDATE cocktails SET created_by = 22 WHERE id = 22;
+-- UPDATE cocktails SET created_by = 23 WHERE id = 23;
+-- UPDATE cocktails SET created_by = 24 WHERE id = 24;
+
+
 CREATE TABLE IF NOT EXISTS cocktail_ingredients (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cocktail_id INTEGER NOT NULL,
@@ -115,6 +141,8 @@ CREATE TABLE IF NOT EXISTS favorites (
 
 INSERT INTO favorites (user_id, cocktail_id) VALUES
 (3, 1);
+
+SELECT * FROM favorites;
 
 INSERT INTO cocktail_ingredients (cocktail_id, ingredient_id) VALUES
 -- Cosmopolitan
@@ -205,5 +233,6 @@ SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC;
 
 SELECT * FROM cocktail_ingredients;
 SELECT * FROM cocktails;
+
 
 
