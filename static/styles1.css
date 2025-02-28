@@ -481,3 +481,34 @@ h3 a {
 form {
     margin-bottom: 20px;
 }
+
+
+/* Add to favorite button , Remove from favorite button */
+.favorite-button, .remove-favorite-button {
+    background: linear-gradient(135deg, #a8e063, #56ab2f); /* Elegant green gradient */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px; /* Softer, more premium feel */
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between icon and text */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); /* Soft drop shadow */
+    backdrop-filter: blur(10px); /* Light glass effect */
+}
+
+.favorite-button:hover, .remove-favorite-button:hover {
+    background: linear-gradient(135deg, #56ab2f, #a8e063); /* Reverse the gradient on hover */
+    transform: translateY(-3px); /* Slight lift for interaction */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2); /* More prominent shadow */
+}
+
+.favorite-button:active, .remove-favorite-button:active {
+    transform: translateY(1px) scale(0.98); /* Press-down effect */
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
