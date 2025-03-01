@@ -13,7 +13,7 @@
 
     <div class="beverage-creation-container">
         <h2>Create Your Own Cocktail</h2>
-        <form action="{{ url_for('creation') }}" method="POST">
+        <form action="{{ url_for('creation') }}" method="POST" enctype="multipart/form-data">
             <label for="name">Drink Name</label>
             <input type="text" id="name" name="name" placeholder="Enter the name of your cocktail" required>
             
@@ -42,6 +42,9 @@
                 <!-- Hidden Input to Send Selected Ingredients -->
                 <input type="hidden" name="selected_ingredients" id="selectedIngredientsInput">
             </div>
+            
+            <label for="image">Upload an Image</label>
+            <input type="file" id="image" name="image" accept="image/*">
 
             <button type="submit">Submit</button>
         </form>

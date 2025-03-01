@@ -2,12 +2,17 @@ import sqlite3
 import os
 from flask import Flask, request, redirect, url_for, render_template, g, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from datetime import datetime, date
 
 app = Flask(__name__)
 app.secret_key = "my_secret_key" #for sessions
 
 DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), "db.db")
+
+UPLOAD_FOLDER = 'static'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def get_db():
     if "db" not in g:
@@ -20,6 +25,10 @@ def close_db(e=None):
     db = g.pop("db", None)
     if db is not None:
         db.close()
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 
@@ -74,7 +83,6 @@ def login():
             flash("Invalid email or password", "danger")
 
     return render_template("login.html")
-
 
 @app.route("/logout")
 def logout():
@@ -169,14 +177,23 @@ def creation():
         method = request.form['method']
         recipe_by = session.get('username', 'Anonymous')
 
-        #Get ingredients ids
+        #Handle Image Upload
+        image = request.files['image']
+        if image and allowed_file(image.filename):
+            filename = secure_filename(image.filename)
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            image.save(image_path)
+        else:
+            filename = 'basic.jpg'  #Default if no image uploaded
+
+        #Get selected ingredient IDs
         selected_ingredient_ids = request.form.get('selected_ingredients', '')
         selected_ingredient_ids = [int(i) for i in selected_ingredient_ids.split(',') if i.isdigit()]
 
         #Insert into cocktails table
         cursor = db.execute(
-            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, method) VALUES (?, 'basic.jpg', 5, 1, ?, ?, ?)",
-            (name, alcohol_content, recipe_by, method)
+            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, method) VALUES (?, ?, 5, 1, ?, ?, ?)",
+            (name, filename, alcohol_content, recipe_by, method)
         )
         cocktail_id = cursor.lastrowid
 
