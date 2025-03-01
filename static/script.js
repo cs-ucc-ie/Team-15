@@ -64,3 +64,45 @@ document.addEventListener("DOMContentLoaded", function () {
         grid.scrollBy({ left: -scrollAmount, behavior: "smooth" });
     });
 });
+
+function goToExplore(id) {
+    window.location.href = "/explore.html?id=" + id;
+}
+
+function applyFilter() {
+    let filter = document.getElementById("filter-select").value;
+    window.location.href = "/explore.html?filter=" + filter;
+}
+
+function filterCocktails() {
+    let input = document.getElementById("search-bar").value.toLowerCase();
+    let cards = document.querySelectorAll(".cocktail-card");
+
+    cards.forEach(card => {
+        let name = card.querySelector("h3").innerText.toLowerCase();
+        if (name.includes(input)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+let selectedIngredients = [];
+
+function toggleIngredient(id, name) {
+    const index = selectedIngredients.findIndex(ing => ing.id === id);
+    if (index > -1) {
+        selectedIngredients.splice(index, 1);
+    } else {
+        selectedIngredients.push({ id, name });
+    }
+    updateUI();
+}
+
+function updateUI() {
+    document.getElementById("selectedIngredientsList").innerHTML = 
+        selectedIngredients.map(ing => `<li onclick="toggleIngredient(${ing.id}, '${ing.name}')">${ing.name}</li>`).join("");
+
+    document.getElementById("selectedIngredientsInput").value = selectedIngredients.map(ing => ing.id).join(",");
+}

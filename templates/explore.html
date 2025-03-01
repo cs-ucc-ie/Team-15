@@ -10,55 +10,48 @@
     <!-- Nav Bar -->
     {% include 'navbar.html' %} 
 
-    <div class="explore-container">
-        <h2>Explore Cocktails</h2>
-
-        <div class="search-filter-container">
-            <input type="text" id="search-bar" placeholder="Search cocktails..." oninput="filterCocktails()">
+    {% if selected_cocktail %}
+        <div class="cocktail-details">
+            <h2>{{ selected_cocktail.name }}</h2>
+            <img src="{{ url_for('static', filename=selected_cocktail.image) }}" alt="{{ selected_cocktail.name }}">
+            <p><strong>Popularity:</strong> {{ selected_cocktail.popularity / selected_cocktail.reviews_number }}</p>
+            <p><strong>Recipe by:</strong> {{ selected_cocktail.recipe_by }}</p>
+            <p><strong>Alcoholic:</strong> {% if selected_cocktail.alcohol_content == 1 %} Yes {% else %} No {% endif %}</p>
+            <p><strong>Method:</strong> {{ selected_cocktail.method }}</p>
             
-            <select id="filter-select" onchange="applyFilter()">
-                <option value="all" {% if filter_option == 'all' %}selected{% endif %}>All</option>
-                <option value="alcoholic" {% if filter_option == 'alcoholic' %}selected{% endif %}>Alcoholic</option>
-                <option value="non-alcoholic" {% if filter_option == 'non-alcoholic' %}selected{% endif %}>Non-Alcoholic</option>
-                <option value="easy" {% if filter_option == 'easy' %}selected{% endif %}>Lowest-to-highest rated</option>
-                <option value="advanced" {% if filter_option == 'advanced' %}selected{% endif %}>Highest-to-lowest rated</option>
-            </select>
+            <button onclick="history.back()">Go Back</button>
         </div>
-        
-        <div class="cocktail-grid" id="cocktail-list">
-            {% for cocktail in cocktails %}
-            <div class="cocktail-card">
-                <img src="{{ url_for('static', filename=cocktail.image) }}" alt="{{ cocktail.name }}">
-                <h3>{{ cocktail.name }}</h3>
-                <p>Popularity: {{ cocktail.popularity / cocktail.reviews_number }}</p>
-                <p>Recipe by: {{ cocktail.recipe_by }}</p>
+    {% else %}
+        <div class="explore-container">
+            <h2>Explore Cocktails</h2>
+
+            <div class="search-filter-container">
+                <input type="text" id="search-bar" placeholder="Search cocktails..." oninput="filterCocktails()">
+                
+                <select id="filter-select" onchange="applyFilter()">
+                    <option value="all" {% if filter_option == 'all' %}selected{% endif %}>All</option>
+                    <option value="alcoholic" {% if filter_option == 'alcoholic' %}selected{% endif %}>Alcoholic</option>
+                    <option value="non-alcoholic" {% if filter_option == 'non-alcoholic' %}selected{% endif %}>Non-Alcoholic</option>
+                    <option value="easy" {% if filter_option == 'easy' %}selected{% endif %}>Lowest-to-highest rated</option>
+                    <option value="advanced" {% if filter_option == 'advanced' %}selected{% endif %}>Highest-to-lowest rated</option>
+                </select>
             </div>
-            {% endfor %}
+            
+            <div class="cocktail-grid" id="cocktail-list">
+                {% for cocktail in cocktails %}
+                    <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
+                        <img src="{{ url_for('static', filename=cocktail.image) }}" alt="{{ cocktail.name }}">
+                        <h3>{{ cocktail.name }}</h3>
+                        <p>Popularity: {{ cocktail.popularity / cocktail.reviews_number }}</p>
+                        <p>Recipe by: {{ cocktail.recipe_by }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <a href="all-explore.html" class="see-more">See More →</a>
         </div>
         
-        <a href="all-explore.html" class="see-more">See More →</a>
-    </div>
-    
-    <script>
-        function applyFilter() {
-            let filter = document.getElementById("filter-select").value;
-            window.location.href = "{{ url_for('explore') }}?filter=" + filter;
-        }
-
-        function filterCocktails() {
-            let input = document.getElementById("search-bar").value.toLowerCase();
-            let cards = document.querySelectorAll(".cocktail-card");
-
-            cards.forEach(card => {
-                let name = card.querySelector("h3").innerText.toLowerCase();
-                if (name.includes(input)) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-        }
-    </script>
-
+    <script src="{{ url_for('static', filename = 'script.js') }}"></script>
+    {% endif %}
 </body>
 </html>
