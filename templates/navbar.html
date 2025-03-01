@@ -50,15 +50,7 @@
             </div>
         {% endfor %}
     </div>
-    
-    <script>
-        setTimeout(() => {
-            document.querySelectorAll("#flash-messages .alert").forEach(alert => {
-                alert.style.display = "none";
-            });
-        }, 3000);
-    </script>
 
-    
+    <script src="{{ url_for('static', filename = 'script.js') }}"></script>
 
 </section>

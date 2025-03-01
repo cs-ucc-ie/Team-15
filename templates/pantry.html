@@ -34,36 +34,5 @@
     <div class="pantry-r2">
     <h2>Matching Cocktails</h2>
     <ul id="cocktail-list"></ul>
-    </div>
-    <script>
-        let selectedIngredients = [];
-
-        function toggleIngredient(id, name) {
-            const index = selectedIngredients.findIndex(ing => ing.id === id);
-            if (index > -1) {
-                selectedIngredients.splice(index, 1);
-            } else {
-                selectedIngredients.push({ id, name });
-            }
-            updateUI();
-        }
-
-        function updateUI() {
-            document.getElementById("selected-ingredients-list").innerHTML = 
-                selectedIngredients.map(ing => `<li onclick="toggleIngredient(${ing.id}, '${ing.name}')">${ing.name}</li>`).join("");
-
-            fetch('/get_cocktails', {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ingredients: selectedIngredients.map(ing => ing.id) })
-            })
-            .then(response => response.json())
-            .then(cocktails => {
-                document.getElementById("cocktail-list").innerHTML = 
-                    cocktails.length ? cocktails.map(c => `<li>${c.name}</li>`).join("") : "<li>No matches found</li>";
-            });
-        }
-    </script>
-    </div>
 </body>
 </html>

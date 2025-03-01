@@ -30,7 +30,7 @@
                 <h3>Available Ingredients (Click to Select)</h3>
                 <div id="ingredientList">
                     {% for ingredient in ingredients %}
-                        <div class="ingredient-item" onclick="toggleIngredient({{ ingredient.id }}, '{{ ingredient.name }}')">
+                        <div class="ingredient-item" data-id="{{ ingredient.id }}" data-name="{{ ingredient.name }}">
                             {{ ingredient.name }}
                         </div>
                     {% endfor %}
@@ -46,29 +46,7 @@
             <button type="submit">Submit</button>
         </form>
     </div>
-<!--
-    <script>
-        let selectedIngredients = [];
 
-        function toggleIngredient(id, name) {
-            const index = selectedIngredients.findIndex(ing => ing.id === id);
-            if (index > -1) {
-                selectedIngredients.splice(index, 1);
-            } else {
-                selectedIngredients.push({ id, name });
-            }
-            updateUI();
-        }
-
-        function updateUI() {
-            document.getElementById("selectedIngredientsList").innerHTML = 
-                selectedIngredients.map(ing => `<li onclick="toggleIngredient(${ing.id}, '${ing.name}')">${ing.name}</li>`).join("");
-
-            document.getElementById("selectedIngredientsInput").value = selectedIngredients.map(ing => ing.id).join(",");
-        }
-    </script>
--->
-<script src="{{ url_for('static', filename = 'script.js') }}"></script>
 </body>
 </html>
 
