@@ -515,32 +515,76 @@ form {
 /* css for pantry page */
 
 .pantry-container{
-    display: flex;
-    width: 80%;
-    max-width: 1200px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-areas:
+    "A B C C";
+    width: 1000px;
+    height: 600px;
+    margin: auto;
+    margin-top: 50px;
 }
 
-.pantry-left-col {
-    flex: 3; 
-    padding: 20px;
-    border: 2px solid #ddd;
-}
-.pantry-right-col {
-    flex: 1; 
-    display: flex;
+.pantry-l1{
+    grid-area: A;
+    background-color: red;
+    display: flex; 
     flex-direction: column;
-    padding: 20px;
-}
-.pantry-top-right{
-    flex: 1; 
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    border: 2px solid #ddd;
+    flex-wrap: wrap; /* wrap list items to next line if they don't fit*/
+    gap: 10px;
+    padding: 10x;
+    align-content: flex-start;
 }
 
-.pantry-bottom-right{
-    flex: 1; 
+.pantry-l1 ul{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.pantry-l1 li{
+    list-style: none;
+    padding: 5px 10px;
+    background-color: white;
+    border-radius:5px;
+}
+
+.pantry-r1 {
+    grid-area: B;
+    background-color: green;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
     padding: 10px;
-    border: 2px solid #ddd;
+    align-content: flex-start; 
+}
+
+.pantry-r1 ul {
+    display: flex;
+    flex-wrap: wrap; 
+    padding: 0;
+    margin: 0;
+    gap: 10px;
+}
+
+.pantry-r1 li {
+    list-style: none;
+    padding: 5px 10px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+
+.pantry-r2{
+    grid-area: C;
+    background-color: blue;
+}
+
+/* fix to make titles all level */
+.pantry-l1 h2,
+.pantry-r1 h2,
+.pantry-r2 h2 {
+    margin: 0; 
+    padding-bottom: 10px;
 }

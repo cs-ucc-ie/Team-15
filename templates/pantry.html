@@ -6,14 +6,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>Pantry</title>
 </head>
-<body>
 
+<body>
     <!-- Nav Bar -->
     {% include 'navbar.html' %} 
-    <h1>Pantry</h1>
-<div class="pantry-container">
+
+    <div class="pantry-container">
     <!-- Ingredients List -->
-    <div class="pantry-left-col"
+     <div class="pantry-l1">
     <h2>Available Ingredients</h2>
     <ul id="ingredient-list">
         {% for ingredient in ingredients %}
@@ -23,20 +23,18 @@
         {% endfor %}
     </ul>
     </div>
-    <div class="pantry-right-col">
-    <div class="pantry-top-right">
     <!-- Selected Ingredients -->
+    <div class="pantry-r1">
     <h2>Selected Ingredients</h2>
     <ul id="selected-ingredients-list"></ul>
-    </div>
+    <p>Tap to remove ingredient</p>
     </div>
 
     <!-- Matching Cocktails -->
-    <div class="pantry-bottom-right">
+    <div class="pantry-r2">
     <h2>Matching Cocktails</h2>
     <ul id="cocktail-list"></ul>
     </div>
-
     <script>
         let selectedIngredients = [];
 
@@ -66,6 +64,6 @@
             });
         }
     </script>
-</div>
+    </div>
 </body>
 </html>
