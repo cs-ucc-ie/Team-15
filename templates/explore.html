@@ -50,31 +50,8 @@
             
             <a href="all-explore.html" class="see-more">See More →</a>
         </div>
-
-        <script>
-            function goToExplore(id) {
-                window.location.href = "/explore.html?id=" + id;
-            }
-
-            function applyFilter() {
-                let filter = document.getElementById("filter-select").value;
-                window.location.href = "{{ url_for('explore') }}?filter=" + filter;
-            }
-
-            function filterCocktails() {
-                let input = document.getElementById("search-bar").value.toLowerCase();
-                let cards = document.querySelectorAll(".cocktail-card");
-
-                cards.forEach(card => {
-                    let name = card.querySelector("h3").innerText.toLowerCase();
-                    if (name.includes(input)) {
-                        card.style.display = "block";
-                    } else {
-                        card.style.display = "none";
-                    }
-                });
-            }
-        </script>
+        
+    <script src="{{ url_for('static', filename = 'script.js') }}"></script>
     {% endif %}
 </body>
 </html>

@@ -46,7 +46,7 @@
             <button type="submit">Submit</button>
         </form>
     </div>
-
+<!--
     <script>
         let selectedIngredients = [];
 
@@ -67,6 +67,8 @@
             document.getElementById("selectedIngredientsInput").value = selectedIngredients.map(ing => ing.id).join(",");
         }
     </script>
+-->
+<script src="{{ url_for('static', filename = 'script.js') }}"></script>
 </body>
 </html>
 
