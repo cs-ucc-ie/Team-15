@@ -175,7 +175,7 @@ def creation():
 
         #Insert into cocktails table
         cursor = db.execute(
-            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, method) VALUES (?, '', 5, 1, ?, ?, ?)",
+            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, method) VALUES (?, 'basic.jpg', 5, 1, ?, ?, ?)",
             (name, alcohol_content, recipe_by, method)
         )
         cocktail_id = cursor.lastrowid
