@@ -103,6 +103,15 @@ def homepage():
 @app.route('/explore.html')
 def explore():
     db = get_db()
+    cocktail_id = request.args.get("id")
+
+    if cocktail_id:
+        selected_cocktail = db.execute(
+            "SELECT * FROM cocktails WHERE id = ?", (cocktail_id,)
+        ).fetchone()
+
+        return render_template("explore.html", selected_cocktail=selected_cocktail)
+
     filter_option = request.args.get("filter", "all")
     
     query = "SELECT * FROM cocktails"

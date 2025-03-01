@@ -7,50 +7,42 @@
     <title>Home</title>
 </head>
 
-<header></header>
-
 <body>
     <!-- Nav Bar -->
     {% include 'navbar.html' %} 
   
-<h2>
-    <span style="--j:1">Trending</span>
-    <br>
-    <br>
-    <span style="--j:2">Cocktails</span>	
-</h2>
-   <div class="cocktail-container">
-    <div class="cocktail-grid">
-        <button id="prevBtn">←</button>
+    <h2>
+        <span style="--j:1">Trending</span>
+        <br><br>
+        <span style="--j:2">Cocktails</span>    
+    </h2>
+    
+    <div class="cocktail-container">
+        <div class="cocktail-grid">
+            <button id="prevBtn">←</button>
 
-        <div class="cocktail-grid" id="cocktail-grid">
-            {% for cocktail in top_cocktails %}
-                <div class="cocktail-card">
-                    <img src="{{ url_for('static', filename=cocktail['image']) }}" alt="{{ cocktail['name'] }}">
-                    <h3>{{ cocktail['name'] }}</h3>
-                    <p>Popularity: {{ cocktail['popularity'] / (cocktail['reviews_number'] * 5) }}</p>
-                    <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
-                    <p>Alcoholic: {% if cocktail['alcohol_content'] == 1 %} Yes {% else %} No {% endif %}</p>
-                </div>
-            {% endfor %}
-        </div>
-        <button id="nextBtn">→</button>
-    </div>  
+            <div class="cocktail-grid" id="cocktail-grid">
+                {% for cocktail in top_cocktails %}
+                    <div class="cocktail-card" onclick="goToExplore({{ cocktail['id'] }})">
+                        <img src="{{ url_for('static', filename=cocktail['image']) }}" alt="{{ cocktail['name'] }}">
+                        <h3>{{ cocktail['name'] }}</h3>
+                        <p>Popularity: {{ cocktail['popularity'] / (cocktail['reviews_number'] * 5) }}</p>
+                        <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
+                        <p>Alcoholic: {% if cocktail['alcohol_content'] == 1 %} Yes {% else %} No {% endif %}</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button id="nextBtn">→</button>
+        </div>  
     </div>
     
     <h3><a href="explore.html">Explore More</a></h3>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-    
 
-        <div class="intro-grid">
-        <h2> About Pourfect Cocktail</h2>
-        <p>Ever feel frustrated by a lack of ideas for cocktails?</p>
-        <p>Ever feel like you don't know what to make with your ingredients on hand?</p>
-        <p>Ever want to share your feedback on a cocktail, but don't have a community to do that with?</p>
-        <p></p>
-        <p>Well, if you've answered yes to any of the following <i>Pourfect Cocktail</i> is the <b>PERFECT</b> place for you!</p>
-        <p></p>
-    </div>
-
+    <script>
+        function goToExplore(id) {
+            window.location.href = "/explore.html?id=" + id;
+        }
+    </script>
 </body>
 </html>
