@@ -2,12 +2,17 @@ import sqlite3
 import os
 from flask import Flask, request, redirect, url_for, render_template, g, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from datetime import datetime, date
 
 app = Flask(__name__)
 app.secret_key = "my_secret_key" #for sessions
 
 DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), "db.db")
+
+UPLOAD_FOLDER = 'static'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def get_db():
     if "db" not in g:
@@ -20,6 +25,10 @@ def close_db(e=None):
     db = g.pop("db", None)
     if db is not None:
         db.close()
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 
@@ -75,7 +84,6 @@ def login():
 
     return render_template("login.html")
 
-
 @app.route("/logout")
 def logout():
     session.clear()
@@ -103,32 +111,81 @@ def homepage():
 @app.route('/explore.html')
 def explore():
     db = get_db()
-    cocktail_id = request.args.get("id")
+    cocktail_id = request.args.get("id") #Debug
+    
+    print(cocktail_id)
 
     if cocktail_id:
         selected_cocktail = db.execute(
             "SELECT * FROM cocktails WHERE id = ?", (cocktail_id,)
         ).fetchone()
 
-        return render_template("explore.html", selected_cocktail=selected_cocktail)
+        ingredients = db.execute(
+            """SELECT ingredients.name 
+               FROM ingredients 
+               JOIN cocktail_ingredients ON ingredients.id = cocktail_ingredients.ingredient_id 
+               WHERE cocktail_ingredients.cocktail_id = ?""", (cocktail_id,)
+        ).fetchall()
+
+        reviews = db.execute(
+            """SELECT reviews.rating, reviews.review_text, users.username, reviews.created_at 
+               FROM reviews 
+               JOIN users ON reviews.user_id = users.id 
+               WHERE reviews.cocktail_id = ?
+               ORDER BY reviews.created_at DESC""", (cocktail_id,)
+        ).fetchall()
+
+        print(reviews) #Debug
+
+        return render_template("explore.html", selected_cocktail=selected_cocktail, ingredients=ingredients, reviews=reviews)
 
     filter_option = request.args.get("filter", "all")
-    
-    query = "SELECT * FROM cocktails"
-    params = []
 
+    query = "SELECT * FROM cocktails"
+    
     if filter_option == "alcoholic":
         query += " WHERE alcohol_content > 0"
     elif filter_option == "non-alcoholic":
         query += " WHERE alcohol_content = 0"
     elif filter_option == "easy":
-        query += " ORDER BY popularity/reviews_number ASC"
+        query += " ORDER BY CAST(popularity AS FLOAT) / reviews_number ASC"
     elif filter_option == "advanced":
-        query += " ORDER BY popularity/reviews_number DESC"
-    
-    cocktails = db.execute(query, params).fetchall()
+        query += " ORDER BY CAST(popularity AS FLOAT) / reviews_number DESC"
+
+    cocktails = db.execute(query).fetchall()
 
     return render_template("explore.html", cocktails=cocktails, filter_option=filter_option)
+
+@app.route('/submit_review', methods=['POST'])
+def submit_review():
+    db = get_db()
+    
+    # Get data from form
+    user_id = session.get("user_id")  # Ensure user is logged in
+    cocktail_id = request.form.get("cocktail_id")
+    rating = request.form.get("rating")
+    review_text = request.form.get("review_text", "")
+
+    if not user_id:
+        flash("You must be logged in to submit a review.", "error")
+        return redirect(request.referrer)
+
+    # Insert into database
+    db.execute(
+        "INSERT INTO reviews (user_id, cocktail_id, rating, review_text) VALUES (?, ?, ?, ?)",
+        (user_id, cocktail_id, rating, review_text)
+    )
+    db.commit()
+
+    # Update cocktail's popularity & review count
+    db.execute(
+        "UPDATE cocktails SET popularity = popularity + ?, reviews_number = reviews_number + 1 WHERE id = ?",
+        (int(rating), cocktail_id)
+    )
+    db.commit()
+
+    flash("Review submitted successfully!", "success")
+    return redirect(request.referrer)
 
 @app.route('/pantry.html', methods=['GET'])
 def pantry():
@@ -169,14 +226,23 @@ def creation():
         method = request.form['method']
         recipe_by = session.get('username', 'Anonymous')
 
-        #Get ingredients ids
+        #Handle Image Upload
+        image = request.files['image']
+        if image and allowed_file(image.filename):
+            filename = secure_filename(image.filename)
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            image.save(image_path)
+        else:
+            filename = 'basic.jpg'  #Default if no image uploaded
+
+        #Get selected ingredient IDs
         selected_ingredient_ids = request.form.get('selected_ingredients', '')
         selected_ingredient_ids = [int(i) for i in selected_ingredient_ids.split(',') if i.isdigit()]
 
         #Insert into cocktails table
         cursor = db.execute(
-            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, method) VALUES (?, '', 5, 1, ?, ?, ?)",
-            (name, alcohol_content, recipe_by, method)
+            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, method) VALUES (?, ?, 5, 1, ?, ?, ?)",
+            (name, filename, alcohol_content, recipe_by, method)
         )
         cocktail_id = cursor.lastrowid
 

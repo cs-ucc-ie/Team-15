@@ -26,7 +26,16 @@
                     <div class="cocktail-card" onclick="goToExplore({{ cocktail['id'] }})">
                         <img src="{{ url_for('static', filename=cocktail['image']) }}" alt="{{ cocktail['name'] }}">
                         <h3>{{ cocktail['name'] }}</h3>
-                        <p>Popularity: {{ cocktail['popularity'] / (cocktail['reviews_number'] * 5) }}</p>
+                        <div class="rating">
+                            {% set rating = (cocktail.popularity / cocktail.reviews_number) | round(1) %}
+                            {% for i in range(1, 6) %}
+                                {% if i <= rating %}
+                                    <span class="star filled">★</span>
+                                {% else %}
+                                    <span class="star empty">☆</span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                         <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
                         <p>Alcoholic: {% if cocktail['alcohol_content'] == 1 %} Yes {% else %} No {% endif %}</p>
                     </div>
@@ -39,6 +48,5 @@
     
     <h3><a href="explore.html">Explore More</a></h3>
 
-    <script src="{{ url_for('static', filename = 'script.js') }}"></script>
 </body>
 </html>
