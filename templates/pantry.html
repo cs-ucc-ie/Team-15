@@ -60,7 +60,13 @@
             .then(response => response.json())
             .then(cocktails => {
                 document.getElementById("cocktail-list").innerHTML = 
-                    cocktails.length ? cocktails.map(c => `<li>${c.name}</li>`).join("") : "<li>No matches found</li>";
+                    cocktails.length ? cocktails.map(c => `<li>
+                        <img src= "{{ url_for('static', filename='cosmopolitan.jpg')}}"alt="Placeholder image for layout">
+                        <div class="matching-cocktail-info">
+                        ${c.name}
+                        <p><a href="{{ url_for('homepage') }}">See Recipe</a> </p></div>
+                        </li>`).join("") : "<li>No matches found</li>";
+
             });
         }
     </script>

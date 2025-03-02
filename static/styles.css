@@ -25,7 +25,7 @@
 }
 
 body {
-    background-color: rgb(248, 235, 197);
+    background-color: #8DA9C4;
     font-family: "Tinos", serif;
     color: #504f4f;
 }
@@ -48,13 +48,12 @@ body {
 }
 
 .custom-shape-divider-top-1739903469 .shape-fill {
-    fill: #FFFFFF;
+    fill:#F2E7C9;
 }
 
 .custom-shape-divider-top-1739903469{
     z-index: -1;
 }
-
 
 /* Top Nav Bar */
 .top-nav {
@@ -230,7 +229,7 @@ h2 {
     font-size: 30px;
     margin-top: 20px;	
     padding-top: 20px;
-    color:#a07036; 
+    color:#485665; 
     text-align: center;
 }
 
@@ -285,10 +284,10 @@ h2 span{
 }
 
 button {
-    background-color: white;
+    background-color:#485665;
     size: 20px;
     padding: 10px;
-    color: rgb(17, 16, 12);
+    color: white;
     box-shadow: none;
     border: none;
     border-radius: 5px;
@@ -513,78 +512,135 @@ form {
 }
 
 /* css for pantry page */
-
-.pantry-container{
+.pantry-container {
     display: grid;
-    grid-auto-flow: column;
-    grid-template-areas:
-    "A B C C";
-    width: 1000px;
-    height: 600px;
+    grid-template-areas: "A B C C";
+    grid-template-columns: 2fr 2fr 2fr;
+    border: 3px solid white;
+    width: 1200px;
+    height: 500px;
     margin: auto;
     margin-top: 50px;
+    overflow: hidden; 
+    position: relative; 
+
+    /* background blur */
+    background: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); 
+    border-radius: 10px;
 }
 
-.pantry-l1{
+/* Left column (Available Ingredients) */
+.pantry-l1 {
     grid-area: A;
-    background-color: red;
-    display: flex; 
-    flex-direction: column;
-    flex-wrap: wrap; /* wrap list items to next line if they don't fit*/
-    gap: 10px;
-    padding: 10x;
-    align-content: flex-start;
-}
-
-.pantry-l1 ul{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.pantry-l1 li{
-    list-style: none;
-    padding: 5px 10px;
-    background-color: white;
-    border-radius:5px;
-}
-
-.pantry-r1 {
-    grid-area: B;
-    background-color: green;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     gap: 10px;
     padding: 10px;
-    align-content: flex-start; 
+    align-content: flex-start;
+    overflow-y: auto;
+    max-height: 100%;
+    width: 100%;
+    position: relative; 
+}
+
+.pantry-l1 ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 100%; 
+    padding: 10px;
+    margin: 0;
+    overflow-y: auto;
+    justify-content: flex-start; 
+}
+
+.pantry-l1 li {
+    list-style: none;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    max-width: calc(100% - 20px); 
+    white-space: nowrap; 
+}
+
+/* Middle column (Selected Ingredients) */
+.pantry-r1 {
+    grid-area: B;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    align-content: flex-start;
+    overflow-y: auto;
+    max-height: 100%;
+    width: 100%;
+    position: relative; 
 }
 
 .pantry-r1 ul {
     display: flex;
-    flex-wrap: wrap; 
-    padding: 0;
-    margin: 0;
+    flex-wrap: wrap;
     gap: 10px;
+    max-width: 100%; 
+    padding: 10px;
+    margin: 0;
+    overflow-y: auto;
+    justify-content: flex-start; 
+
 }
 
 .pantry-r1 li {
     list-style: none;
-    padding: 5px 10px;
+    padding: 10px;
     background-color: white;
     border-radius: 5px;
+    max-width: calc(100% - 20px); 
+    white-space: nowrap;
 }
 
-
+/* Right column (Matching Cocktails) */
 .pantry-r2{
     grid-area: C;
-    background-color: blue;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    align-content: flex-start;
+    overflow-y: auto;
+    max-height: 100%;
+    width: 100%;
+    position: relative; 
 }
 
-/* fix to make titles all level */
-.pantry-l1 h2,
-.pantry-r1 h2,
-.pantry-r2 h2 {
-    margin: 0; 
-    padding-bottom: 10px;
+.pantry-r2 ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 100%; 
+    padding: 10px;
+    margin: 0;
+    overflow-y: auto;
+    justify-content: flex-start; 
+}
+
+.pantry-r2 li {
+    list-style: none;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+.pantry-r2 img {
+    width: 80%;  
+    height: 80%;
+    object-fit: cover; 
+    border-radius: 5px;
 }
