@@ -27,9 +27,67 @@
             <p><strong>Recipe by:</strong> {{ selected_cocktail.recipe_by }}</p>
             <p><strong>Alcoholic:</strong> {% if selected_cocktail.alcohol_content == 1 %} Yes {% else %} No {% endif %}</p>
             <p><strong>Method:</strong> {{ selected_cocktail.method }}</p>
+            <p><strong>Ingredients:</strong></p>
+            <ul>
+                {% for ingredient in ingredients %}
+                    <li>{{ ingredient.name }}</li>
+                {% endfor %}
+            </ul>
             
             <button onclick="history.back()">Go Back</button>
+            <button onclick="openReviewModal()">Leave a Review</button>
+            <div id="reviewModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeReviewModal()">&times;</span>
+                    <h2>Leave a Review for {{ selected_cocktail.name }}</h2>
+                    <form id="reviewForm" method="POST" action="{{ url_for('submit_review') }}">
+                        <input type="hidden" name="cocktail_id" value="{{ selected_cocktail.id }}">
+            
+                        <label for="rating">Rating (1-5):</label>
+                        <select name="rating" required>
+                            <option value="1">★☆☆☆☆</option>
+                            <option value="2">★★☆☆☆</option>
+                            <option value="3">★★★☆☆</option>
+                            <option value="4">★★★★☆</option>
+                            <option value="5">★★★★★</option>
+                        </select>
+            
+                        <label for="review_text">Your Review (optional):</label>
+                        <textarea name="review_text" rows="4"></textarea>
+            
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>    
+            
         </div>
+        <div class="reviews-section">
+            <h3>Reviews</h3>
+            {% if reviews %}
+                <p>Debug: Found {{ reviews|length }} reviews.</p>
+                <ul>
+                    {% for review in reviews %}
+                        <li>
+                            <strong>{{ review.username }}</strong> 
+                            <span class="rating">
+                                {% for i in range(1, 6) %}
+                                    {% if i <= review.rating %}
+                                        <span class="star filled">★</span>
+                                    {% else %}
+                                        <span class="star empty">☆</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                            <p>{{ review.review_text }}</p>
+                            <small>{{ review.created_at }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Debug: No reviews found.</p>
+            {% endif %}
+        </div>
+
     {% else %}
         <div class="explore-container">
             <h2>Explore Cocktails</h2>
@@ -65,8 +123,6 @@
                     </div>
                 {% endfor %}
             </div>
-            
-            <a href="all-explore.html" class="see-more">See More →</a>
         </div>
     {% endif %}
 </body>

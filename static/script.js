@@ -79,6 +79,14 @@ function filterCocktails() {
     });
 }
 
+function openReviewModal() {
+    document.getElementById("reviewModal").style.display = "block";
+}
+
+function closeReviewModal() {
+    document.getElementById("reviewModal").style.display = "none";
+}
+
 
 //Ingredient Selection (Pantry & Creation Pages)
 

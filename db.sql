@@ -13,14 +13,44 @@ CREATE TABLE IF NOT EXISTS cocktails (
     reviews_number INTEGER DEFAULT 1,
     alcohol_content INTEGER NOT NULL,
     recipe_by TEXT NOT NULL,
-    method TEXT NOT NULL DEFAULT '',
+    method TEXT NOT NULL DEFAULT 'None provided',
     created_by INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS reviews (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    cocktail_id INTEGER NOT NULL,
+    rating INTEGER CHECK (rating BETWEEN 1 AND 5) NOT NULL,
+    review_text TEXT DEFAULT '',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (cocktail_id) REFERENCES cocktails(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS ingredients (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(255) NOT NULL UNIQUE
 );
+
+CREATE TABLE IF NOT EXISTS cocktail_ingredients (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cocktail_id INTEGER NOT NULL,
+    ingredient_id INTEGER NOT NULL,
+    FOREIGN KEY (cocktail_id) REFERENCES cocktails(id) ON DELETE CASCADE,
+    FOREIGN KEY (ingredient_id) REFERENCES ingredients(id) ON DELETE CASCADE,
+    UNIQUE (cocktail_id, ingredient_id)
+);
+
+CREATE TABLE IF NOT EXISTS favorites (
+    favorites_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    cocktail_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (cocktail_id) REFERENCES cocktails (id) ON DELETE CASCADE
+);
+
+
 
 INSERT INTO ingredients (name) VALUES
 ('Vodka'), ('Gin'), ('Rum'), ('Tequila'), ('Whiskey'), ('Triple Sec'), ('Vermouth'),
@@ -53,22 +83,9 @@ INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content,
 ('Boulevardier', 'basic.jpg', 62, 27, 1, 'WhiskeyAficionado'),
 ('Sazerac', 'basic.jpg', 55, 20, 1, 'NewOrleansMixologist');
 
-CREATE TABLE IF NOT EXISTS cocktail_ingredients (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    cocktail_id INTEGER NOT NULL,
-    ingredient_id INTEGER NOT NULL,
-    FOREIGN KEY (cocktail_id) REFERENCES cocktails(id) ON DELETE CASCADE,
-    FOREIGN KEY (ingredient_id) REFERENCES ingredients(id) ON DELETE CASCADE,
-    UNIQUE (cocktail_id, ingredient_id)
-);
 
-CREATE TABLE IF NOT EXISTS favorites (
-    favorites_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    cocktail_id INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    FOREIGN KEY (cocktail_id) REFERENCES cocktails (id) ON DELETE CASCADE
-);
+
+
 
 INSERT INTO favorites (user_id, cocktail_id) VALUES
 (3, 1);
@@ -112,5 +129,15 @@ SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC;
 
 SELECT * FROM cocktail_ingredients;
 SELECT * FROM cocktails;
+SELECT * FROM reviews;
+SELECT * FROM users;
+
+SELECT * FROM reviews WHERE cocktail_id = 3;
+
+SELECT reviews.rating, reviews.review_text, users.username, reviews.created_at 
+FROM reviews 
+JOIN users ON reviews.user_id = users.id 
+WHERE reviews.cocktail_id = 3
+ORDER BY reviews.created_at DESC;
 
 
