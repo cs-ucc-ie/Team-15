@@ -512,3 +512,19 @@ form {
     transform: translateY(1px) scale(0.98); /* Press-down effect */
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* FOLLOW BUTTON TO FOLLOW USERS */
+.follow-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.follow-button:hover {
+    background-color: #218838;
+}

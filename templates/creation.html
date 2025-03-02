@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +14,10 @@
 
     <div class="beverage-creation-container">
         <h2>Create Your Own Cocktail</h2>
-        <form action="{{ url_for('creation') }}" method="POST">
+        <form action="creation.html" method="POST">
             <label for="name">Drink Name</label>
             <input type="text" id="name" name="name" placeholder="Enter the name of your cocktail" required>
-            
+
             <label for="alcohol_content">Alcohol Content</label>
             <select id="alcohol_content" name="alcohol_content" required>
                 <option value="0">Non-Alcoholic</option>
@@ -30,15 +31,16 @@
                 <h3>Available Ingredients (Click to Select)</h3>
                 <div id="ingredientList">
                     {% for ingredient in ingredients %}
-                        <div class="ingredient-item" onclick="toggleIngredient({{ ingredient.id }}, '{{ ingredient.name }}')">
-                            {{ ingredient.name }}
-                        </div>
+                    <div class="ingredient-item"
+                        onclick="toggleIngredient('{{ ingredient.id }}', '{{ ingredient.name }}')">
+                        {{ ingredient.name }}
+                    </div>
                     {% endfor %}
                 </div>
 
                 <h3>Selected Ingredients</h3>
                 <div id="selectedIngredientsList"></div>
-                
+
                 <!-- Hidden Input to Send Selected Ingredients -->
                 <input type="hidden" name="selected_ingredients" id="selectedIngredientsInput">
             </div>
@@ -61,12 +63,12 @@
         }
 
         function updateUI() {
-            document.getElementById("selectedIngredientsList").innerHTML = 
+            document.getElementById("selectedIngredientsList").innerHTML =
                 selectedIngredients.map(ing => `<li onclick="toggleIngredient(${ing.id}, '${ing.name}')">${ing.name}</li>`).join("");
 
             document.getElementById("selectedIngredientsInput").value = selectedIngredients.map(ing => ing.id).join(",");
         }
     </script>
 </body>
-</html>
 
+</html>

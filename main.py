@@ -206,7 +206,20 @@ def user_profile():
         WHERE f.user_id = ?
     """, (user_id,)).fetchall()
 
-    return render_template("userpage.html", user_cocktails=user_cocktails, favorite_cocktails=favorite_cocktails)
+    # Get the users that the logged in user is following
+    followed_users = db.execute("""
+        SELECT u.id, u.username 
+        FROM users as u 
+        JOIN follows as f ON u.id = f.following_id 
+        WHERE f.follower_id = ?""", (user_id,)).fetchall()
+    
+    # get the cocktails created by the users that the logged in user is following
+    followed_user_ids = [user['id'] for user in followed_users]
+    followed_user_cocktails = []
+    if followed_user_ids:
+        followed_user_cocktails = db.execute("SELECT c.* FROM cocktails AS c WHERE c.created_by IN ({})".format(','.join('?' for _ in followed_user_ids)), followed_user_ids).fetchall()
+
+    return render_template("userpage.html", user_cocktails=user_cocktails, favorite_cocktails=favorite_cocktails, followed_users=followed_users, followed_user_cocktails=followed_user_cocktails)
 
 # Adding the cocktails to favorites
 @app.route('/add_favorite/<int:cocktail_id>', methods=['POST'])
@@ -251,6 +264,44 @@ def remove_favorite(cocktail_id):
     flash("Removed from favorites!", "success")
 
     return redirect(url_for("user_profile"))
+
+# COMMUNITY PAGE - Displaying all the users where they can follow others
+@app.route('/community.html')
+def community():
+    db = get_db()
+    users = db.execute("SELECT id, username FROM users").fetchall()
+
+    user_cocktails = {}
+    for user in users:
+        cocktails = db.execute("SELECT * FROM cocktails WHERE created_by = ?", (user['id'],)).fetchall()
+        user_cocktails[user['id']] = cocktails
+    
+    return render_template("community.html", users=users, user_cocktails=user_cocktails)
+
+# Follow a user
+@app.route('/follow/<int:user_id>', methods=['POST'])
+def follow_user(user_id):
+    if "user_id" not in session:
+        flash("You need to log in first!", "danger")
+        return redirect(url_for("login"))
+    
+    db = get_db()
+    current_user_id = session["user_id"]
+
+    # # if the user is already following the other user
+    existing_follow = db.execute("SELECT * FROM follows WHERE follower_id = ? AND following_id = ?",
+        (current_user_id, user_id)).fetchone()
+
+    if existing_follow:
+        flash("You are already following this user!", "warning")
+        return redirect(url_for("community"))
+    
+    # Insert the relationship into the follow database
+    db.execute("INSERT INTO follows (follower_id, following_id) VALUES (?, ?)", (current_user_id, user_id))
+    db.commit()
+
+    flash("You have started following {user_id}!", "success")
+    return redirect(url_for("community"))
 
 if __name__ == '__main__':
     app.run(debug = True)

@@ -15,7 +15,29 @@ CREATE TABLE IF NOT EXISTS cocktails (
     recipe_by TEXT NOT NULL
 );
 ALTER TABLE cocktails ADD COLUMN method TEXT NOT NULL DEFAULT '';
-ALTER TABLE cocktails ADD COLUMN created_by INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE cocktails ADD COLUMN created_by INTEGER NOT NULL;
+ALTER TABLE cocktails ADD FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE;
+SELECT * FROM cocktails;
+
+-- ALTER TABLE cocktails RENAME TO old_cocktails;
+CREATE TABLE cocktails (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    image TEXT NOT NULL,
+    popularity INTEGER DEFAULT 5,
+    reviews_number INTEGER DEFAULT 1,
+    alcohol_content INTEGER NOT NULL,
+    recipe_by TEXT NOT NULL,
+    method TEXT NOT NULL DEFAULT '',
+    created_by INTEGER NOT NULL,
+    FOREIGN KEY (created_by) REFERENCES users (id) ON DELETE CASCADE
+);
+
+INSERT INTO cocktails (id, name, image, popularity, reviews_number, alcohol_content, recipe_by, method, created_by)
+SELECT id, name, image, popularity, reviews_number, alcohol_content, recipe_by, method, created_by FROM old_cocktails;
+
+SELECT * FROM cocktails;
+
 
 CREATE TABLE IF NOT EXISTS ingredients (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -234,5 +256,14 @@ SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC;
 SELECT * FROM cocktail_ingredients;
 SELECT * FROM cocktails;
 
+CREATE TABLE follows (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    follower_id INTEGER NOT NULL,
+    following_id INTEGER NOT NULL,
+    FOREIGN KEY (follower_id) REFERENCES users(id),
+    FOREIGN KEY (following_id) REFERENCES users(id)
+);
 
+SELECT * FROM follows;
 
+SELECT * FROM users;
