@@ -34,24 +34,24 @@ INSERT INTO ingredients (name) VALUES
 ('Bourbon'), ('Maple Syrup'), ('Apple Cider'), ('Red Wine'), ('Egg Nog');
 
 INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by) VALUES
-('Cosmopolitan', 'cosmopolitan.jpg', 50, 20, 1, 'c4rriebradshaw'),
+('Cosmopolitan', 'basic.jpg', 50, 20, 1, 'c4rriebradshaw'),
 ('Old Fashioned', 'old_fashioned.jpg', 80, 40, 1, 'mhobbes'),
 ('Aperol Spritz', 'aperol_spritz.jpg', 60, 30, 1, 'charY0rk'),
 ('Dirty Martini', 'dirty_martini.jpg', 55, 25, 1, 'SamJones'),
-('Vodka with Coke', 'vodka_with_coke.jpg', 123, 100, 1, 'OP'),
-('Whiskey with Coke', 'whiskey_with_coke.jpg', 90, 50, 1, 'OP'),
-('Mojito', 'mojito.jpg', 70, 35, 1, 'BartenderX'),
-('Margarita', 'margarita.jpg', 85, 45, 1, 'DrinkMaster42'),
-('Pina Colada', 'pina_colada.jpg', 78, 38, 1, 'TropicalJoe'),
-('Long Island Iced Tea', 'long_island_iced_tea.jpg', 95, 50, 1, 'PartyGuru'),
-('Negroni', 'negroni.jpg', 65, 28, 1, 'ClassicCocktail'),
-('Espresso Martini', 'espresso_martini.jpg', 88, 47, 1, 'CaffeineAddict'),
-('Irish Coffee', 'irish_coffee.jpg', 58, 22, 1, 'DublinBartender'),
-('Mai Tai', 'mai_tai.jpg', 75, 33, 1, 'TikiMan'),
-('Daiquiri', 'daiquiri.jpg', 72, 31, 1, 'CubaLibre'),
-('Manhattan', 'manhattan.jpg', 82, 39, 1, 'NYCDrinker'),
-('Boulevardier', 'boulevardier.jpg', 62, 27, 1, 'WhiskeyAficionado'),
-('Sazerac', 'sazerac.jpg', 55, 20, 1, 'NewOrleansMixologist');
+('Vodka with Coke', 'basic.jpg', 123, 100, 1, 'OP'),
+('Whiskey with Coke', 'basic.jpg', 90, 50, 1, 'OP'),
+('Mojito', 'basic.jpg', 70, 35, 1, 'BartenderX'),
+('Margarita', 'basic.jpg', 85, 45, 1, 'DrinkMaster42'),
+('Pina Colada', 'basic.jpg', 78, 38, 1, 'TropicalJoe'),
+('Long Island Iced Tea', 'basic.jpg', 95, 50, 1, 'PartyGuru'),
+('Negroni', 'basic.jpg', 65, 28, 1, 'ClassicCocktail'),
+('Espresso Martini', 'basic.jpg', 88, 47, 1, 'CaffeineAddict'),
+('Irish Coffee', 'basic.jpg', 58, 22, 1, 'DublinBartender'),
+('Mai Tai', 'basic.jpg', 75, 33, 1, 'TikiMan'),
+('Daiquiri', 'basic.jpg', 72, 31, 1, 'CubaLibre'),
+('Manhattan', 'basic.jpg', 82, 39, 1, 'NYCDrinker'),
+('Boulevardier', 'basic.jpg', 62, 27, 1, 'WhiskeyAficionado'),
+('Sazerac', 'basic.jpg', 55, 20, 1, 'NewOrleansMixologist');
 
 CREATE TABLE IF NOT EXISTS cocktail_ingredients (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -588,3 +588,22 @@ form {
     margin: 0; 
     padding-bottom: 10px;
 }
+
+
+.rating {
+    font-size: 20px; /* Adjust size */
+    color: gold; /* Star color */
+}
+
+.star {
+    display: inline-block;
+    margin-right: 2px;
+}
+
+.filled {
+    color: gold; /* Filled stars */
+}
+
+.empty {
+    color: lightgray; /* Empty stars */
+}

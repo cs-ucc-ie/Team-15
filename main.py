@@ -121,20 +121,19 @@ def explore():
         return render_template("explore.html", selected_cocktail=selected_cocktail)
 
     filter_option = request.args.get("filter", "all")
-    
-    query = "SELECT * FROM cocktails"
-    params = []
 
+    query = "SELECT * FROM cocktails"
+    
     if filter_option == "alcoholic":
         query += " WHERE alcohol_content > 0"
     elif filter_option == "non-alcoholic":
         query += " WHERE alcohol_content = 0"
     elif filter_option == "easy":
-        query += " ORDER BY popularity/reviews_number ASC"
+        query += " ORDER BY CAST(popularity AS FLOAT) / reviews_number ASC"
     elif filter_option == "advanced":
-        query += " ORDER BY popularity/reviews_number DESC"
-    
-    cocktails = db.execute(query, params).fetchall()
+        query += " ORDER BY CAST(popularity AS FLOAT) / reviews_number DESC"
+
+    cocktails = db.execute(query).fetchall()
 
     return render_template("explore.html", cocktails=cocktails, filter_option=filter_option)
 
