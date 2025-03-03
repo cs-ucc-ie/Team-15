@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +17,7 @@
         <form action="{{ url_for('creation') }}" method="POST" enctype="multipart/form-data">
             <label for="name">Drink Name</label>
             <input type="text" id="name" name="name" placeholder="Enter the name of your cocktail" required>
-            
+
             <label for="alcohol_content">Alcohol Content</label>
             <select id="alcohol_content" name="alcohol_content" required>
                 <option value="0">Non-Alcoholic</option>
@@ -38,7 +39,7 @@
 
                 <h3>Selected Ingredients</h3>
                 <div id="selectedIngredientsList"></div>
-                
+
                 <!-- Hidden Input to Send Selected Ingredients -->
                 <input type="hidden" name="selected_ingredients" id="selectedIngredientsInput">
             </div>
@@ -51,5 +52,5 @@
     </div>
 
 </body>
-</html>
 
+</html>

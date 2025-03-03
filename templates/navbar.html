@@ -32,6 +32,7 @@
                 <li><a href="{{ url_for('explore') }}"><img src="{{ url_for('static', filename='search.png') }}" alt="Explore"> Explore</a></li>
                 <li><a href="{{ url_for('pantry') }}"><img src="{{ url_for('static', filename='pantry.png') }}" alt="Pantry"> Pantry?</a></li>
                 <li><a href="{{ url_for('creation') }}"><img src="{{ url_for('static', filename='bev.png') }}" alt="Create"> Create</a></li>
+                <li><a href="{{ url_for('community') }}">Community</a></li>
 
                 {% if session.user_id %}
                     <li><a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='logout.png') }}" alt="Logout"> Logout</a></li>

@@ -90,6 +90,8 @@ INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content,
 INSERT INTO favorites (user_id, cocktail_id) VALUES
 (3, 1);
 
+SELECT * FROM favorites;
+
 INSERT INTO cocktail_ingredients (cocktail_id, ingredient_id) VALUES
 (1, 1), (1, 9), 
 (1, 18), (1, 14),
@@ -140,4 +142,14 @@ JOIN users ON reviews.user_id = users.id
 WHERE reviews.cocktail_id = 3
 ORDER BY reviews.created_at DESC;
 
+CREATE TABLE follows (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    follower_id INTEGER NOT NULL,
+    following_id INTEGER NOT NULL,
+    FOREIGN KEY (follower_id) REFERENCES users(id),
+    FOREIGN KEY (following_id) REFERENCES users(id)
+);
 
+SELECT * FROM follows;
+
+SELECT * FROM users;

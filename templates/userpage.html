@@ -11,7 +11,7 @@
 
 <body>
     <!-- Nav Bar -->
-    {% include 'navbar.html' %} 
+    {% include 'navbar.html' %}
 
     <div class="profile-container">
         <h2>Welcome, {{ session['username'] }}</h2>
@@ -44,11 +44,55 @@
                 <h3>{{ cocktail['name'] }}</h3>
                 <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
                 <p>Popularity: {{ cocktail['popularity'] / cocktail['reviews_number'] }}</p>
+
+                <!-- button to remove cocktails -->
+                <form action="{{ url_for('remove_favorite', cocktail_id=cocktail.id) }}" method="POST">
+                    <button type="submit" class="remove-favorite-button">Remove from favorites</button>
+                </form>
             </div>
 
             {% else %}
             <p>You don't have any favorites yet.</p>
             {% endfor %}
+        </div>
+
+        <!-- Showing people that the users follow -->
+        <h3>My Following</h3>
+        <div class="followed-users">
+            {% if followed_users %}
+            <ul>
+                {% for user in followed_users %}
+                <li><strong>{{ user['username'] }}</strong>
+
+                    <div class="cocktail-grid">
+                        {% set user_cocktails = [] %}
+                        {% for cocktail in followed_user_cocktails %}
+                            {% if cocktail['created_by'] == user['id'] %}
+                                {% set user_cocktails = user_cocktails + [cocktail] %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <!-- display the cocktails that the users have created followed by the logged-in user -->
+                        {% if user_cocktails %}
+                            {% for cocktail in user_cocktails %}
+                            <div class="cocktail-card">
+                                <img src="{{ url_for('static', filename = cocktail['image']) }}"
+                                alt="{{ cocktail['name'] }}">
+                                <h3>{{ cocktail['name'] }}</h3>
+                                <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No cocktails created by {{ user['username'] }} yet.</p>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>You haven't followed anyone yet.</p>
+            <p>Check out <a href="community.html">Community.</a></p>
+            {% endif %}
         </div>
     </div>
 </body>
