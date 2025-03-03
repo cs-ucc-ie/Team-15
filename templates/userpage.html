@@ -67,11 +67,12 @@
                     <div class="cocktail-grid">
                         {% set user_cocktails = [] %}
                         {% for cocktail in followed_user_cocktails %}
-                        {% if cocktail['created_by'] == user['id'] %}
-                        {% set user_cocktails = user_cocktails + [cocktail] %}
-                        {% endif %}
+                            {% if cocktail['created_by'] == user['id'] %}
+                                {% set user_cocktails = user_cocktails + [cocktail] %}
+                            {% endif %}
                         {% endfor %}
 
+                        <!-- display the cocktails that the users have created followed by the logged-in user -->
                         {% if user_cocktails %}
                             {% for cocktail in user_cocktails %}
                             <div class="cocktail-card">
