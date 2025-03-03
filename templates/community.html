@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <!-- Nav Bar -->
+    {% include 'navbar.html' %}
+
+    <h2>Discover Users</h2>
+    <h4>Connect with the fellow cocktail enthusiasts! Browse through users profiles, check out their unique cocktail
+        creations, and follow them to stay inspired.</h4>
+
+    <div class="users-list">
+        {% for user in users %}
+        <div class="users-card">
+            <div class="user-info">
+                <h3>{{ user['username'] }}</h3>
+                {% if user.id != session['user_id'] %}
+                <!-- a button to follow users -->
+                <form action="{{ url_for('follow_user', user_id = user.id) }}" method="POST">
+                    <button type="submit" class="follow-button">Follow</button>
+                </form>
+                {% endif %}
+            </div>
+            <h4>Their Cocktails:</h4>
+            <div class="cocktail-grid">
+                {% for cocktail in user_cocktails[user.id] %}
+                <div class="cocktail-card">
+                    <img src="{{ url_for('static', filename=cocktail['image']) }}" alt="{{ cocktail['name'] }}">
+                    <h3>{{ cocktail['name'] }}</h3>
+                </div>
+
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+
+</html>
