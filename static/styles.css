@@ -25,303 +25,146 @@
 }
 
 body {
-    background-color:  #485665;
-    font-family: "Tinos", serif;
+    background-color:  #59697b;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
     color: black;
-}
-
-.custom-shape-divider-top-1739903469 {
-    position: absolute;
-    top: 0;
-    left: 0;
+    margin:0;
+    padding:0;
     width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    transform: rotate(180deg);
 }
-
-.custom-shape-divider-top-1739903469 svg {
+/*~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*--------NAV BAR--------*/
+/*~~~~~~~~~~~~~~~~~~~~#~~*/
+.navbar {
+    background-color: #3b3e42;  
+    padding: 20px 40px;
+    width: 100%;
+    height:120px;
+    display: flex;
+    justify-content: flex-end; /*to go to the right*/
+    align-items: center;
     position: relative;
-    display: block;
-    width: calc(224% + 1.3px);
-    height: 500px;
 }
 
-.custom-shape-divider-top-1739903469 .shape-fill {
-    fill:#485665;
-}
-
-.custom-shape-divider-top-1739903469{
-    z-index: -1;
-}
-
-/* Top Nav Bar */
-.top-nav {
-    position: fixed;
-    right: 0;
-    padding: 0px;
-    background-color: #ffffff56;
-    transition: top 0.3s;
-    z-index: 1000;
-}
-
-.top-nav ul {
-    display: flex;
-    padding: 0;
-    margin: 0;
-}
-
-.top-nav li {
-    margin-right: 15px;
-    list-style-type: none;
-}
-
-
-.top-nav a {
-    display: inline-block; 
-}
-
-
-.top-nav img {
-    width: 80px;
-    height: auto;
-    cursor: pointer;
-}
-
-.top-nav img:hover {
-    transform: scale(1.2); 
-}
-
-
-/*Slogan part*/
-
-h1 {
-    margin-bottom: 30px;
-}
-.slogan {
-    text-align: left;
-    margin: 0;
-    padding: 0;
-}
-
-.slogan p {
-    margin: 5px 0;  /* Adjusts the space between paragraphs */
-    padding: 0;
-}
-
-.slogan p{
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: 1px solid;
-    animation: typing 3s steps(30) forwards,
-    blink 1s step-end 
-}
-
-@keyframes typing {
-    from{
-        width: 0;
-    }
-    to{
-        width: 30%;
-    }
-    
-}
-
-@keyframes blink {
-    50%{
-        border-color: transparent;
-    }
-    
-}
-
-.slogan h1 {
-    margin-top: 10px; /* Adjust space above the heading */
-    margin-bottom: 5px; /* Adjust space below the heading */
-    padding: 0;
-}
-
-
-
-/*Main nav*/
-nav {
-    color: white;
-}
-
-nav ul {
+.navbar ul {
     list-style: none;
-    display: flex;
-    justify-content: center;
+    margin: 0;
     padding: 0;
-}
-
-nav ul li {
-    margin: 0 20px;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #393939; 
-    font-weight: bold;
-    font-size: 18px;
-    transition: color 0.3s ease-in-out;
-}
-
-
-nav ul li a:hover {
-    color: #fbd09f; 
-}
-
-nav ul {
-    list-style: none;  
-    padding: 0;        
-    margin: 0;         
-    display: flex;     
-  }
-  
-  nav ul li {
-    padding: 0 15px;    
-    margin: 0;          
-  }
-  
-  nav ul li:not(:last-child) {
-    border-right: 1px solid #f7f2f2;  
-  }
-
-  /* Resize all nav icons to be uniform */
-  .main-nav ul li a {
     display: flex;
-    flex-direction: column;  
-    align-items: center;      
-    justify-content: center;  
+    gap: 30px;
+}
+
+.navbar li {
+    display: inline-block;
+    position: relative;
+}
+
+.navbar a {
     text-decoration: none;
-    color: #333;
-    font-size: 16px;
+    color: white;
     font-weight: bold;
+    padding: 10px 15px;
+    transition: 0.3s;
+    font-size: 20px;
 }
 
-/* Resize and center all images */
-.main-nav ul li a img {
-    width: 40px;   
-    height: 40px;  
-    object-fit: contain; 
-    margin-bottom: 5px; 
+.navbar a:hover {
+    color: #768da5; 
+}
+
+/* DROPDOWN MENU */
+.dropdown {
+    position: relative; 
+}
+
+/* Hide */
+.dropdown-content {
+    display: none; /*keep hidden */
+    position: absolute;
+    background-color: #3a3d42;
+    min-width: 150px;
+    z-index: 1000;
+    top: 100%;
+    border-radius: 5px;
+}
+
+/* CONTENT OF DD*/
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #3a3d42;
+    min-width: 150px;
+    top: 100%;
+    left: 0;
+    border-radius: 5px;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /*lag issue*/
+}
+
+/* make visible */
+.dropdown:hover .dropdown-content {
     display: block;
+    opacity: 1;
+    visibility: visible;
 }
 
-/*text*/
-.intro-grid {
-    width: 700px;            
-    padding: 5px;           
-    margin: 60px auto 0;         
-    text-align: center;
-    background-color: #485665; 
-    border-radius: 25px;     
-    border: 2px solid #485665; 
-    box-sizing: border-box;  
-  }
-  
-/*FROM HERE REVIEW */
+.navbar img {
+    width: 40px;
+    height: 30px;
+   
+}
+/*----------*/
+/*HOMEPAGE */
+/*----------*/
 div {
     box-sizing: border-box;
 }
 
-h2 {
-    font-size: 30px;
-    margin-top: 20px;	
-    padding-top: 20px;
-    color:#485665; 
+.cocktail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(250px, 1fr)); /*3 p/r*/
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px; 
+    width: 100%; 
+    margin: 0 auto; /* center it */
+}
+.cocktail-card {
+    background: white;
+    border-radius: 1px;
+    box-shadow: black; 
+    padding: 16px;
     text-align: center;
-}
-
-h2 span{
-    position: relative;
-    top: 20px;
-    display:inline;
-    animation: bounce 2s ease infinite alternate;
-    animation-delay: calc(var(--n) * 0.1s);
-}
-
-@keyframes bounce {
-    100% {
-        top: -20px;
-    }
     
 }
 
-.cocktail-container {
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    gap: 100px;
-   
+.cocktail-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.cocktail-grid {
-    display: flex;
-    overflow-x: auto;
-    margin-top: 10px;
-    scroll-snap-type: x mandatory;
-    scroll-padding-left: 20px;
-    scrollbar-width: none; 
+.cocktail-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
-.cocktail-grid::-webkit-scrollbar {
-    display: none; 
+h2{
+    color: #485665;
+}
+/* Card Titles */
+.cocktail-card h3 {
+    margin: 12px 8px;
+    font-size: 18px;
 }
 
-
-
-.cocktail-card {
-    background: rgb(250, 236, 212);
-    padding: 15px;
-
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 250px;
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-}
-
-button {
-    background-color:  #485665;
-    size: 20px;
-    padding: 10px;
-    color: white;
-    box-shadow: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-family: "Tinos", serif;
-}
+/*other*/
+/*-------*/
 
 .form-control{
     font-family: "Tinos", serif;
 }
-
-div[style*="display: flex"] {
-    display: flex;
-    justify-content: space-between;
-    padding: 40px;
-}
-
-div[style*="width: 75%"] {
-    width: 70%;
-    background-color: #C8D5B9; 
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-div[style*="width: 25%"] {
-    width: 25%;
-    background-color:#dad1ce; 
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 
 p {
     font-size: 16px;
@@ -341,6 +184,18 @@ div a img {
 
 div a img:hover {
     transform: scale(1.05);
+}
+/* Responsive adjustments for smaller devices*/
+@media (max-width: 1200px) {
+    .cocktail-grid {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+@media (max-width: 800px) {
+    .cocktail-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* css for login and register containers */
@@ -447,28 +302,6 @@ h3 a {
     justify-content: flex-start;  
     width: 100%;             
     scroll-padding-left: 20px;
-}
-
-.cocktail-card {
-    background: #b1c79ede;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 250px;          
-    flex: 0 0 auto;         
-    scroll-snap-align: start; 
-}
-
-.cocktail-card img {
-    width: 100%;
-    border-radius: 10px;
-    height: auto;
-    transition: transform 0.3s ease-in-out;
-}
-
-.cocktail-card img:hover {
-    transform: scale(1.05); 
 }
 
 .tabs {
