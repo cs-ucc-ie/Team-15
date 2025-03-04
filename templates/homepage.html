@@ -11,12 +11,6 @@
     <!-- Nav Bar -->
     {% include 'navbar.html' %} 
   
-    <h2>
-        <span style="--j:1">Trending</span>
-        <br><br>
-        <span style="--j:2">Cocktails</span>    
-    </h2>
-    
     <div class="cocktail-container">
         <div class="cocktail-grid">
             <div class="cocktail-grid" id="cocktail-grid">
@@ -34,8 +28,6 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-                        <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
-                        <p>Alcoholic: {% if cocktail['alcohol_content'] == 1 %} Yes {% else %} No {% endif %}</p>
                     </div>
                 {% endfor %}
             </div>
