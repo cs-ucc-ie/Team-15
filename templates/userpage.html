@@ -36,6 +36,7 @@
                     {% endfor %}
                 </div>
                 <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
+                <button onclick="event.stopPropagation(); openEditModal({{ cocktail.id }})">Edit</button>
             </div>
 
             <!-- if there are no cocktails created by the user  -->
@@ -43,6 +44,33 @@
             <p>You haven't created any cocktails yet.</p>
             {% endfor %}
         </div>
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h2>Edit Cocktail</h2>
+                <form id="editForm" method="POST" action="{{ url_for('edit_cocktail') }}" enctype="multipart/form-data">
+                    <input type="hidden" name="cocktail_id" id="editCocktailId">
+                    
+                    <label for="editName">Drink Name</label>
+                    <input type="text" id="editName" name="name" required>
+        
+                    <label for="editAlcohol">Alcohol Content</label>
+                    <select id="editAlcohol" name="alcohol_content" required>
+                        <option value="0">Non-Alcoholic</option>
+                        <option value="1">Alcoholic</option>
+                    </select>
+        
+                    <label for="editMethod">Preparation Method</label>
+                    <textarea id="editMethod" name="method" rows="4" required></textarea>
+        
+                    <label for="editImage">Upload New Image</label>
+                    <input type="file" id="editImage" name="image" accept="image/*">
+        
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
 
         <!-- cocktails what the user has added to the favorites-->
         <h3>My Favorites</h3>

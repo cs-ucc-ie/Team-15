@@ -87,6 +87,23 @@ function closeReviewModal() {
     document.getElementById("reviewModal").style.display = "none";
 }
 
+function openEditModal(cocktailId) {
+    document.getElementById("editModal").style.display = "block";
+    
+    fetch(`/get_cocktail/${cocktailId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("editCocktailId").value = data.id;
+            document.getElementById("editName").value = data.name;
+            document.getElementById("editAlcohol").value = data.alcohol_content;
+            document.getElementById("editMethod").value = data.method;
+        });
+}
+
+function closeEditModal() {
+    document.getElementById("editModal").style.display = "none";
+}
+
 
 //Ingredient Selection (Pantry & Creation Pages)
 

@@ -298,6 +298,47 @@ def userpage():
 
     return render_template("userpage.html", user_cocktails=user_cocktails, favorite_cocktails=favorite_cocktails, followed_users=followed_users, followed_user_cocktails=followed_user_cocktails)
 
+@app.route('/edit_cocktail', methods=['POST'])
+def edit_cocktail():
+    db = get_db()
+    cocktail_id = request.form['cocktail_id']
+    name = request.form['name']
+    alcohol_content = int(request.form['alcohol_content'])
+    method = request.form['method']
+
+    image = request.files['image']
+    if image and allowed_file(image.filename):
+        filename = secure_filename(image.filename)
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        image.save(image_path)
+        db.execute(
+            "UPDATE cocktails SET name = ?, alcohol_content = ?, method = ?, image = ? WHERE id = ?",
+            (name, alcohol_content, method, filename, cocktail_id)
+        )
+    else:
+        db.execute(
+            "UPDATE cocktails SET name = ?, alcohol_content = ?, method = ? WHERE id = ?",
+            (name, alcohol_content, method, cocktail_id)
+        )
+
+    db.commit()
+    flash("Cocktail updated successfully!", "success")
+    return redirect(url_for('userpage'))
+
+@app.route('/get_cocktail/<int:cocktail_id>')
+def get_cocktail(cocktail_id):
+    db = get_db()
+    cocktail = db.execute("SELECT * FROM cocktails WHERE id = ?", (cocktail_id,)).fetchone()
+    
+    if cocktail:
+        return jsonify({
+            'id': cocktail['id'],
+            'name': cocktail['name'],
+            'alcohol_content': cocktail['alcohol_content'],
+            'method': cocktail['method']
+        })
+    return jsonify({'error': 'Cocktail not found'}), 404
+
 # Adding the cocktails to favorites
 @app.route('/add_favorite/<int:cocktail_id>', methods=['POST'])
 def add_favorite(cocktail_id):
