@@ -709,4 +709,146 @@ form {
     display: block;
     margin: auto; /* Centers images */
   }
+
+  /*---------------*/
+/* CREATION PAGE */
+/*---------------*/
+
+/*animation*/
+@keyframes scrollLeft {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.ingredient-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.ingredient-track {
+    display: flex;
+    gap: 10px;
+    white-space: nowrap;
+    width: max-content; /*continous scroll*/
+    animation: scrollLeft 60s linear infinite; /*duration*/
+}
+
+.ingredient-item {
+    background-color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ingredient-item:hover {
+    background-color: #007BFF;
+    color: white;
+}
+
+.creation .beverage-creation-container {
+    background-color: white;
+    padding: 40px;  
+    margin: 50px auto 0;  /*needed to sep from nav*/
+    max-width: 800px;
+    border-radius: 8px;
+    box-shadow: black;
+}
+
+.creation h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.creation h3 {
+    font-size: 22px;
+    color: #4b4a4a;
+    margin-bottom: 10px;
+}
+
+.creation input[type="text"],
+.creation textarea,
+.creation select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #d1cdcd;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+/* Ingredient list styling */
+.creation .ingredient-container {
+    margin-bottom: 20px;
+}
+
+.creation #ingredientList {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.creation .ingredient-item {
+    background-color: #f0f0f0;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.creation .ingredient-item:hover {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+/* Selected ingredients styling */
+.creation #selectedIngredientsList {
+    background-color: #e9f5ff;
+    padding: 10px;
+    border-radius: 5px;
+    min-height: 60px;
+}
+
+.creation #selectedIngredientsList li {
+    list-style: none;
+    margin: 5px;
+    padding: 5px;
+    background-color: #d1e7f7;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+/* button */
+.creation button[type="submit"] {
+    background: linear-gradient(145deg, #6c7b8b, #3e5f82);
+    color: white;
+    font-size: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+    max-width: 300px;  
+    margin: 0 auto;  
+    box-shadow: black;  
+    
+}
+
+/* Hover effect for the button */
+.creation button[type="submit"]:hover {
+    background: linear-gradient(145deg, #3e5f82, #6c7b8b);  /*opposite gradient*/
+    box-shadow: black;
+    transform: translateY(-2px);  /*raise*/
+}
+
+
   
