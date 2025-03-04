@@ -48,7 +48,7 @@ body {
 }
 
 .custom-shape-divider-top-1739903469 .shape-fill {
-    fill:#F2E7C9;
+    fill:#485665;
 }
 
 .custom-shape-divider-top-1739903469{
@@ -214,9 +214,9 @@ nav ul {
     padding: 5px;           
     margin: 60px auto 0;         
     text-align: center;
-    background-color: #f8dda8; 
+    background-color: #485665; 
     border-radius: 25px;     
-    border: 2px solid #f8dda8; 
+    border: 2px solid #485665; 
     box-sizing: border-box;  
   }
   
@@ -284,7 +284,7 @@ h2 span{
 }
 
 button {
-    background-color:#485665;
+    background-color:  #485665;
     size: 20px;
     padding: 10px;
     color: white;
@@ -516,19 +516,13 @@ form {
     display: grid;
     grid-template-areas: "A B C C";
     grid-template-columns: 2fr 2fr 2fr;
-    border: 3px solid white;
     width: 1200px;
     height: 500px;
     margin: auto;
     margin-top: 50px;
     overflow: hidden; 
     position: relative; 
-
-    /* background blur */
-    background: rgba(255, 255, 255, 0.1); 
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px); 
-    border-radius: 10px;
+    background-color: #8DA9C4;
 }
 
 /* Left column (Available Ingredients) */
@@ -673,19 +667,20 @@ form {
     grid-template-columns: 1fr 1fr 2fr;
     grid-template-rows: auto auto; 
     border-radius: 25px;
-    border: 2px solid black;
     width: 1200px;
     min-height: 550px; 
     margin: auto;
     margin-top: 50px;
     overflow: hidden;
     position: relative;
+    background-color: #8DA9C4;
 }
 
 /* Recipe Column 1 */
 .recipe-column1 {
     grid-area: A;
     display: flex;
+    color: white;
     flex-direction: column;
     gap: 10px;
     padding: 10px;
@@ -722,7 +717,7 @@ form {
     align-items: flex-start;
     justify-content: flex-start;
     padding: 10px;
-    background-color: #8DA9C4;
+    color: white;
 }
 
 .recipe-column2 ul {
@@ -752,6 +747,7 @@ form {
     justify-content: flex-start;
     align-items: flex-start;
     padding: 10px;
+    color: white;
 }
 
 .method-textbox {
@@ -763,9 +759,9 @@ form {
     border-radius: 5px;
     overflow-y: auto;
     background-color: white;
+    color: black;
 }
 
-/* Fix: Changed class name to match HTML */
 .review-column {
     grid-area: D;
     display: flex;
@@ -775,6 +771,7 @@ form {
     padding: 10px;
     max-height: 300px;
     overflow-y: auto;
+    color: white;
 }
 
 .review-textbox {
@@ -786,6 +783,7 @@ form {
     border-radius: 5px;
     overflow-y: auto;
     background-color: white;
+    color: black;
 }
 
 .modal {
@@ -813,3 +811,65 @@ form {
     font-size: 28px;
     cursor: pointer;
 }
+
+* {box-sizing:border-box}
+
+/*Slideshow*/
+.slideshow-container {
+  max-width: 80%;
+  position: relative;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.mySlides {
+  display: none;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Slideshow captions */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* The dots */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Add hover effect */
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Fading animation */
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
+  
+  @keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+  }
