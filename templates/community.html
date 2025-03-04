@@ -31,7 +31,7 @@
             <h4>Their Cocktails:</h4>
             <div class="cocktail-grid">
                 {% for cocktail in user_cocktails[user.id] %}
-                <div class="cocktail-card">
+                <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
                     <img src="{{ url_for('static', filename=cocktail['image']) }}" alt="{{ cocktail['name'] }}">
                     <h3>{{ cocktail['name'] }}</h3>
                 </div>

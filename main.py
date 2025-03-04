@@ -225,6 +225,8 @@ def creation():
         alcohol_content = int(request.form['alcohol_content'])
         method = request.form['method']
         recipe_by = session.get('username', 'Anonymous')
+        created_by = session["user_id"]
+
 
         #Handle Image Upload
         image = request.files['image']
@@ -241,8 +243,8 @@ def creation():
 
         #Insert into cocktails table
         cursor = db.execute(
-            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, method) VALUES (?, ?, 5, 1, ?, ?, ?)",
-            (name, filename, alcohol_content, recipe_by, method)
+            "INSERT INTO cocktails (name, image, popularity, reviews_number, alcohol_content, recipe_by, method, created_by) VALUES (?, ?, 5, 1, ?, ?, ?, ?)",
+            (name, filename, alcohol_content, recipe_by, method, created_by)
         )
         cocktail_id = cursor.lastrowid
 
@@ -261,7 +263,7 @@ def creation():
     return render_template('creation.html', ingredients=ingredients)
 
 @app.route('/userpage.html')
-def user_profile():
+def userpage():
     db = get_db()
     user_id = session["user_id"]
 
@@ -320,7 +322,7 @@ def add_favorite(cocktail_id):
     else:
         flash("Already in favorites!", "warning")
     
-    return redirect(url_for("user_profile"))  
+    return redirect(url_for("explore"))  
 
 # Removing the cocktails from favorites
 @app.route('/remove_favorite/<int:cocktail_id>', methods=['POST'])  
@@ -338,7 +340,7 @@ def remove_favorite(cocktail_id):
     db.commit()
     flash("Removed from favorites!", "success")
 
-    return redirect(url_for("user_profile"))
+    return redirect(url_for("userpage"))
 
 # COMMUNITY PAGE - Displaying all the users where they can follow others
 @app.route('/community.html')

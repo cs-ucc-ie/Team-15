@@ -22,9 +22,19 @@
             <!-- display all cocktails created by the user -->
 
             {% for cocktail in user_cocktails %}
-            <div class="cocktail-card">
+            <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
                 <img src="{{ url_for('static', filename = cocktail['image'])}}" alt="{{ cocktail['name'] }}">
                 <h3>{{ cocktail['name'] }}</h3>
+                <div class="rating">
+                    {% set rating = (cocktail.popularity / cocktail.reviews_number) | round(1) %}
+                    {% for i in range(1, 6) %}
+                        {% if i <= rating %}
+                            <span class="star filled">★</span>
+                        {% else %}
+                            <span class="star empty">☆</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
                 <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
             </div>
 
@@ -39,11 +49,10 @@
         <div class="cocktail-grid">
             <!-- display all user's favorite cocktails -->
             {% for cocktail in favorite_cocktails %}
-            <div class="cocktail-card">
+            <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
                 <img src="{{ url_for('static', filename = cocktail['image']) }}" alt="{{ cocktail['name'] }}">
                 <h3>{{ cocktail['name'] }}</h3>
                 <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
-                <p>Popularity: {{ cocktail['popularity'] / cocktail['reviews_number'] }}</p>
 
                 <!-- button to remove cocktails -->
                 <form action="{{ url_for('remove_favorite', cocktail_id=cocktail.id) }}" method="POST">
@@ -75,7 +84,7 @@
                         <!-- display the cocktails that the users have created followed by the logged-in user -->
                         {% if user_cocktails %}
                             {% for cocktail in user_cocktails %}
-                            <div class="cocktail-card">
+                            <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
                                 <img src="{{ url_for('static', filename = cocktail['image']) }}"
                                 alt="{{ cocktail['name'] }}">
                                 <h3>{{ cocktail['name'] }}</h3>

@@ -30,20 +30,31 @@
                 <p><strong>Alcoholic:</strong> {% if selected_cocktail.alcohol_content == 1 %} Yes {% else %} No {% endif %}</p>
                 <button onclick="history.back()">Go Back</button>
                 <button onclick="openReviewModal()">Leave a Review</button>
-            </div>
+                <!-- add to favorite button-->
 
-            <div class="recipe-column2">
-                <h3>Ingredients</h3>
-                <ul>
-                    {% for ingredient in ingredients %}
-                        <li>{{ ingredient.name }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-            <div class="recipe-column3">
-                <h3>Method</h3>
-                <div class="method-textbox">{{ selected_cocktail.method }}</div>
+                <div id="reviewModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeReviewModal()">&times;</span>
+                        <h2>Leave a Review for {{ selected_cocktail.name }}</h2>
+                        <form id="reviewForm" method="POST" action="{{ url_for('submit_review') }}">
+                            <input type="hidden" name="cocktail_id" value="{{ selected_cocktail.id }}">
+                
+                            <label for="rating">Rating (1-5):</label>
+                            <select name="rating" required>
+                                <option value="1">★☆☆☆☆</option>
+                                <option value="2">★★☆☆☆</option>
+                                <option value="3">★★★☆☆</option>
+                                <option value="4">★★★★☆</option>
+                                <option value="5">★★★★★</option>
+                            </select>
+                
+                            <label for="review_text">Your Review (optional):</label>
+                            <textarea name="review_text" rows="4"></textarea>
+                
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
             </div>
 
             <div class="review-column"> 
@@ -75,7 +86,22 @@
                 </div>
             </div> 
         </div> 
-{% else %}
+
+            <div class="recipe-column2">
+                <h3>Ingredients</h3>
+                <ul>
+                    {% for ingredient in ingredients %}
+                        <li>{{ ingredient.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="recipe-column3">
+                <h3>Method</h3>
+                <div class="method-textbox">{{ selected_cocktail.method }}</div>
+            </div>
+
+    {% else %}
 
 
         <div class="explore-container">
@@ -109,6 +135,9 @@
                             {% endfor %}
                         </div>
                         <p>Recipe by: {{ cocktail.recipe_by }}</p>
+                        <form action="{{ url_for('add_favorite', cocktail_id = cocktail.id) }}" method = "POST">
+                            <button type="submit" class = "favorite-button">Add to favorites</button>
+                        </form>
                     </div>
                 {% endfor %}
             </div>

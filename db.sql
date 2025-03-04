@@ -50,6 +50,14 @@ CREATE TABLE IF NOT EXISTS favorites (
     FOREIGN KEY (cocktail_id) REFERENCES cocktails (id) ON DELETE CASCADE
 );
 
+CREATE TABLE follows (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    follower_id INTEGER NOT NULL,
+    following_id INTEGER NOT NULL,
+    FOREIGN KEY (follower_id) REFERENCES users(id),
+    FOREIGN KEY (following_id) REFERENCES users(id)
+);
+
 
 
 INSERT INTO ingredients (name) VALUES
@@ -142,13 +150,7 @@ JOIN users ON reviews.user_id = users.id
 WHERE reviews.cocktail_id = 3
 ORDER BY reviews.created_at DESC;
 
-CREATE TABLE follows (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    follower_id INTEGER NOT NULL,
-    following_id INTEGER NOT NULL,
-    FOREIGN KEY (follower_id) REFERENCES users(id),
-    FOREIGN KEY (following_id) REFERENCES users(id)
-);
+
 
 SELECT * FROM follows;
 

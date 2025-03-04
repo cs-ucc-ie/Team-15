@@ -19,8 +19,6 @@
     
     <div class="cocktail-container">
         <div class="cocktail-grid">
-            <button id="prevBtn">←</button>
-
             <div class="cocktail-grid" id="cocktail-grid">
                 {% for cocktail in top_cocktails %}
                     <div class="cocktail-card" onclick="goToExplore({{ cocktail['id'] }})">
@@ -41,8 +39,6 @@
                     </div>
                 {% endfor %}
             </div>
-
-            <button id="nextBtn">→</button>
         </div>  
     </div>
     
