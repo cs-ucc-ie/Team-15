@@ -458,6 +458,15 @@ def community():
     db = get_db()
     users = db.execute("SELECT id, username FROM users").fetchall()
 
+    # get the id of the current logged-in user
+    logged_in_user_id = session.get("user_id")
+
+    if logged_in_user_id:
+        users = db.execute("SELECT id, username FROM users WHERE id != ?", (logged_in_user_id,)).fetchall()
+    else:
+        users = db.execute("SELECT id, username FROM users").fetchall()
+    
+    # get the cocktails created by each user
     user_cocktails = {}
     for user in users:
         cocktails = db.execute("SELECT * FROM cocktails WHERE created_by = ?", (user['id'],)).fetchall()
