@@ -1,18 +1,35 @@
 import sqlite3
 import os
+import openai
 from flask import Flask, request, redirect, url_for, render_template, g, session, flash, jsonify
+from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import secure_filename
 from datetime import datetime, date
+from sqlalchemy.orm import scoped_session
+from models import Session, cocktails  
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "my_secret_key" #for sessions
+app.secret_key = "my_secret_key"
+CORS(app)
 
+# OpenAI API key
+# Load API key from .env
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+# Debugging: Check if API key is loaded (REMOVE this after testing)
+if not OPENAI_API_KEY:
+    raise ValueError("Error: OPENAI_API_KEY is not set. Check your .env file.")
+
+# Initialize OpenAI client
+client = openai.OpenAI(api_key=OPENAI_API_KEY)
+
+# SQLite database setup
 DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), "db.db")
-
-UPLOAD_FOLDER = 'static'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def get_db():
     if "db" not in g:
@@ -25,6 +42,58 @@ def close_db(e=None):
     db = g.pop("db", None)
     if db is not None:
         db.close()
+
+# Session for SQLAlchemy
+session = scoped_session(Session)
+
+@app.route('/chat.html')
+def chat_page():
+    return render_template('chat.html')
+
+# AI Chatbox Route
+@app.route('/chat', methods=['GET', 'POST'])
+def chat():
+    if request.method == "GET":
+        # Return the list of cocktail names as JSON
+        db_data = session.query(cocktails).all()
+        cocktail_list = [{"name": item.name} for item in db_data]
+
+        return jsonify({"cocktails": cocktail_list})
+
+    # Handle POST request (AI chat)
+    data = request.json
+    user_input = data.get("message", "")
+
+    # Fetch cocktail names from the database
+    db_data = session.query(cocktails).all()
+    if not db_data:
+        data_str = "There are no cocktails available in the database."
+    else:
+        data_str = '\n'.join([f'{item.name}' for item in db_data])
+
+    # Modify the prompt to include only cocktail names
+    prompt = f"""
+    You are a cocktail expert. Recommend a cocktail from the list below based on the user's request.
+    
+    Available Cocktails:
+    {data_str}
+    
+    User: {user_input}
+    AI:
+    """
+
+    # Send the prompt to OpenAI
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "You are an AI assistant specializing in cocktail recommendations."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    return jsonify({"response": response.choices[0].message.content.strip()})
+
+
 
 
 def allowed_file(filename):

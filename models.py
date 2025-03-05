@@ -5,8 +5,8 @@ from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
-class YourTable(Base):
-    __tablename__ = 'your_table'
+class cocktails(Base):
+    __tablename__ = 'cocktails'
     id = Column(Integer, primary_key=True)
     name = Column(String)
     # Add other columns as needed
@@ -16,7 +16,8 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-DATABASE_URL = os.getenv('db.db')
+DATABASE_URL = os.getenv('DATABASE_URL')
+
 
 # Create engine and session
 engine = create_engine(DATABASE_URL)
