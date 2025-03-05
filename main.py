@@ -44,7 +44,7 @@ def close_db(e=None):
         db.close()
 
 # Session for SQLAlchemy
-session = scoped_session(Session)
+db_session = scoped_session(Session)
 
 @app.route('/chat.html')
 def chat_page():
@@ -55,7 +55,7 @@ def chat_page():
 def chat():
     if request.method == "GET":
         # Return the list of cocktail names as JSON
-        db_data = session.query(cocktails).all()
+        db_data = db_session.query(cocktails).all()
         cocktail_list = [{"name": item.name} for item in db_data]
 
         return jsonify({"cocktails": cocktail_list})
@@ -65,7 +65,7 @@ def chat():
     user_input = data.get("message", "")
 
     # Fetch cocktail names from the database
-    db_data = session.query(cocktails).all()
+    db_data = db_session.query(cocktails).all()
     if not db_data:
         data_str = "There are no cocktails available in the database."
     else:
@@ -134,7 +134,7 @@ def register():
 
     return render_template("register.html")
 
-@app.route('/login.html', methods=['GET','POST'])
+@app.route('/login.html', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
         email = request.form["email"]
@@ -144,7 +144,7 @@ def login():
         user = db.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
 
         if user and check_password_hash(user["password"], password):
-            session["user_id"] = user["id"]
+            session["user_id"] = user["id"]  
             session["username"] = user["username"]
             flash("Login successful!", "success")
             return redirect(url_for("homepage"))
