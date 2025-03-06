@@ -652,10 +652,9 @@ form {
 
 /*Slideshow*/
 .slideshow-container {
-  max-width: 80%;
+  max-width: 100%;
   position: relative;
   margin: auto;
-  margin-top: 50px;
 }
 
 .mySlides {
