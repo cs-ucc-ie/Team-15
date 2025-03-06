@@ -119,7 +119,7 @@
                 </select>
             </div>
             
-            <div class="cocktail-grid" id="cocktail-list">
+            <div class="cocktail-grid1" id="cocktail-list">
                 {% for cocktail in cocktails %}
                     <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
                         <img src="{{ url_for('static', filename=cocktail.image) }}" alt="{{ cocktail.name }}">
