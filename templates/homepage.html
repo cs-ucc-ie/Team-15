@@ -13,15 +13,24 @@
   
 <div class="slideshow-container">
     <div class="mySlides fade">
-      <img src="/static/dirty_martini.jpg" style="width:100%">
+      <img src="/static/barshelf.jpg" style="width:100%">
+      <div class="slide-text">
+        <a href="{{ url_for('explore') }}">Explore</a>
+    </div>
     </div>
   
     <div class="mySlides fade">
-      <img src="/static/mixologist.jpeg" style="width:100%">
+      <img src="/static/barshelf2.jpg" style="width:100%">
+      <div class="slide-text">
+        <a href="{{ url_for('pantry') }}">What's in your Pantry?</a>
+    </div>
     </div>
   
     <div class="mySlides fade">
-      <img src="/static/champagne.jpg" style="width:100%">
+      <img src="/static/barshelf3.jpg" style="width:100%">
+      <div class="slide-text">
+        <a href="{{ url_for('creation') }}">Upload your Own</a>
+    </div>
     </div>
 
     <!-- The dots/circles -->
@@ -34,6 +43,7 @@
   <br>
   
     <div class="cocktail-container">
+        <h2>Trending Cocktails</h2>
             <div class="cocktail-grid" id="cocktail-grid">
                 {% for cocktail in top_cocktails %}
                     <div class="cocktail-card" onclick="goToExplore({{ cocktail['id'] }})">
@@ -53,10 +63,9 @@
                     </div>
                 {% endfor %}
             </div>
+            <h3><a href="explore.html">Explore More</a></h3>
         </div>  
     
-    <h3><a href="explore.html">Explore More</a></h3>
-
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

@@ -131,10 +131,8 @@ div {
     margin: 0 auto; /* center it */
 }
 .cocktail-card {
-    background: rgb(217, 152, 87);
     border-radius: 1px;
     box-shadow: black; 
-
     text-align: center;
     
 }
@@ -163,7 +161,7 @@ h2{
 /*-------*/
 
 .form-control{
-    font-family: "Tinos", serif;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
 p {
@@ -203,7 +201,7 @@ div a img:hover {
     display: flex;
     width: 800px;
     height: 500px;
-    border: 3px solid white;
+    border: 1px solid  #3b3e42;
     border-radius: 30px;
     backdrop-filter: blur;
     margin: auto;
@@ -257,9 +255,7 @@ input {
 }
 
 
-h3 a {
-    background-color: rgb(127, 120, 83);
-    color: wheat;
+ a {
     width: 200px;
     padding: 30px;
     text-align: center;  /* Centers the text inside the <a> */
@@ -279,7 +275,7 @@ h3 a {
 .beverage-creation-container {
     float: center;
     background: white;
-    padding: 20px;
+    padding: h320px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     text-align: center;
@@ -288,11 +284,10 @@ h3 a {
 
 
 .cocktail-container {
-    margin-top: 80px; 
     padding : 20px;
     text-align: center;  
     overflow-x: hidden; 
-    padding: 120px;
+    padding: 100px;
 }
 
 /*cocktail grid for homepage */
@@ -358,7 +353,7 @@ form {
     margin-top: 50px;
     overflow: hidden; 
     position: relative; 
-    background-color: #8DA9C4;
+    border: 1px solid  #3b3e42;
 }
 
 /* Left column (Available Ingredients) */
@@ -652,7 +647,7 @@ form {
 
 /*Slideshow*/
 .slideshow-container {
-  max-width: 100%;
+  max-width: 95%;
   position: relative;
   margin: auto;
 }
@@ -706,12 +701,88 @@ form {
   }
 
   .mySlides img {
-    max-height: 500px; /* Adjust to desired height */
-    width: auto; /* Ensures aspect ratio is maintained */
+    max-height: 500px; 
+    width: auto;
     display: block;
-    margin: auto; /* Centers images */
+    margin: auto; 
   }
 
+/*Slideshow*/
+.slideshow-container {
+    max-width: 95%;
+    position: relative;
+    margin: auto;
+  }
+  
+  .mySlides {
+    display: none;
+  }
+   
+  /* The dots */
+  .dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+    margin-top: 10px;
+  }
+  
+  .active, .dot:hover {
+    background-color: #717171;
+  }
+  
+  /* Add hover effect */
+  .prev:hover, .next:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  /* Fading animation */
+  .fade {
+      animation-name: fade;
+      animation-duration: 1.5s;
+    }
+    
+    @keyframes fade {
+      from {opacity: .4}
+      to {opacity: 1}
+    }
+  
+    .mySlides img {
+      max-height: 500px; 
+      width: auto;
+      display: block;
+      margin: auto; 
+    }
+  
+    .slide-text {
+        position: absolute;
+        top: 50%; 
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 5px;
+        text-align: center;
+        border: 2px solid white;
+        font-family: "Tinos", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+    
+    .slide-text a {
+        color: white;
+        text-decoration: none;
+        font-size: 30px;
+        font-weight: bold;
+    }
+    
+    .slide-text a:hover {
+        text-decoration: underline;
+    }
   /*---------------*/
 /* CREATION PAGE */
 /*---------------*/
