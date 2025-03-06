@@ -504,14 +504,14 @@ form {
     margin-top: 50px;
     overflow: hidden;
     position: relative;
-    background-color: #8DA9C4;
+    border: 1px solid  #3b3e42;
 }
 
 /* Recipe Column 1 */
 .recipe-column1 {
     grid-area: A;
     display: flex;
-    color: white;
+    color: black;
     flex-direction: column;
     gap: 10px;
     padding: 10px;
@@ -548,7 +548,7 @@ form {
     align-items: flex-start;
     justify-content: flex-start;
     padding: 10px;
-    color: white;
+    color: black;
 }
 
 .recipe-column2 ul {
@@ -615,6 +615,7 @@ form {
     overflow-y: auto;
     background-color: white;
     color: black;
+    border: 1px solid #ccc;
 }
 
 .modal {

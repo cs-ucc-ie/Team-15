@@ -133,8 +133,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({ ingredients: selectedIngredients.map(ing => ing.id) })
             })
             .then(response => response.json())
-            .then(cocktails => {
-                cocktailList.innerHTML = cocktails.length ? cocktails.map(c => `<li>${c.name}</li>`).join("") : "<li>No matches found</li>";
+            .then(cocktails => {cocktailList.innerHTML = cocktails.length 
+                ? cocktails.map(c => `<li><a href="/explore.html?id=${c.id}">${c.name}</a></li>`).join("")
+                : "<li>No matches found</li>";
             });
         }
     }

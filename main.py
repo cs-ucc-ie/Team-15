@@ -256,11 +256,25 @@ def submit_review():
     flash("Review submitted successfully!", "success")
     return redirect(request.referrer)
 
+"""@app.route('/pantry.html', methods=['GET'])
+def pantry():
+    db = get_db()
+    ingredients = db.execute("SELECT * FROM ingredients").fetchall()
+    return render_template("pantry.html", ingredients=ingredients)"""
+
 @app.route('/pantry.html', methods=['GET'])
 def pantry():
     db = get_db()
     ingredients = db.execute("SELECT * FROM ingredients").fetchall()
-    return render_template("pantry.html", ingredients=ingredients)
+
+    matching_cocktails = db.execute("""
+        SELECT DISTINCT c.id, c.name 
+        FROM cocktails c
+        JOIN cocktail_ingredients ci ON c.id = ci.cocktail_id
+    """).fetchall()
+
+    return render_template("pantry.html", ingredients=ingredients, matching_cocktails=matching_cocktails)
+
 
 @app.route('/get_cocktails', methods=['POST'])
 def get_cocktails():
