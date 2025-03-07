@@ -31,8 +31,17 @@
     </div>
 
     <!-- Matching Cocktails -->
-    <div class="pantry-r2">
+    <div class="pantry-r2"> 
     <h2>Matching Cocktails</h2>
-    <ul id="cocktail-list"></ul>
+    <ul id="cocktail-list">
+        {% for cocktail in matching_cocktails %}
+        <li>
+            <a href="{{ url_for('explore', id=cocktail.id) }}">
+                {{ cocktail.name }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
 </body>
 </html>

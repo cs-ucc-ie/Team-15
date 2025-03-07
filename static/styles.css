@@ -25,7 +25,7 @@
 }
 
 body {
-    background-color:  #59697b;
+    background-color:  white;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     color: black;
     margin:0;
@@ -120,20 +120,19 @@ div {
     box-sizing: border-box;
 }
 
-.cocktail-grid {
+/*cocktail grid for explore page don't confuse w homepgae */
+.cocktail-grid1 {
     display: grid;
     grid-template-columns: repeat(3, minmax(250px, 1fr)); /*3 p/r*/
-    gap: 20px;
-    padding: 20px;
+    gap: 80px;
+    padding: 40px;
     max-width: 1200px; 
     width: 100%; 
     margin: 0 auto; /* center it */
 }
 .cocktail-card {
-    background: white;
     border-radius: 1px;
     box-shadow: black; 
-    padding: 16px;
     text-align: center;
     
 }
@@ -147,7 +146,6 @@ div {
     width: 100%;
     height: 180px;
     object-fit: cover;
-    border-radius: 10px;
 }
 
 h2{
@@ -163,7 +161,7 @@ h2{
 /*-------*/
 
 .form-control{
-    font-family: "Tinos", serif;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
 p {
@@ -203,7 +201,7 @@ div a img:hover {
     display: flex;
     width: 800px;
     height: 500px;
-    border: 3px solid white;
+    border: 1px solid  #3b3e42;
     border-radius: 30px;
     backdrop-filter: blur;
     margin: auto;
@@ -257,9 +255,7 @@ input {
 }
 
 
-h3 a {
-    background-color: rgb(127, 120, 83);
-    color: wheat;
+ a {
     width: 200px;
     padding: 30px;
     text-align: center;  /* Centers the text inside the <a> */
@@ -279,20 +275,22 @@ h3 a {
 .beverage-creation-container {
     float: center;
     background: white;
-    padding: 20px;
+    padding: h320px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     text-align: center;
     width: 100%;    
 }
 
+
 .cocktail-container {
-    margin-top: 80px; 
     padding : 20px;
     text-align: center;  
     overflow-x: hidden; 
+    padding: 100px;
 }
 
+/*cocktail grid for homepage */
 .cocktail-grid {
     display: flex;            
     overflow-x: auto;         
@@ -355,7 +353,7 @@ form {
     margin-top: 50px;
     overflow: hidden; 
     position: relative; 
-    background-color: #8DA9C4;
+    border: 1px solid  #3b3e42;
 }
 
 /* Left column (Available Ingredients) */
@@ -506,14 +504,14 @@ form {
     margin-top: 50px;
     overflow: hidden;
     position: relative;
-    background-color: #8DA9C4;
+    border: 1px solid  #3b3e42;
 }
 
 /* Recipe Column 1 */
 .recipe-column1 {
     grid-area: A;
     display: flex;
-    color: white;
+    color: black;
     flex-direction: column;
     gap: 10px;
     padding: 10px;
@@ -550,7 +548,7 @@ form {
     align-items: flex-start;
     justify-content: flex-start;
     padding: 10px;
-    color: white;
+    color: black;
 }
 
 .recipe-column2 ul {
@@ -617,6 +615,7 @@ form {
     overflow-y: auto;
     background-color: white;
     color: black;
+    border: 1px solid #ccc;
 }
 
 .modal {
@@ -649,10 +648,9 @@ form {
 
 /*Slideshow*/
 .slideshow-container {
-  max-width: 80%;
+  max-width: 95%;
   position: relative;
   margin: auto;
-  margin-top: 50px;
 }
 
 .mySlides {
@@ -704,12 +702,88 @@ form {
   }
 
   .mySlides img {
-    max-height: 500px; /* Adjust to desired height */
-    width: auto; /* Ensures aspect ratio is maintained */
+    max-height: 500px; 
+    width: auto;
     display: block;
-    margin: auto; /* Centers images */
+    margin: auto; 
   }
 
+/*Slideshow*/
+.slideshow-container {
+    max-width: 95%;
+    position: relative;
+    margin: auto;
+  }
+  
+  .mySlides {
+    display: none;
+  }
+   
+  /* The dots */
+  .dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+    margin-top: 10px;
+  }
+  
+  .active, .dot:hover {
+    background-color: #717171;
+  }
+  
+  /* Add hover effect */
+  .prev:hover, .next:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  /* Fading animation */
+  .fade {
+      animation-name: fade;
+      animation-duration: 1.5s;
+    }
+    
+    @keyframes fade {
+      from {opacity: .4}
+      to {opacity: 1}
+    }
+  
+    .mySlides img {
+      max-height: 500px; 
+      width: auto;
+      display: block;
+      margin: auto; 
+    }
+  
+    .slide-text {
+        position: absolute;
+        top: 50%; 
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 5px;
+        text-align: center;
+        border: 2px solid white;
+        font-family: "Tinos", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+    
+    .slide-text a {
+        color: white;
+        text-decoration: none;
+        font-size: 30px;
+        font-weight: bold;
+    }
+    
+    .slide-text a:hover {
+        text-decoration: underline;
+    }
   /*---------------*/
 /* CREATION PAGE */
 /*---------------*/
@@ -849,6 +923,220 @@ form {
     box-shadow: black;
     transform: translateY(-2px);  /*raise*/
 }
+
+/*-----------------------*/
+/*USERPAGE*/
+/*---------------------*/
+
+ul, ol {
+    list-style: none;
+
+}
+
+.profile-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+h2, h3 {
+    color: #333;
+}
+
+
+
+.cocktail-card {
+    background: white;
+    
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+
+.cocktail-card:hover {
+    transform: scale(1.05);
+}
+
+.cocktail-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.cocktail-card h3 {
+    padding: 10px 15px;
+    color: #ff6f61;
+}
+
+.rating {
+    padding: 5px;
+    color: gold;
+}
+
+.remove-favorite-button, button {
+    background: #ff6f61;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.remove-favorite-button:hover, button:hover {
+    background: #e65c50;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.modal-content {
+    text-align: left;
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+p{
+    color:  rgb(235, 94, 63);
+}
+
+
+
+/*-------------*/
+/*EXPLORE PAGE */
+/*-------------*/
+
+.explore h2{
+    margin: 55px;
+}
+
+
+
+#search-bar, #filter-select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    display: grid;
+    place-items: center;
+}
+
+
+#search-bar {
+    margin-left: 55px;
+    width: 250px;
+}
+
+#filter-select {
+    width: 180px;
+    margin-left: 55px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.cocktail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  
+    gap: 80px;
+    justify-content: center;
+    padding: 60px 0;
+}
+
+.cocktail-card {
+    background: white;
+    box-shadow: black;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+    overflow: hidden;
+}
+
+.cocktail-card:hover {
+    transform: translateY(-5px);
+    box-shadow: black;
+}
+
+.cocktail-card h3 {
+    font-size: 20px;
+    margin: 10px 0;
+    color: #3e3c3c;
+}
+
+/* Star Rating */
+.rating {
+    color: gold;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.cocktail-card p {
+    font-size: 14px;
+    color: #6d6a6a;
+    margin-bottom: 10px;
+}
+
+
+
+/* Responsive Design for cards*/
+@media (max-width: 1024px) {
+    .cocktail-grid {
+        grid-template-columns: repeat(2, 1fr);  /* 2 cards per row for medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .cocktail-grid {
+        grid-template-columns: repeat(1, 1fr);  /* 1 card per row for small screens */
+    }
+
+    .search-filter-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #search-bar, #filter-select {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+  /* Keyframes for pop-up animation */
+  @keyframes popUp {
+    0% {
+      opacity: 0;
+      transform: translateY(50px); /* Start below */
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0); /* End in place */
+    }
+  }
+  
+  .cocktail-grid1 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+
+
 
 
   

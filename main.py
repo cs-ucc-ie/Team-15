@@ -4,6 +4,7 @@ import openai
 from flask import Flask, request, redirect, url_for, render_template, g, session, flash, jsonify
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from datetime import datetime, date
 from sqlalchemy.orm import scoped_session
 from models import Session, cocktails  
@@ -15,6 +16,10 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
 CORS(app)
+
+UPLOAD_FOLDER = 'static'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # OpenAI API key
 # Load API key from .env
@@ -256,11 +261,25 @@ def submit_review():
     flash("Review submitted successfully!", "success")
     return redirect(request.referrer)
 
+"""@app.route('/pantry.html', methods=['GET'])
+def pantry():
+    db = get_db()
+    ingredients = db.execute("SELECT * FROM ingredients").fetchall()
+    return render_template("pantry.html", ingredients=ingredients)"""
+
 @app.route('/pantry.html', methods=['GET'])
 def pantry():
     db = get_db()
     ingredients = db.execute("SELECT * FROM ingredients").fetchall()
-    return render_template("pantry.html", ingredients=ingredients)
+
+    matching_cocktails = db.execute("""
+        SELECT DISTINCT c.id, c.name 
+        FROM cocktails c
+        JOIN cocktail_ingredients ci ON c.id = ci.cocktail_id
+    """).fetchall()
+
+    return render_template("pantry.html", ingredients=ingredients, matching_cocktails=matching_cocktails)
+
 
 @app.route('/get_cocktails', methods=['POST'])
 def get_cocktails():
