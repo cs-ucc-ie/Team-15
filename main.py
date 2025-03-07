@@ -4,6 +4,7 @@ import openai
 from flask import Flask, request, redirect, url_for, render_template, g, session, flash, jsonify
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from datetime import datetime, date
 from sqlalchemy.orm import scoped_session
 from models import Session, cocktails  
@@ -15,6 +16,10 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
 CORS(app)
+
+UPLOAD_FOLDER = 'static'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # OpenAI API key
 # Load API key from .env
