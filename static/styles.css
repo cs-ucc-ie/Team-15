@@ -1116,6 +1116,27 @@ p{
     }
 }
 
+  /* Keyframes for pop-up animation */
+  @keyframes popUp {
+    0% {
+      opacity: 0;
+      transform: translateY(50px); /* Start below */
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0); /* End in place */
+    }
+  }
+  
+  .cocktail-grid1 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+
+
 
 
   
