@@ -7,13 +7,13 @@
     <title>Create a Cocktail</title>
 </head>
 
-<body class = "creation">
+<body class="creation">
     {% include 'navbar.html' %}
 
 
     <div class="beverage-creation-container">
         <h2>Create Your Own Cocktail</h2>
-        <form action="{{ url_for('creation') }}" method="POST">
+        <form action="{{ url_for('creation') }}" method="POST" enctype="multipart/form-data">
             <label for="name">Drink Name</label>
             <input type="text" id="name" name="name" placeholder="Enter the name of your cocktail" required>
             
@@ -26,35 +26,30 @@
             <label for="method">Preparation Method</label>
             <textarea id="method" name="method" rows="4" required></textarea>
 
-            <div class="ingredient-wrapper">
-                <div class="ingredient-track">
+            <div class="ingredient-container">
+                <h3>Available Ingredients (Click to Select)</h3>
+                <div id="ingredientList">
                     {% for ingredient in ingredients %}
-                        <div class="ingredient-item" onclick="toggleIngredient({{ ingredient.id }}, '{{ ingredient.name }}')">
-                            {{ ingredient.name }}
-                        </div>
-                    {% endfor %}
-                    <!-- Duplicate the same list inside for scroll -->
-                    {% for ingredient in ingredients %}
-                        <div class="ingredient-item" onclick="toggleIngredient({{ ingredient.id }}, '{{ ingredient.name }}')">
+                        <div class="ingredient-item" data-id="{{ ingredient.id }}" data-name="{{ ingredient.name }}">
                             {{ ingredient.name }}
                         </div>
                     {% endfor %}
                 </div>
-            </div>
 
                 <h3>Selected Ingredients</h3>
                 <div id="selectedIngredientsList"></div>
-                <button type="submit">Submit</button>
                 
                 <!-- Hidden Input to Send Selected Ingredients -->
                 <input type="hidden" name="selected_ingredients" id="selectedIngredientsInput">
             </div>
+            
+            <label for="image">Upload an Image</label>
+            <input type="file" id="image" name="image" accept="image/*">
 
-          
+            <button type="submit">Submit</button>
         </form>
     </div>
 
-<script src="{{ url_for('static', filename = 'script.js') }}"></script>
 </body>
 </html>
 
