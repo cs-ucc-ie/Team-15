@@ -900,16 +900,81 @@ h2, h3 {
     padding: 20px;
   }
 
+/*Community page */
   .users-card{
-    border: 1px solid #d1cdcd;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     margin: auto;
     margin-top: 10px;
     padding: 10px;
     width: 90%;
   }
 
+  .user-info {
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+}
 
+.username {
+    font-size: 20px;
+    font-weight: bold;
+}
 
+.follow-button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
 
+.follow-button:hover {
+    background-color: var(--hover-color);
+}
 
-  
+.blerb{
+    max-width: 80%;
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+}
+
+.blerb p {
+    color: grey;
+}
+
+/* cocktail grids for community page (scrollable)*/
+.user-cocktail-grid {
+    display: flex;
+    gap: 10px; 
+    overflow-x: auto;
+    max-width: 100%;
+    padding-bottom: 10px;
+    scrollbar-width: thin; 
+}
+
+.user-cocktail-card {
+    flex: 0 0 180px; 
+    min-width: 180px; 
+    max-width: 180px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+
+.user-cocktail-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.user-cocktail-grid {
+    scroll-behavior: smooth;
+}
