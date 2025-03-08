@@ -1,3 +1,9 @@
+:root {
+    --primary-color: #3b3e42;
+    --accent-color: #ff6f61;
+    --hover-color: #e65c50;
+}
+
 /*Age verification pop up css */
 #age-overlay {
     position: fixed;
@@ -32,11 +38,10 @@ body {
     padding:0;
     width: 100%;
 }
-/*~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 /*--------NAV BAR--------*/
-/*~~~~~~~~~~~~~~~~~~~~#~~*/
 .navbar {
-    background-color: #3b3e42;  
+    background-color: var(--primary-color);  
     padding: 20px 40px;
     width: 100%;
     height:120px;
@@ -77,17 +82,6 @@ body {
     position: relative; 
 }
 
-/* Hide */
-.dropdown-content {
-    display: none; /*keep hidden */
-    position: absolute;
-    background-color: #3a3d42;
-    min-width: 150px;
-    z-index: 1000;
-    top: 100%;
-    border-radius: 5px;
-}
-
 /* CONTENT OF DD*/
 .dropdown-content {
     display: none;
@@ -95,6 +89,7 @@ body {
     background-color: #3a3d42;
     min-width: 150px;
     top: 100%;
+    z-index: 1000;
     left: 0;
     border-radius: 5px;
     visibility: hidden;
@@ -130,12 +125,6 @@ div {
     width: 100%; 
     margin: 0 auto; /* center it */
 }
-.cocktail-card {
-    border-radius: 1px;
-    box-shadow: black; 
-    text-align: center;
-    
-}
 
 .cocktail-card:hover {
     transform: translateY(-10px);
@@ -147,18 +136,6 @@ div {
     height: 180px;
     object-fit: cover;
 }
-
-h2{
-    color: #485665;
-}
-/* Card Titles */
-.cocktail-card h3 {
-    margin: 12px 8px;
-    font-size: 18px;
-}
-
-/*other*/
-/*-------*/
 
 .form-control{
     font-family:Verdana, Geneva, Tahoma, sans-serif;
@@ -184,24 +161,18 @@ div a img:hover {
     transform: scale(1.05);
 }
 /* Responsive adjustments for smaller devices*/
-@media (max-width: 1200px) {
-    .cocktail-grid {
-        grid-template-columns: repeat(2, 1fr); 
-    }
-}
-
-@media (max-width: 800px) {
-    .cocktail-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 1024px) {
+    .pantry-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
 }
 
 /* css for login and register containers */
 .login-container {
     display: flex;
-    width: 800px;
-    height: 500px;
-    border: 1px solid  #3b3e42;
+    max-width: 800px;
+    max-height: 500px;
+    border: 1px solid  var(--primary-color);
     border-radius: 30px;
     backdrop-filter: blur;
     margin: auto;
@@ -273,7 +244,6 @@ input {
 }
 
 .beverage-creation-container {
-    float: center;
     background: white;
     padding: h320px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -290,75 +260,22 @@ input {
     padding: 100px;
 }
 
-/*cocktail grid for homepage */
-.cocktail-grid {
-    display: flex;            
-    overflow-x: auto;         
-    gap: 20px;               
-    padding: 20px 0;         
-    scroll-snap-type: x mandatory;
-    justify-content: flex-start;  
-    width: 100%;             
-    scroll-padding-left: 20px;
-}
-
-.tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.tab-button {
-    background-color: #68B0AB;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    margin-right: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.tab-button:hover {
-    background-color: #4A7C59;
-}
-
-.tab-button.active {
-    background-color: #4A7C59;
-}*/
-
-/* Tab content */
-.tab-content {
-    display: none;
-    text-align: center;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-form {
-    margin-bottom: 20px;
-}
 
 /* css for pantry page */
 .pantry-container {
     display: grid;
     grid-template-areas: "A B C C";
     grid-template-columns: 2fr 2fr 2fr;
-    width: 1200px;
+    max-width: 1200px;
     height: 500px;
     margin: auto;
     margin-top: 50px;
     overflow: hidden; 
     position: relative; 
-    border: 1px solid  #3b3e42;
+    border: 1px solid var(--primary-color);
 }
 
-/* Left column (Available Ingredients) */
-.pantry-l1 {
-    grid-area: A;
+.pantry-l1, .pantry-r1, .pantry-r2 {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -367,87 +284,27 @@ form {
     overflow-y: auto;
     max-height: 100%;
     width: 100%;
-    position: relative; 
+    position: relative;
 }
 
-.pantry-l1 ul {
+.pantry-container ul {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    max-width: 100%; 
+    max-width: 100%;
     padding: 10px;
     margin: 0;
     overflow-y: auto;
-    justify-content: flex-start; 
+    justify-content: flex-start;
 }
 
-.pantry-l1 li {
+.pantry-container li {
     list-style: none;
     padding: 10px;
     background-color: white;
     border-radius: 5px;
-    max-width: calc(100% - 20px); 
-    white-space: nowrap; 
-}
-
-/* Middle column (Selected Ingredients) */
-.pantry-r1 {
-    grid-area: B;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    align-content: flex-start;
-    overflow-y: auto;
-    max-height: 100%;
-    width: 100%;
-    position: relative; 
-}
-
-.pantry-r1 ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    max-width: 100%; 
-    padding: 10px;
-    margin: 0;
-    overflow-y: auto;
-    justify-content: flex-start; 
-
-}
-
-.pantry-r1 li {
-    list-style: none;
-    padding: 10px;
-    background-color: white;
-    border-radius: 5px;
-    max-width: calc(100% - 20px); 
+    max-width: calc(100% - 20px);
     white-space: nowrap;
-}
-
-/* Right column (Matching Cocktails) */
-.pantry-r2{
-    grid-area: C;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    align-content: flex-start;
-    overflow-y: auto;
-    max-height: 100%;
-    width: 100%;
-    position: relative; 
-}
-
-.pantry-r2 ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    max-width: 100%; 
-    padding: 10px;
-    margin: 0;
-    overflow-y: auto;
-    justify-content: flex-start; 
 }
 
 .pantry-r2 li {
@@ -504,7 +361,7 @@ form {
     margin-top: 50px;
     overflow: hidden;
     position: relative;
-    border: 1px solid  #3b3e42;
+    border: 1px solid var(--primary-color);
 }
 
 /* Recipe Column 1 */
@@ -648,14 +505,14 @@ form {
 
 /*Slideshow*/
 .slideshow-container {
-  max-width: 95%;
+  max-width: 100%;
   position: relative;
   margin: auto;
 }
 
 .mySlides {
-  display: none;
-}
+    display: none;
+  }
 
 /* Slideshow captions */
 .text {
@@ -706,17 +563,6 @@ form {
     width: auto;
     display: block;
     margin: auto; 
-  }
-
-/*Slideshow*/
-.slideshow-container {
-    max-width: 95%;
-    position: relative;
-    margin: auto;
-  }
-  
-  .mySlides {
-    display: none;
   }
    
   /* The dots */
@@ -966,7 +812,7 @@ h2, h3 {
 
 .cocktail-card h3 {
     padding: 10px 15px;
-    color: #ff6f61;
+    color: var(--primary-color);
 }
 
 .rating {
@@ -975,7 +821,7 @@ h2, h3 {
 }
 
 .remove-favorite-button, button {
-    background: #ff6f61;
+    background: var(--accent-color);
     color: white;
     border: none;
     padding: 8px 12px;
@@ -986,7 +832,7 @@ h2, h3 {
 }
 
 .remove-favorite-button:hover, button:hover {
-    background: #e65c50;
+    background: var(--hover-color);
 }
 
 .modal {
@@ -1072,12 +918,6 @@ p{
     box-shadow: black;
 }
 
-.cocktail-card h3 {
-    font-size: 20px;
-    margin: 10px 0;
-    color: #3e3c3c;
-}
-
 /* Star Rating */
 .rating {
     color: gold;
@@ -1100,21 +940,17 @@ p{
     }
 }
 
-@media (max-width: 768px) {
-    .cocktail-grid {
-        grid-template-columns: repeat(1, 1fr);  /* 1 card per row for small screens */
-    }
+.search-filter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
 
-    .search-filter-container {
-        flex-direction: column;
-        align-items: center;
-    }
 
     #search-bar, #filter-select {
         width: 100%;
         max-width: 300px;
     }
-}
 
   /* Keyframes for pop-up animation */
   @keyframes popUp {
@@ -1133,6 +969,14 @@ p{
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
     padding: 20px;
+  }
+
+  .users-card{
+    border: 1px solid #d1cdcd;
+    margin: auto;
+    margin-top: 10px;
+    padding: 10px;
+    width: 90%;
   }
 
 

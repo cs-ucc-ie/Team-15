@@ -261,12 +261,6 @@ def submit_review():
     flash("Review submitted successfully!", "success")
     return redirect(request.referrer)
 
-"""@app.route('/pantry.html', methods=['GET'])
-def pantry():
-    db = get_db()
-    ingredients = db.execute("SELECT * FROM ingredients").fetchall()
-    return render_template("pantry.html", ingredients=ingredients)"""
-
 @app.route('/pantry.html', methods=['GET'])
 def pantry():
     db = get_db()
