@@ -104,7 +104,7 @@
                             <form action="{{ url_for('unfollow_user', user_id=user.id) }}" method="POST" style="display: inline;">
                             <button type="submit" class="unfollow-button">Unfollow</button>
                             </form>
-                        <div class="user-cocktail-grid">
+                        <div class="user-cocktail-grid">    
                             {% set found = false %}
                             {% for cocktail in followed_user_cocktails %}
                                 {% if cocktail['created_by'] == user['id'] %}
@@ -118,12 +118,12 @@
                                 {% endif %}
                             {% endfor %}
                             
-                        {% if not found %}
-                            <p>No cocktails created by {{ user['username'] }} yet.</p>
-                        {% endif %}
-                    </div>
+                            {% if not found %}
+                                <p>No cocktails created by {{ user['username'] }} yet.</p>
+                            {% endif %}
+                        </div>
                     {% endfor %}
-                </ul>
+                    </ul>
             {% else %}
                 <p>You haven't followed anyone yet.</p>
                 <p>Check out: <a href="community.html"> Our Community.</a></p>
