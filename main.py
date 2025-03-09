@@ -382,7 +382,17 @@ def userpage():
     followed_user_ids = [user['id'] for user in followed_users]
     followed_user_cocktails = []
     if followed_user_ids:
-        followed_user_cocktails = db.execute("SELECT c.* FROM cocktails AS c WHERE c.created_by IN ({})".format(','.join('?' for _ in followed_user_ids)), followed_user_ids).fetchall()
+        followed_user_cocktails = db.execute("""
+            SELECT c.*, u.username 
+            FROM cocktails AS c
+            JOIN users AS u ON c.created_by = u.id 
+            WHERE c.created_by IN (
+            SELECT following_id FROM follows WHERE follower_id = ?
+            )
+            ORDER BY u.username""", (user_id,)).fetchall()
+        
+    print("followed users", followed_users)
+    print("followed user cocktails", followed_user_cocktails)
 
     return render_template("userpage.html", user_cocktails=user_cocktails, favorite_cocktails=favorite_cocktails, followed_users=followed_users, followed_user_cocktails=followed_user_cocktails)
 
@@ -517,6 +527,23 @@ def follow_user(user_id):
 
     flash("You have started following {user_id}!", "success")
     return redirect(url_for("community"))
+
+@app.route('/unfollow/<int:user_id>', methods=['POST'])
+def unfollow_user(user_id):
+    if "user_id" not in session:
+        flash("You need to log in first!", "danger")
+        return redirect(url_for("login"))
+    
+    db = get_db()
+    current_user_id = session["user_id"]
+
+    # delete the follow relationship
+    db.execute("DELETE FROM follows WHERE follower_id = ? AND following_id = ?", (current_user_id, user_id))
+    db.commit()
+
+    flash("You have unfollowed the user.", "success")
+    return redirect(url_for("userpage"))
+
 
 if __name__ == '__main__':
     app.run(debug = True)
