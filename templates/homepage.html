@@ -9,18 +9,41 @@
 
 <body>
     <!-- Nav Bar -->
-    {% include 'navbar.html' %} 
+    {% include 'navbar.html' %}
   
-    <h2>
-        <span style="--j:1">Trending</span>
-        <br><br>
-        <span style="--j:2">Cocktails</span>    
-    </h2>
-    
-    <div class="cocktail-container">
-        <div class="cocktail-grid">
-            <button id="prevBtn">←</button>
+<div class="slideshow-container">
+    <div class="mySlides fade">
+      <img src="/static/barshelf.jpg" style="width:100%">
+      <div class="slide-text">
+        <a href="{{ url_for('explore') }}">Explore</a>
+    </div>
+    </div>
+  
+    <div class="mySlides fade">
+      <img src="/static/barshelf2.jpg" style="width:100%">
+      <div class="slide-text">
+        <a href="{{ url_for('pantry') }}">What's in your Pantry?</a>
+    </div>
+    </div>
+  
+    <div class="mySlides fade">
+      <img src="/static/barshelf3.jpg" style="width:100%">
+      <div class="slide-text">
+        <a href="{{ url_for('creation') }}">Upload your Own</a>
+    </div>
+    </div>
 
+    <!-- The dots/circles -->
+  <div style="text-align:center">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+  </div>
+  </div>
+  <br>
+  
+    <div class="cocktail-container">
+        <h2>Trending Cocktails</h2>
             <div class="cocktail-grid" id="cocktail-grid">
                 {% for cocktail in top_cocktails %}
                     <div class="cocktail-card" onclick="goToExplore({{ cocktail['id'] }})">
@@ -36,17 +59,13 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-                        <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
-                        <p>Alcoholic: {% if cocktail['alcohol_content'] == 1 %} Yes {% else %} No {% endif %}</p>
+                       
                     </div>
                 {% endfor %}
             </div>
-
-            <button id="nextBtn">→</button>
+            <h3><a href="explore.html">Explore More</a></h3>
         </div>  
-    </div>
     
-    <h3><a href="explore.html">Explore More</a></h3>
-
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

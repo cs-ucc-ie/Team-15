@@ -1,337 +1,126 @@
-/*Age verification pop up css */
-#age-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.age-container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
-}
-
-#main-content {
-    display: none; /*Hides the homepage until age is verified */
+:root {
+    --primary-color: #3b3e42;
+    --accent-color: #ff6f61;
+    --hover-color: #e65c50;
 }
 
 body {
-    background-color: #8DA9C4;
+    background-color:  white;
     font-family: "Tinos", serif;
-    color: #504f4f;
-}
-
-.custom-shape-divider-top-1739903469 {
-    position: absolute;
-    top: 0;
-    left: 0;
+    color: black;
+    margin:0;
+    padding:0;
     width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    transform: rotate(180deg);
 }
 
-.custom-shape-divider-top-1739903469 svg {
+/*--------NAV BAR--------*/
+.navbar {
+    background-color: var(--primary-color);  
+    padding: 20px 40px;
+    width: 100%;
+    height:120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
-    display: block;
-    width: calc(224% + 1.3px);
-    height: 500px;
 }
 
-.custom-shape-divider-top-1739903469 .shape-fill {
-    fill:#F2E7C9;
-}
-
-.custom-shape-divider-top-1739903469{
-    z-index: -1;
-}
-
-/* Top Nav Bar */
-.top-nav {
-    position: fixed;
-    right: 0;
-    padding: 0px;
-    background-color: #ffffff56;
-    transition: top 0.3s;
-    z-index: 1000;
-}
-
-.top-nav ul {
-    display: flex;
-    padding: 0;
-    margin: 0;
-}
-
-.top-nav li {
-    margin-right: 15px;
-    list-style-type: none;
-}
-
-
-.top-nav a {
-    display: inline-block; 
-}
-
-
-.top-nav img {
-    width: 80px;
-    height: auto;
-    cursor: pointer;
-}
-
-.top-nav img:hover {
-    transform: scale(1.2); 
-}
-
-
-/*Slogan part*/
-
-h1 {
-    margin-bottom: 30px;
-}
-.slogan {
-    text-align: left;
-    margin: 0;
-    padding: 0;
-}
-
-.slogan p {
-    margin: 5px 0;  /* Adjusts the space between paragraphs */
-    padding: 0;
-}
-
-.slogan p{
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: 1px solid;
-    animation: typing 3s steps(30) forwards,
-    blink 1s step-end 
-}
-
-@keyframes typing {
-    from{
-        width: 0;
-    }
-    to{
-        width: 30%;
-    }
-    
-}
-
-@keyframes blink {
-    50%{
-        border-color: transparent;
-    }
-    
-}
-
-.slogan h1 {
-    margin-top: 10px; /* Adjust space above the heading */
-    margin-bottom: 5px; /* Adjust space below the heading */
-    padding: 0;
-}
-
-
-
-/*Main nav*/
-nav {
+.website-name {
+    font-size: 40px;
+    font-weight: bold;
     color: white;
+    font-style: bold;
 }
 
-nav ul {
+.navbar nav {
+    display: flex;
+}
+
+.navbar ul {
     list-style: none;
-    display: flex;
-    justify-content: center;
+    margin: 0;
     padding: 0;
-}
-
-nav ul li {
-    margin: 0 20px;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #393939; 
-    font-weight: bold;
-    font-size: 18px;
-    transition: color 0.3s ease-in-out;
-}
-
-
-nav ul li a:hover {
-    color: #fbd09f; 
-}
-
-nav ul {
-    list-style: none;  
-    padding: 0;        
-    margin: 0;         
-    display: flex;     
-  }
-  
-  nav ul li {
-    padding: 0 15px;    
-    margin: 0;          
-  }
-  
-  nav ul li:not(:last-child) {
-    border-right: 1px solid #f7f2f2;  
-  }
-
-  /* Resize all nav icons to be uniform */
-  .main-nav ul li a {
     display: flex;
-    flex-direction: column;  
-    align-items: center;      
-    justify-content: center;  
+    gap: 30px;
+}
+
+.navbar li {
+    display: inline-block;
+    position: relative;
+}
+
+.navbar a {
     text-decoration: none;
-    color: #333;
-    font-size: 16px;
+    color: white;
     font-weight: bold;
+    padding: 10px 15px;
+    transition: 0.3s;
+    font-size: 20px;
 }
 
-/* Resize and center all images */
-.main-nav ul li a img {
-    width: 40px;   
-    height: 40px;  
-    object-fit: contain; 
-    margin-bottom: 5px; 
-    display: block;
+/* DROPDOWN MENU */
+.dropdown {
+    position: relative; 
 }
 
-/*text*/
-.intro-grid {
-    width: 700px;            
-    padding: 5px;           
-    margin: 60px auto 0;         
-    text-align: center;
-    background-color: #f8dda8; 
-    border-radius: 25px;     
-    border: 2px solid #f8dda8; 
-    box-sizing: border-box;  
-  }
-  
-/*FROM HERE REVIEW */
+/* CONTENT OF DD*/
+.dropdown-content {
+    position: absolute;
+    background-color: #3a3d42;
+    min-width: 150px;
+    top: 100%; 
+    left: 0; 
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    transform: translateY(5px); 
+    pointer-events: none;
+}
+
+.dropdown:hover .dropdown-content {
+    opacity: 1;
+    transform: translateY(0); 
+    pointer-events: auto;
+}
+
+
+.navbar img {
+    width: 40px;
+    height: 30px;
+   
+}
+/*----------*/
+/*HOMEPAGE */
+/*----------*/
 div {
     box-sizing: border-box;
 }
 
-h2 {
-    font-size: 30px;
-    margin-top: 20px;	
-    padding-top: 20px;
-    color:#485665; 
-    text-align: center;
-}
-
-h2 span{
-    position: relative;
-    top: 20px;
-    display:inline;
-    animation: bounce 2s ease infinite alternate;
-    animation-delay: calc(var(--n) * 0.1s);
-}
-
-@keyframes bounce {
-    100% {
-        top: -20px;
-    }
-    
-}
-
-.cocktail-container {
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    gap: 100px;
-   
-}
-
-.cocktail-grid {
-    display: flex;
-    overflow-x: auto;
-    margin-top: 10px;
-    scroll-snap-type: x mandatory;
-    scroll-padding-left: 20px;
-    scrollbar-width: none; 
-}
-
-.cocktail-grid::-webkit-scrollbar {
-    display: none; 
-}
-
-
-
-.cocktail-card {
-    background: rgb(250, 236, 212);
-    padding: 15px;
-
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 250px;
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-}
-
-button {
-    background-color:#485665;
-    size: 20px;
-    padding: 10px;
-    color: white;
-    box-shadow: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-family: "Tinos", serif;
-}
-
-.form-control{
-    font-family: "Tinos", serif;
-}
-
-div[style*="display: flex"] {
-    display: flex;
-    justify-content: space-between;
+/*cocktail grid for explore page don't confuse w homepgae */
+.cocktail-grid1 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(250px, 1fr)); /*3 p/r*/
+    gap: 80px;
     padding: 40px;
+    max-width: 1200px; 
+    width: 100%; 
+    margin: 0 auto; /* center it */
 }
 
-div[style*="width: 75%"] {
-    width: 70%;
-    background-color: #C8D5B9; 
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.cocktail-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-div[style*="width: 25%"] {
-    width: 25%;
-    background-color:#dad1ce; 
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.cocktail-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
 }
-
 
 p {
     font-size: 16px;
     line-height: 1.6;
-}
-
-
-div a {
-    text-decoration: none;
-    color: #7a3826; 
 }
 
 div a img {
@@ -342,13 +131,19 @@ div a img {
 div a img:hover {
     transform: scale(1.05);
 }
+/* Responsive adjustments for smaller devices*/
+@media (max-width: 1024px) {
+    .pantry-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
 
 /* css for login and register containers */
 .login-container {
     display: flex;
-    width: 800px;
-    height: 500px;
-    border: 3px solid white;
+    max-width: 800px;
+    max-height: 500px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 30px;
     backdrop-filter: blur;
     margin: auto;
@@ -402,14 +197,13 @@ input {
 }
 
 
-h3 a {
-    background-color: rgb(127, 120, 83);
-    color: wheat;
+ a {
     width: 200px;
     padding: 30px;
     text-align: center;  /* Centers the text inside the <a> */
     justify-content: center;  
     text-decoration: none;    /* Ro the <a> */
+    color: var(--primary-color);
 }
 
 #error-message {
@@ -417,123 +211,43 @@ h3 a {
     margin-top: 10px;
 }
 
-.login-container a:hover {
-    color: #C8D5B9; 
+a:hover {
+    color: grey; 
 }
 
 .beverage-creation-container {
-    float: center;
     background: white;
-    padding: 20px;
+    padding: h320px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     text-align: center;
     width: 100%;    
 }
 
+
 .cocktail-container {
-    margin-top: 80px; 
     padding : 20px;
     text-align: center;  
     overflow-x: hidden; 
+    padding: 100px;
 }
 
-.cocktail-grid {
-    display: flex;            
-    overflow-x: auto;         
-    gap: 20px;               
-    padding: 20px 0;         
-    scroll-snap-type: x mandatory;
-    justify-content: flex-start;  
-    width: 100%;             
-    scroll-padding-left: 20px;
-}
-
-.cocktail-card {
-    background: #b1c79ede;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 250px;          
-    flex: 0 0 auto;         
-    scroll-snap-align: start; 
-}
-
-.cocktail-card img {
-    width: 100%;
-    border-radius: 10px;
-    height: auto;
-    transition: transform 0.3s ease-in-out;
-}
-
-.cocktail-card img:hover {
-    transform: scale(1.05); 
-}
-
-.tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.tab-button {
-    background-color: #68B0AB;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    margin-right: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.tab-button:hover {
-    background-color: #4A7C59;
-}
-
-.tab-button.active {
-    background-color: #4A7C59;
-}*/
-
-/* Tab content */
-.tab-content {
-    display: none;
-    text-align: center;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-form {
-    margin-bottom: 20px;
-}
 
 /* css for pantry page */
 .pantry-container {
     display: grid;
     grid-template-areas: "A B C C";
     grid-template-columns: 2fr 2fr 2fr;
-    border: 3px solid white;
-    width: 1200px;
+    max-width: 1200px;
     height: 500px;
     margin: auto;
     margin-top: 50px;
     overflow: hidden; 
     position: relative; 
-
-    /* background blur */
-    background: rgba(255, 255, 255, 0.1); 
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px); 
-    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Left column (Available Ingredients) */
-.pantry-l1 {
-    grid-area: A;
+.pantry-l1, .pantry-r1 .pantry-r2{
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -542,110 +256,35 @@ form {
     overflow-y: auto;
     max-height: 100%;
     width: 100%;
-    position: relative; 
+    position: relative;
 }
 
-.pantry-l1 ul {
+
+.pantry-container ul {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    max-width: 100%; 
+    max-width: 100%;
     padding: 10px;
     margin: 0;
     overflow-y: auto;
-    justify-content: flex-start; 
+    justify-content: flex-start;
 }
 
-.pantry-l1 li {
+.pantry-container li {
     list-style: none;
     padding: 10px;
     background-color: white;
     border-radius: 5px;
-    max-width: calc(100% - 20px); 
-    white-space: nowrap; 
-}
-
-/* Middle column (Selected Ingredients) */
-.pantry-r1 {
-    grid-area: B;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    align-content: flex-start;
-    overflow-y: auto;
-    max-height: 100%;
-    width: 100%;
-    position: relative; 
-}
-
-.pantry-r1 ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    max-width: 100%; 
-    padding: 10px;
-    margin: 0;
-    overflow-y: auto;
-    justify-content: flex-start; 
-
-}
-
-.pantry-r1 li {
-    list-style: none;
-    padding: 10px;
-    background-color: white;
-    border-radius: 5px;
-    max-width: calc(100% - 20px); 
+    max-width: calc(100% - 20px);
     white-space: nowrap;
-}
-
-/* Right column (Matching Cocktails) */
-.pantry-r2{
-    grid-area: C;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    align-content: flex-start;
-    overflow-y: auto;
-    max-height: 100%;
-    width: 100%;
-    position: relative; 
-}
-
-.pantry-r2 ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    max-width: 100%; 
-    padding: 10px;
-    margin: 0;
-    overflow-y: auto;
-    justify-content: flex-start; 
-}
-
-.pantry-r2 li {
-    list-style: none;
-    background-color: white;
-    border-radius: 10px;
-    padding: 10px;
-    width: 80%;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 15px;
-}
-
-.pantry-r2 img {
-    width: 80%;  
-    height: 80%;
-    object-fit: cover; 
-    border-radius: 5px;
+    background-color: lightgray;
 }
 
 
+
+
+/* Review stars */
 .rating {
     font-size: 40px; /* Adjust size */
     color: gold; /* Star color */
@@ -662,6 +301,135 @@ form {
 
 .empty {
     color: lightgray; /* Empty stars */
+}
+
+/*Recipe page */
+.cocktail-details-container {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-areas: 
+        "A B C C"
+        "A B D D";
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-template-rows: auto auto; 
+    border-radius: 25px;
+    width: 1200px;
+    min-height: 550px; 
+    margin: auto;
+    margin-top: 50px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Recipe Column 1 */
+.recipe-column1 {
+    grid-area: A;
+    display: flex;
+    color: black;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    width: 100%;
+    position: relative;
+}
+
+.recipe-column1 h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 10px;
+}
+
+.recipe-column1 img {
+    width: 210px;
+    height: 210px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.recipe-column1 p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+/* Recipe Column 2 */
+.recipe-column2 {
+    grid-area: B;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10px;
+    color: black;
+}
+
+.recipe-column2 ul {
+    gap: 10px;
+    max-width: 100%; 
+    padding: 10px;
+    margin: 0;
+}
+
+.recipe-column2 li{
+    list-style: none;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: calc(100% - 20px); 
+    white-space: nowrap;
+}
+
+.recipe-column2 ul li{
+    margin-bottom: 20px;
+}
+
+/* Recipe Column 3 */
+.recipe-column3 {
+    grid-area: C;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10px;
+    color: white;
+}
+
+.method-textbox {
+    width: 100%;
+    height: 150px;
+    max-width: 95%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-y: auto;
+    background-color: white;
+    color: black;
+}
+
+.review-column {
+    grid-area: D;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    color: white;
+}
+
+.review-textbox {
+    width: 100%;
+    height: 400px;
+    max-width: 95%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-y: auto;
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
 }
 
 .modal {
@@ -688,4 +456,462 @@ form {
     float: right;
     font-size: 28px;
     cursor: pointer;
+}
+
+* {box-sizing:border-box}
+
+/*Slideshow*/
+.slideshow-container {
+  max-width: 100%;
+  position: relative;
+  margin: auto;
+}
+
+.mySlides {
+    display: none;
+  }
+
+.mySlides img {
+    max-height: 500px; 
+    width: auto;
+    display: block;
+    margin: auto; 
+    }
+  
+.slide-text {
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    text-align: center;
+    border: 2px solid white;
+    font-weight: 400;
+    font-style: normal;
+    }
+    
+.slide-text a {
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: bold;
+    }
+    
+.slide-text a:hover {
+    text-decoration: underline;
+    }
+
+/* Fading animation */
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
+  
+  @keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+  }
+  
+  /* The dots */
+  .dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+    margin-top: 10px;
+  }
+  
+  .active, .dot:hover {
+    background-color: #717171;
+  }
+  
+  /* Add hover effect */
+  .prev:hover, .next:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+/* CREATION PAGE */
+/*animation*/
+@keyframes scrollLeft {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.ingredient-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.ingredient-track {
+    display: flex;
+    gap: 10px;
+    white-space: nowrap;
+    width: max-content; /*continous scroll*/
+    animation: scrollLeft 60s linear infinite; /*duration*/
+}
+
+.ingredient-item {
+    background-color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.creation .beverage-creation-container {
+    background-color: white;
+    padding: 40px;  
+    margin: 50px auto 0;  /*needed to sep from nav*/
+    max-width: 800px;
+    border-radius: 8px;
+    box-shadow: black;
+}
+
+.creation h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.creation h3 {
+    font-size: 22px;
+    color: #4b4a4a;
+    margin-bottom: 10px;
+}
+
+.creation input[type="text"],
+.creation textarea,
+.creation select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #d1cdcd;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+/* Ingredient list styling */
+.creation .ingredient-container {
+    margin-bottom: 20px;
+}
+
+.creation #ingredientList {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.creation .ingredient-item {
+    background-color: #f0f0f0;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.creation .ingredient-item:hover {
+    background-color: grey;
+    color: #fff;
+}
+
+/* Selected ingredients styling */
+.creation #selectedIngredientsList {
+    background-color:lightgray;
+    padding: 10px;
+    border-radius: 5px;
+    min-height: 60px;
+}
+
+.creation #selectedIngredientsList li {
+    list-style: none;
+    margin: 5px;
+    padding: 5px;
+    background-color: grey;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* button */
+.creation button[type="submit"] {
+    background: linear-gradient(145deg, #6c7b8b, #3e5f82);
+    color: white;
+    font-size: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+    max-width: 300px;  
+    margin: 0 auto;  
+    box-shadow: black;  
+    
+}
+
+/* Hover effect for the button */
+.creation button[type="submit"]:hover {
+    background: linear-gradient(145deg, #3e5f82, #6c7b8b);  /*opposite gradient*/
+    box-shadow: black;
+    transform: translateY(-2px);  /*raise*/
+}
+
+/*USERPAGE*/
+ul, ol {
+    list-style: none;
+
+}
+
+.profile-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+h2, h3 {
+    color: #333;
+}
+
+.cocktail-card {
+    background: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+
+.cocktail-card:hover {
+    transform: scale(1.05);
+}
+
+.cocktail-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.cocktail-card h3 {
+    padding: 10px 15px;
+    color: var(--primary-color);
+}
+
+.rating {
+    padding: 5px;
+    color: gold;
+}
+
+.remove-favorite-button, button {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.remove-favorite-button:hover, button:hover {
+    background: var(--hover-color);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.modal-content {
+    text-align: left;
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/*EXPLORE PAGE */
+
+.explore h2{
+    margin: 55px;
+}
+
+#search-bar, #filter-select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    display: grid;
+    place-items: center;
+}
+
+#search-bar {
+    margin-left: 55px;
+    width: 250px;
+}
+
+#filter-select {
+    width: 180px;
+    margin-left: 55px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.cocktail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  
+    gap: 80px;
+    justify-content: center;
+    padding: 60px 0;
+}
+
+.cocktail-card {
+    background: white;
+    box-shadow: black;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+    overflow: hidden;
+}
+
+.cocktail-card:hover {
+    transform: translateY(-5px);
+    box-shadow: black;
+}
+
+/* Star Rating */
+.rating {
+    color: gold;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.cocktail-card p {
+    font-size: 14px;
+    color: #6d6a6a;
+    margin-bottom: 10px;
+}
+
+
+
+/* Responsive Design for cards*/
+@media (max-width: 1024px) {
+    .cocktail-grid {
+        grid-template-columns: repeat(2, 1fr);  /* 2 cards per row for medium screens */
+    }
+}
+
+.search-filter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+
+    #search-bar, #filter-select {
+        width: 100%;
+        max-width: 300px;
+    }
+
+  /* Keyframes for pop-up animation */
+  @keyframes popUp {
+    0% {
+      opacity: 0;
+      transform: translateY(50px); /* Start below */
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0); /* End in place */
+    }
+  }
+  
+  .cocktail-grid1 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+/*Community page */
+  .users-card{
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    margin: auto;
+    margin-top: 10px;
+    padding: 10px;
+    width: 90%;
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+}
+
+.username {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.blerb{
+    max-width: 80%;
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+}
+
+.blerb p {
+    color: grey;
+}
+
+/* cocktail grids for community page (scrollable)*/
+.user-cocktail-grid {
+    display: flex;
+    gap: 10px; 
+    overflow-x: auto;
+    max-width: 100%;
+    padding-bottom: 10px;
+    scrollbar-width: thin; 
+}
+
+.user-cocktail-card {
+    flex: 0 0 240px; 
+    min-width: 240px; 
+    max-width: 240px;
+    height: 300px;
+    text-align: center;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.user-cocktail-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.user-cocktail-grid {
+    scroll-behavior: smooth;
 }
