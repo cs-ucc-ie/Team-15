@@ -224,3 +224,21 @@ function currentSlide(n) {
     showSlides();
     startAutoSlides(); 
 }
+//Chatbot Prefrences
+const savePreferences = async () => {
+    const preferences = {
+        user_id: 1, // Get this dynamically if user login is implemented
+        favorite_ingredients: ["rum", "lime", "mint"],
+        disliked_ingredients: ["whiskey", "egg whites"],
+        preferred_cocktail_types: ["refreshing", "sweet"]
+    };
+
+    const response = await fetch('/save_preferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(preferences)
+    });
+
+    const data = await response.json();
+    alert(data.message);
+};
