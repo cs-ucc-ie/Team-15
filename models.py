@@ -1,27 +1,37 @@
-
-from sqlalchemy import Column, Integer, String, create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
-Base = declarative_base()
-
-class cocktails(Base):
-    __tablename__ = 'cocktails'
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    # Add other columns as needed
-
-# Load database 
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
 import os
 from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
-DATABASE_URL = os.getenv('DATABASE_URL')
 
+db = SQLAlchemy()
 
-# Create engine and session
+# Database connection
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///site.db")  # Default to SQLite if not set
 engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
 
+# Create session factory
+Session = sessionmaker(bind=engine)
+session = scoped_session(Session)  # Define scoped session
+
+# Define Models
+class Cocktails(db.Model):
+    __tablename__ = 'cocktails'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+
+class UserPreferences(db.Model):
+    __tablename__ = 'user_preferences'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, unique=True, nullable=False)
+    favorite_ingredients = db.Column(db.Text, nullable=True)
+    disliked_ingredients = db.Column(db.Text, nullable=True)
+    preferred_cocktail_types = db.Column(db.Text, nullable=True)
+
+# Initialize Database
 def init_db():
-    Base.metadata.create_all(engine)
+    db.create_all()

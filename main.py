@@ -1,4 +1,5 @@
 import sqlite3
+import requests
 import os
 import openai
 from flask import Flask, request, redirect, url_for, render_template, g, session, flash, jsonify
@@ -7,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime, date
 from sqlalchemy.orm import scoped_session
-from models import Session, cocktails  
+from models import db, Cocktails, UserPreferences, session
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -17,27 +18,26 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///site.db')  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  
-db = SQLAlchemy(app)
+
+db.init_app(app)
 migrate = Migrate(app, db)
+
 app.secret_key = "my_secret_key"
 CORS(app)
 
-# Sets the essential data for image upload
 UPLOAD_FOLDER = 'static'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Load API key from .env
-load_dotenv()
+# OpenAI API Setup
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+if not OPENAI_API_KEY:
+    raise ValueError("Error: OPENAI_API_KEY is not set. Check your .env file.")
 
-# Initialize OpenAI client
-client = openai.OpenAI(api_key=OPENAI_API_KEY)
+openai.api_key = OPENAI_API_KEY
 
-# SQLite database setup
 DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), "db.db")
 
-# Function for SQLite DB connection
 def get_db():
     if "db" not in g:
         g.db = sqlite3.connect(DATABASE, detect_types=sqlite3.PARSE_DECLTYPES)
@@ -51,63 +51,139 @@ def close_db(e=None):
         db.close()
 
 # Session for SQLAlchemy
-db_session = scoped_session(Session)
+
 
 @app.route('/chat.html')
 def chat_page():
     return render_template('chat.html')
 
+@app.route('/save_preferences', methods=['POST'])
+def save_preferences():
+    data = request.json
+    user_id = data.get('user_id')
+    favorite_ingredients = ','.join(data.get('favorite_ingredients', []))
+    disliked_ingredients = ','.join(data.get('disliked_ingredients', []))
+    preferred_cocktail_types = ','.join(data.get('preferred_cocktail_types', []))
+
+    user_pref = UserPreferences.query.filter_by(user_id=user_id).first()
+
+    if user_pref:
+        user_pref.favorite_ingredients = favorite_ingredients
+        user_pref.disliked_ingredients = disliked_ingredients
+        user_pref.preferred_cocktail_types = preferred_cocktail_types
+    else:
+        user_pref = UserPreferences(user_id, favorite_ingredients, disliked_ingredients, preferred_cocktail_types)
+        db.session.add(user_pref)
+
+    db.session.commit()
+    return jsonify({"message": "Preferences saved successfully!"}), 200
+
+
+@app.route('/get_preferences/<int:user_id>', methods=['GET'])
+def get_preferences(user_id):
+    user_pref = UserPreferences.query.filter_by(user_id=user_id).first()
+    
+    if not user_pref:
+        return jsonify({"message": "No preferences found!"}), 404
+    
+    return jsonify({
+        "user_id": user_pref.user_id,
+        "favorite_ingredients": user_pref.favorite_ingredients.split(','),
+        "disliked_ingredients": user_pref.disliked_ingredients.split(','),
+        "preferred_cocktail_types": user_pref.preferred_cocktail_types.split(',')
+    }), 200
+
+
 # AI Chatbox Route
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
     if request.method == "GET":
-        # Return the list of cocktail names as JSON
-        db_data = db_session.query(cocktails).all()
+        # Fetch cocktails from the database
+        db_data = Cocktails.query.all()
         cocktail_list = [{"name": item.name} for item in db_data]
-
         return jsonify({"cocktails": cocktail_list})
 
     # Handle POST request (AI chat)
     data = request.json
+    user_id = data.get("user_id")
     user_input = data.get("message", "")
 
     # Fetch cocktail names from the database
-    db_data = db_session.query(cocktails).all()
-    if not db_data:
-        data_str = "There are no cocktails available in the database."
-    else:
-        data_str = '\n'.join([f'{item.name}' for item in db_data])
+    db_data = db.session.query(Cocktails).all()
+    cocktail_list = [item.name for item in db_data]
 
-    # Modify the prompt to include only cocktail names
+    if not cocktail_list:
+        # If no cocktails are found, generate them dynamically using GPT-4
+        prompt = f"""
+        You are an expert mixologist. The user is asking for cocktail recommendations.
+        Since no cocktails are available in the database, create a new and unique cocktail recipe.
+        
+        User request: {user_input}
+
+        Respond with:
+        - A unique cocktail name
+        - List of ingredients
+        - Step-by-step instructions
+        - Optional garnish or serving suggestions.
+        """
+
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an AI assistant specializing in cocktail recommendations."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=300
+        )
+
+        return jsonify({"response": response.choices[0].message.content.strip()}), 200
+
+    # Convert the cocktail list to a string for the AI
+    data_str = '\n'.join(cocktail_list) if cocktail_list else "No cocktails available."
+
+    # Fetch user preferences
+    user_pref = UserPreferences.query.filter_by(user_id=user_id).first()
+    preference_prompt = ""
+
+    if user_pref:
+        preference_prompt = f"""
+        The user prefers cocktails with {user_pref.favorite_ingredients}.
+        They dislike {user_pref.disliked_ingredients}.
+        They enjoy {user_pref.preferred_cocktail_types} cocktails.
+        """
+
+    # Final AI prompt with user preferences
     prompt = f"""
+    {preference_prompt}
     You are a cocktail expert. Recommend a cocktail from the list below based on the user's request.
-    
+
     Available Cocktails:
     {data_str}
-    
+
     User: {user_input}
     AI:
     """
 
-    
-    response = client.chat.completions.create(
+    # Generate recommendation using GPT-4
+    response = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are an AI assistant specializing in cocktail recommendations."},
             {"role": "user", "content": prompt}
-        ]
+        ],
+        max_tokens=150
     )
 
-    return jsonify({"response": response.choices[0].message.content.strip()})
+    return jsonify({"response": response.choices[0].message.content.strip()}), 200
 
 
 
-# Function for filename check (if extension is allowed)
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# Registration and age check function
+
 @app.route('/register.html', methods=['GET','POST'])
 def register():
     if request.method == "POST":
@@ -141,7 +217,6 @@ def register():
 
     return render_template("register.html")
 
-# Login function
 @app.route('/login.html', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
@@ -161,21 +236,26 @@ def login():
 
     return render_template("login.html")
 
-# Logout function
 @app.route("/logout")
 def logout():
     session.clear()
     flash("You have been logged out.", "info")
     return redirect(url_for("login"))
 
-# Function for homepage rendering 
 @app.route('/')
+def index():
+    db = get_db()
+    top_cocktails = db.execute(
+        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 5"
+    ).fetchall()
+
+    return render_template('homepage.html', top_cocktails=top_cocktails)
+
 @app.route('/homepage.html')
 def homepage():
     db = get_db()
-    # Displaying 9 most popular cocktail in DB
     top_cocktails = db.execute(
-        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 9"
+        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 5"
     ).fetchall()
 
     return render_template('homepage.html', top_cocktails=top_cocktails)
@@ -183,18 +263,10 @@ def homepage():
 @app.route('/explore.html')
 def explore():
     db = get_db()
-    cocktail_id = request.args.get("id") #Taking data from the user input if card clicked
-    user_id = session.get("user_id") 
+    cocktail_id = request.args.get("id") #Debug
     
-    # Taking the list of favorite cocktails form db
-    favorite_cocktail_ids = {
-        row["cocktail_id"] for row in db.execute(
-            "SELECT cocktail_id FROM favorites WHERE user_id = ?", (user_id,)
-        ).fetchall()
-    }
+    print(cocktail_id)
 
-    # Condition to open a selection mode of the explore page
-    # Multiple queries to get all data about the cocktail
     if cocktail_id:
         selected_cocktail = db.execute(
             "SELECT * FROM cocktails WHERE id = ?", (cocktail_id,)
@@ -215,18 +287,14 @@ def explore():
                ORDER BY reviews.created_at DESC""", (cocktail_id,)
         ).fetchall()
 
-        
+        print(reviews) #Debug
 
-        return render_template("explore.html", selected_cocktail=selected_cocktail, ingredients=ingredients, reviews=reviews, favorite_cocktail_ids = favorite_cocktail_ids)
+        return render_template("explore.html", selected_cocktail=selected_cocktail, ingredients=ingredients, reviews=reviews)
 
-
-    # base filter
     filter_option = request.args.get("filter", "all")
-
 
     query = "SELECT * FROM cocktails"
     
-    # conditions for specific filters 
     if filter_option == "alcoholic":
         query += " WHERE alcohol_content > 0"
     elif filter_option == "non-alcoholic":
@@ -236,26 +304,23 @@ def explore():
     elif filter_option == "advanced":
         query += " ORDER BY CAST(popularity AS FLOAT) / reviews_number DESC"
 
-    #applying filter
     cocktails = db.execute(query).fetchall()
 
-    return render_template("explore.html", cocktails=cocktails, filter_option=filter_option, favorite_cocktail_ids = favorite_cocktail_ids)
+    return render_template("explore.html", cocktails=cocktails, filter_option=filter_option)
 
-# Function submitting review
 @app.route('/submit_review', methods=['POST'])
 def submit_review():
     db = get_db()
     
     # Get data from form
-    user_id = session.get("user_id") 
+    user_id = session.get("user_id")  # Ensure user is logged in
     cocktail_id = request.form.get("cocktail_id")
     rating = request.form.get("rating")
     review_text = request.form.get("review_text", "")
 
-    # Check if user is logged in
     if not user_id:
         flash("You must be logged in to submit a review.", "error")
-        return redirect(url_for("login"))
+        return redirect(request.referrer)
 
     # Insert into database
     db.execute(
@@ -274,21 +339,26 @@ def submit_review():
     flash("Review submitted successfully!", "success")
     return redirect(request.referrer)
 
-# Render the pantry page with ingredients and constantlu updated matching cocktail list
+"""@app.route('/pantry.html', methods=['GET'])
+def pantry():
+    db = get_db()
+    ingredients = db.execute("SELECT * FROM ingredients").fetchall()
+    return render_template("pantry.html", ingredients=ingredients)"""
+
 @app.route('/pantry.html', methods=['GET'])
 def pantry():
     db = get_db()
     ingredients = db.execute("SELECT * FROM ingredients").fetchall()
 
     matching_cocktails = db.execute("""
-        SELECT DISTINCT cocktails.id, cocktails.name 
-        FROM cocktails 
-        JOIN cocktail_ingredients ON cocktails.id = cocktail_ingredients.cocktail_id
+        SELECT DISTINCT c.id, c.name 
+        FROM cocktails c
+        JOIN cocktail_ingredients ci ON c.id = ci.cocktail_id
     """).fetchall()
 
     return render_template("pantry.html", ingredients=ingredients, matching_cocktails=matching_cocktails)
 
-# Function to provide a list of ingredientsfor pantry and creation page
+
 @app.route('/get_cocktails', methods=['POST'])
 def get_cocktails():
     selected_ingredients = request.json.get("ingredients", [])
@@ -300,19 +370,18 @@ def get_cocktails():
     placeholders = ",".join("?" * len(selected_ingredients))
 
     query = f"""
-        SELECT cocktails.id, cocktails.name 
-        FROM cocktails 
-        JOIN cocktail_ingredients ON cocktails.id = cocktail_ingredients.cocktail_id
-        WHERE cocktail_ingredients.ingredient_id IN ({placeholders})
-        GROUP BY cocktails.id
-        HAVING COUNT(DISTINCT cocktail_ingredients.ingredient_id) >= ?
+        SELECT c.id, c.name 
+        FROM cocktails c
+        JOIN cocktail_ingredients ci ON c.id = ci.cocktail_id
+        WHERE ci.ingredient_id IN ({placeholders})
+        GROUP BY c.id
+        HAVING COUNT(DISTINCT ci.ingredient_id) >= ?
     """
 
     cocktails = db.execute(query, selected_ingredients + [len(selected_ingredients)]).fetchall()
 
-    return jsonify([{"id": cocktail["id"], "name": cocktail["name"]} for cocktail in cocktails])
+    return jsonify([{"id": c["id"], "name": c["name"]} for c in cocktails])
 
-# function for creation page 
 @app.route('/creation.html', methods=['GET', 'POST'])
 def creation():
     db = get_db()
@@ -375,33 +444,26 @@ def userpage():
 
     # Fetch user's favorite cocktails by joining with cocktails table
     favorite_cocktails = db.execute("""
-        SELECT cocktails.* FROM cocktails 
-        JOIN favorites ON cocktails.id = favorites.cocktail_id
-        WHERE favorites.user_id = ?
+        SELECT c.* FROM cocktails as c
+        JOIN favorites as f ON c.id = f.cocktail_id
+        WHERE f.user_id = ?
     """, (user_id,)).fetchall()
 
     # Get the users that the logged in user is following
     followed_users = db.execute("""
-        SELECT users.id, users.username 
-        FROM users as users 
-        JOIN follows ON users.id = follows.following_id 
-        WHERE follows.follower_id = ?""", (user_id,)).fetchall()
+        SELECT u.id, u.username 
+        FROM users as u 
+        JOIN follows as f ON u.id = f.following_id 
+        WHERE f.follower_id = ?""", (user_id,)).fetchall()
     
     # get the cocktails created by the users that the logged in user is following
     followed_user_ids = [user['id'] for user in followed_users]
     followed_user_cocktails = []
     if followed_user_ids:
-        followed_user_cocktails = db.execute("""
-        SELECT c.*, u.id as user_id, u.username 
-        FROM cocktails AS c
-        JOIN users AS u ON c.created_by = u.id
-        WHERE c.created_by IN (
-            SELECT following_id FROM follows WHERE follower_id = ?
-        )
-        ORDER BY u.username""", (user_id,)).fetchall()
+        followed_user_cocktails = db.execute("SELECT c.* FROM cocktails AS c WHERE c.created_by IN ({})".format(','.join('?' for _ in followed_user_ids)), followed_user_ids).fetchall()
+
     return render_template("userpage.html", user_cocktails=user_cocktails, favorite_cocktails=favorite_cocktails, followed_users=followed_users, followed_user_cocktails=followed_user_cocktails)
 
-# Function to handle editing of the created cocktails
 @app.route('/edit_cocktail', methods=['POST'])
 def edit_cocktail():
     db = get_db()
@@ -429,7 +491,6 @@ def edit_cocktail():
     flash("Cocktail updated successfully!", "success")
     return redirect(url_for('userpage'))
 
-# Function to get data for edited cocktail and display it on the input forms
 @app.route('/get_cocktail/<int:cocktail_id>')
 def get_cocktail(cocktail_id):
     db = get_db()
@@ -443,7 +504,6 @@ def get_cocktail(cocktail_id):
             'method': cocktail['method']
         })
     return jsonify({'error': 'Cocktail not found'}), 404
-
 
 # Adding the cocktails to favorites
 @app.route('/add_favorite/<int:cocktail_id>', methods=['POST'])
@@ -469,7 +529,7 @@ def add_favorite(cocktail_id):
     else:
         flash("Already in favorites!", "warning")
     
-    return redirect(request.referrer)  
+    return redirect(url_for("explore"))  
 
 # Removing the cocktails from favorites
 @app.route('/remove_favorite/<int:cocktail_id>', methods=['POST'])  
@@ -487,7 +547,7 @@ def remove_favorite(cocktail_id):
     db.commit()
     flash("Removed from favorites!", "success")
 
-    return redirect(request.referrer)
+    return redirect(url_for("userpage"))
 
 # COMMUNITY PAGE - Displaying all the users where they can follow others
 @app.route('/community.html')
@@ -526,22 +586,6 @@ def follow_user(user_id):
 
     flash("You have started following {user_id}!", "success")
     return redirect(url_for("community"))
-
-@app.route('/unfollow/<int:user_id>', methods=['POST'])
-def unfollow_user(user_id):
-    if "user_id" not in session:
-        flash("You need to log in first!", "danger")
-        return redirect(url_for("login"))
-
-    db = get_db()
-    current_user_id = session["user_id"]
-
-    # Delete the follow relationship
-    db.execute("DELETE FROM follows WHERE follower_id = ? AND following_id = ?", (current_user_id, user_id))
-    db.commit()
-
-    flash("You have unfollowed the user.", "success")
-    return redirect(url_for("userpage"))
 
 if __name__ == '__main__':
     app.run(debug = True)
