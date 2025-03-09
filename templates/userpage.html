@@ -19,12 +19,12 @@
         </div>
 
         <!-- cocktails what the user has created/uploaded -->
-        <h3>My Created Cocktails</h3>
-        <div class="cocktail-grid">
+        <h3>My Cocktails</h3>
+        <div class="user-cocktail-grid">
             <!-- display all cocktails created by the user -->
 
             {% for cocktail in user_cocktails %}
-            <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
+            <div class="user-cocktail-card" onclick="goToExplore({{ cocktail.id }})">
                 <img src="{{ url_for('static', filename = cocktail['image'])}}" alt="{{ cocktail['name'] }}">
                 <h3>{{ cocktail['name'] }}</h3>
                 <div class="rating">
@@ -36,7 +36,6 @@
                         {% endif %}
                         {% endfor %}
                 </div>
-                <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
                 <button onclick="event.stopPropagation(); openEditModal({{ cocktail.id }})">Edit</button>
             </div>
 
@@ -74,11 +73,11 @@
 
 
         <!-- cocktails what the user has added to the favorites-->
-        <h3>My Favorites</h3>
-        <div class="cocktail-grid">
+        <h3>My Favourites</h3>
+        <div class="user-cocktail-grid">
             <!-- display all user's favorite cocktails -->
             {% for cocktail in favorite_cocktails %}
-            <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
+            <div class="user-cocktail-card" onclick="goToExplore({{ cocktail.id }})">
                 <img src="{{ url_for('static', filename = cocktail['image']) }}" alt="{{ cocktail['name'] }}">
                 <h3>{{ cocktail['name'] }}</h3>
                 <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
@@ -98,35 +97,33 @@
         <h3>My Following</h3>
         <div class="followed-users">
             {% if followed_users %}
-                <ul>
-                    {% for user in followed_users %}
-                    <li><strong>{{ user['username'] }}</strong>
-                        <form action = "{{ url_for('unfollow_user', user_id = user['id']) }}" method="POST" style="display: inline;">
-                            <button type="submit" class="unfollow-button">Unfollow</button>
-                        </form>
-                        <div class="cocktail-grid">
-                        {% set found = false %}
-                        {% for cocktail in followed_user_cocktails %}
-                            {% if cocktail['created_by'] == user['id'] %}
-                                {% set found = true %}
-                                <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
-                                    <img src="{{ url_for('static', filename = cocktail['image']) }}"
-                                    alt="{{ cocktail['name'] }}">
-                                    <h3>{{ cocktail['name'] }}</h3>
-                                    <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
-                                </div>
+                {% for user in followed_users %}
+                    <strong>{{ user['username'] }}</strong>
+                            <form action="{{ url_for('unfollow_user', user_id=user.id) }}" method="POST" style="display: inline;">
+                                <button type="submit" class="unfollow-button">Unfollow</button>
+                            </form>
+                        <div class="user-cocktail-grid">
+                            <!-- Used ai for this part -->
+                            <!-- {% set found = false %} -->
+                            {% for cocktail in followed_user_cocktails %}
+                                {% if cocktail['created_by'] == user['id'] %}
+                                    <!-- {% set found = true %} -->
+                                    <div class="user-cocktail-card" onclick="goToExplore({{ cocktail.id }})">
+                                        <img src="{{ url_for('static', filename = cocktail['image']) }}"
+                                        alt="{{ cocktail['name'] }}">
+                                        <h3>{{ cocktail['name'] }}</h3>
+                                        <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% if not found %}
+                                <p>{{ user['username'] }} hasn't created any cocktails yet.</p>
                             {% endif %}
-                        {% endfor %}
-                    
-                        {% if not found %}
-                            <p>No cocktails created by {{ user['username'] }} yet.</p>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-                </ul>
+                        </div>
+                    {% endfor %}
             {% else %}
-            <p>You haven't followed anyone yet.</p>
-            <p>Check out <a href="community.html">Community.</a></p>
+                <p>You haven't followed anyone yet.</p>
+                <p>Check out: <a href="community.html"> Our Community.</a></p>
             {% endif %}
         </div>
     </div>

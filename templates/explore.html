@@ -28,8 +28,17 @@
                 </div>
                 <p><strong>Recipe by:</strong> {{ selected_cocktail.recipe_by }}</p>
                 <p><strong>Alcoholic:</strong> {% if selected_cocktail.alcohol_content == 1 %} Yes {% else %} No {% endif %}</p>
-                <button onclick="history.back()">Go Back</button>
+                {% if session.user_id and selected_cocktail.id not in favorite_cocktail_ids%}
+                <form action="{{ url_for('add_favorite', cocktail_id = selected_cocktail.id) }}" method = "POST">
+                    <button type="submit" class = "favorite-button">Add to favorites</button>
+                </form>
+                {% elif session.user_id %}
+                <form action="{{ url_for('remove_favorite', cocktail_id=selected_cocktail.id) }}" method="POST">
+                    <button type="submit" class="remove-favorite-button">Remove from favorites</button>
+                </form>
+                {% endif %}
                 <button onclick="openReviewModal()">Leave a Review</button>
+                <button onclick="history.back()">Go Back</button>
                 <!-- add to favorite button-->
 
                 <div id="reviewModal" class="modal">
@@ -135,9 +144,15 @@
                             {% endfor %}
                         </div>
                         <p>Recipe by: {{ cocktail.recipe_by }}</p>
+                        {% if session.user_id and cocktail.id not in favorite_cocktail_ids%}
                         <form action="{{ url_for('add_favorite', cocktail_id = cocktail.id) }}" method = "POST">
                             <button type="submit" class = "favorite-button">Add to favorites</button>
                         </form>
+                        {% elif session.user_id %}
+                        <form action="{{ url_for('remove_favorite', cocktail_id=cocktail.id) }}" method="POST">
+                            <button type="submit" class="remove-favorite-button">Remove from favorites</button>
+                        </form>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
