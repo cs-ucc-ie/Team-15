@@ -12,15 +12,16 @@
     <!-- Nav Bar -->
     {% include 'navbar.html' %}
 
+    <div class="blerb">
     <h2>Discover Users</h2>
-    <h4>Connect with the fellow cocktail enthusiasts! Browse through users profiles, check out their unique cocktail
-        creations, and follow them to stay inspired.</h4>
+    <p>Connect with the fellow cocktail enthusiasts! Browse through users profiles, check out their unique cocktail
+        creations, and follow them to stay inspired.</p></div>
 
     <div class="users-list">
         {% for user in users %}
         <div class="users-card">
             <div class="user-info">
-                <h3>{{ user['username'] }}</h3>
+                <h2 class="username">{{ user['username'] }}</h2>
                 {% if user.id != session['user_id'] %}
                 <!-- a button to follow users -->
                 <form action="{{ url_for('follow_user', user_id = user.id) }}" method="POST">
@@ -28,10 +29,11 @@
                 </form>
                 {% endif %}
             </div>
-            <h4>Their Cocktails:</h4>
-            <div class="cocktail-grid">
+
+            <h3>User's Cocktails</h3>
+            <div class="user-cocktail-grid">
                 {% for cocktail in user_cocktails[user.id] %}
-                <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
+                <div class="user-cocktail-card" onclick="goToExplore({{ cocktail.id }})">
                     <img src="{{ url_for('static', filename=cocktail['image']) }}" alt="{{ cocktail['name'] }}">
                     <h3>{{ cocktail['name'] }}</h3>
                 </div>

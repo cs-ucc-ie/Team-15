@@ -1,49 +1,39 @@
-/*Age verification pop up css */
-#age-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.age-container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
-}
-
-#main-content {
-    display: none; /*Hides the homepage until age is verified */
+:root {
+    --primary-color: #3b3e42;
+    --accent-color: #ff6f61;
+    --hover-color: #e65c50;
 }
 
 body {
     background-color:  white;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-family: "Tinos", serif;
     color: black;
     margin:0;
     padding:0;
     width: 100%;
 }
-/*~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 /*--------NAV BAR--------*/
-/*~~~~~~~~~~~~~~~~~~~~#~~*/
 .navbar {
-    background-color: #3b3e42;  
+    background-color: var(--primary-color);  
     padding: 20px 40px;
     width: 100%;
     height:120px;
     display: flex;
-    justify-content: flex-end; /*to go to the right*/
+    justify-content: space-between;
     align-items: center;
     position: relative;
+}
+
+.website-name {
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    font-style: bold;
+}
+
+.navbar nav {
+    display: flex;
 }
 
 .navbar ul {
@@ -68,45 +58,31 @@ body {
     font-size: 20px;
 }
 
-.navbar a:hover {
-    color: #768da5; 
-}
-
 /* DROPDOWN MENU */
 .dropdown {
     position: relative; 
 }
 
-/* Hide */
-.dropdown-content {
-    display: none; /*keep hidden */
-    position: absolute;
-    background-color: #3a3d42;
-    min-width: 150px;
-    z-index: 1000;
-    top: 100%;
-    border-radius: 5px;
-}
-
 /* CONTENT OF DD*/
 .dropdown-content {
-    display: none;
     position: absolute;
     background-color: #3a3d42;
     min-width: 150px;
-    top: 100%;
-    left: 0;
+    top: 100%; 
+    left: 0; 
     border-radius: 5px;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease; /*lag issue*/
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    transform: translateY(5px); 
+    pointer-events: none;
 }
 
-/* make visible */
 .dropdown:hover .dropdown-content {
-    display: block;
     opacity: 1;
-    visibility: visible;
+    transform: translateY(0); 
+    pointer-events: auto;
 }
+
 
 .navbar img {
     width: 40px;
@@ -130,12 +106,6 @@ div {
     width: 100%; 
     margin: 0 auto; /* center it */
 }
-.cocktail-card {
-    border-radius: 1px;
-    box-shadow: black; 
-    text-align: center;
-    
-}
 
 .cocktail-card:hover {
     transform: translateY(-10px);
@@ -148,31 +118,9 @@ div {
     object-fit: cover;
 }
 
-h2{
-    color: #485665;
-}
-/* Card Titles */
-.cocktail-card h3 {
-    margin: 12px 8px;
-    font-size: 18px;
-}
-
-/*other*/
-/*-------*/
-
-.form-control{
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-}
-
 p {
     font-size: 16px;
     line-height: 1.6;
-}
-
-
-div a {
-    text-decoration: none;
-    color: #7a3826; 
 }
 
 div a img {
@@ -184,24 +132,18 @@ div a img:hover {
     transform: scale(1.05);
 }
 /* Responsive adjustments for smaller devices*/
-@media (max-width: 1200px) {
-    .cocktail-grid {
-        grid-template-columns: repeat(2, 1fr); 
-    }
-}
-
-@media (max-width: 800px) {
-    .cocktail-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 1024px) {
+    .pantry-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
 }
 
 /* css for login and register containers */
 .login-container {
     display: flex;
-    width: 800px;
-    height: 500px;
-    border: 1px solid  #3b3e42;
+    max-width: 800px;
+    max-height: 500px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 30px;
     backdrop-filter: blur;
     margin: auto;
@@ -261,6 +203,7 @@ input {
     text-align: center;  /* Centers the text inside the <a> */
     justify-content: center;  
     text-decoration: none;    /* Ro the <a> */
+    color: var(--primary-color);
 }
 
 #error-message {
@@ -268,12 +211,11 @@ input {
     margin-top: 10px;
 }
 
-.login-container a:hover {
-    color: #C8D5B9; 
+a:hover {
+    color: grey; 
 }
 
 .beverage-creation-container {
-    float: center;
     background: white;
     padding: h320px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -290,75 +232,22 @@ input {
     padding: 100px;
 }
 
-/*cocktail grid for homepage */
-.cocktail-grid {
-    display: flex;            
-    overflow-x: auto;         
-    gap: 20px;               
-    padding: 20px 0;         
-    scroll-snap-type: x mandatory;
-    justify-content: flex-start;  
-    width: 100%;             
-    scroll-padding-left: 20px;
-}
-
-.tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.tab-button {
-    background-color: #68B0AB;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    margin-right: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.tab-button:hover {
-    background-color: #4A7C59;
-}
-
-.tab-button.active {
-    background-color: #4A7C59;
-}*/
-
-/* Tab content */
-.tab-content {
-    display: none;
-    text-align: center;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-form {
-    margin-bottom: 20px;
-}
 
 /* css for pantry page */
 .pantry-container {
     display: grid;
     grid-template-areas: "A B C C";
     grid-template-columns: 2fr 2fr 2fr;
-    width: 1200px;
+    max-width: 1200px;
     height: 500px;
     margin: auto;
     margin-top: 50px;
     overflow: hidden; 
     position: relative; 
-    border: 1px solid  #3b3e42;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Left column (Available Ingredients) */
-.pantry-l1 {
-    grid-area: A;
+.pantry-l1, .pantry-r1 .pantry-r2{
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -367,108 +256,33 @@ form {
     overflow-y: auto;
     max-height: 100%;
     width: 100%;
-    position: relative; 
+    position: relative;
 }
 
-.pantry-l1 ul {
+
+.pantry-container ul {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    max-width: 100%; 
+    max-width: 100%;
     padding: 10px;
     margin: 0;
     overflow-y: auto;
-    justify-content: flex-start; 
+    justify-content: flex-start;
 }
 
-.pantry-l1 li {
+.pantry-container li {
     list-style: none;
     padding: 10px;
     background-color: white;
     border-radius: 5px;
-    max-width: calc(100% - 20px); 
-    white-space: nowrap; 
-}
-
-/* Middle column (Selected Ingredients) */
-.pantry-r1 {
-    grid-area: B;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    align-content: flex-start;
-    overflow-y: auto;
-    max-height: 100%;
-    width: 100%;
-    position: relative; 
-}
-
-.pantry-r1 ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    max-width: 100%; 
-    padding: 10px;
-    margin: 0;
-    overflow-y: auto;
-    justify-content: flex-start; 
-
-}
-
-.pantry-r1 li {
-    list-style: none;
-    padding: 10px;
-    background-color: white;
-    border-radius: 5px;
-    max-width: calc(100% - 20px); 
+    max-width: calc(100% - 20px);
     white-space: nowrap;
+    background-color: lightgray;
 }
 
-/* Right column (Matching Cocktails) */
-.pantry-r2{
-    grid-area: C;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    align-content: flex-start;
-    overflow-y: auto;
-    max-height: 100%;
-    width: 100%;
-    position: relative; 
-}
 
-.pantry-r2 ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    max-width: 100%; 
-    padding: 10px;
-    margin: 0;
-    overflow-y: auto;
-    justify-content: flex-start; 
-}
 
-.pantry-r2 li {
-    list-style: none;
-    background-color: white;
-    border-radius: 10px;
-    padding: 10px;
-    width: 80%;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 15px;
-}
-
-.pantry-r2 img {
-    width: 80%;  
-    height: 80%;
-    object-fit: cover; 
-    border-radius: 5px;
-}
 
 /* Review stars */
 .rating {
@@ -491,6 +305,7 @@ form {
 
 /*Recipe page */
 .cocktail-details-container {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     display: grid;
     grid-template-areas: 
         "A B C C"
@@ -504,7 +319,6 @@ form {
     margin-top: 50px;
     overflow: hidden;
     position: relative;
-    border: 1px solid  #3b3e42;
 }
 
 /* Recipe Column 1 */
@@ -648,47 +462,46 @@ form {
 
 /*Slideshow*/
 .slideshow-container {
-  max-width: 95%;
+  max-width: 100%;
   position: relative;
   margin: auto;
 }
 
 .mySlides {
-  display: none;
-}
+    display: none;
+  }
 
-/* Slideshow captions */
-.text {
-  color: #f2f2f2;
-  font-size: 15px;
-  padding: 8px 12px;
-  position: absolute;
-  bottom: 8px;
-  width: 100%;
-  text-align: center;
-}
-
-/* The dots */
-.dot {
-  cursor: pointer;
-  height: 15px;
-  width: 15px;
-  margin: 0 2px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
-  transition: background-color 0.6s ease;
-  margin-top: 10px;
-}
-
-.active, .dot:hover {
-  background-color: #717171;
-}
-
-/* Add hover effect */
-.prev:hover, .next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
+.mySlides img {
+    max-height: 500px; 
+    width: auto;
+    display: block;
+    margin: auto; 
+    }
+  
+.slide-text {
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    text-align: center;
+    border: 2px solid white;
+    font-weight: 400;
+    font-style: normal;
+    }
+    
+.slide-text a {
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: bold;
+    }
+    
+.slide-text a:hover {
+    text-decoration: underline;
+    }
 
 /* Fading animation */
 .fade {
@@ -700,25 +513,7 @@ form {
     from {opacity: .4}
     to {opacity: 1}
   }
-
-  .mySlides img {
-    max-height: 500px; 
-    width: auto;
-    display: block;
-    margin: auto; 
-  }
-
-/*Slideshow*/
-.slideshow-container {
-    max-width: 95%;
-    position: relative;
-    margin: auto;
-  }
   
-  .mySlides {
-    display: none;
-  }
-   
   /* The dots */
   .dot {
     cursor: pointer;
@@ -741,53 +536,7 @@ form {
       background-color: rgba(0, 0, 0, 0.8);
   }
   
-  /* Fading animation */
-  .fade {
-      animation-name: fade;
-      animation-duration: 1.5s;
-    }
-    
-    @keyframes fade {
-      from {opacity: .4}
-      to {opacity: 1}
-    }
-  
-    .mySlides img {
-      max-height: 500px; 
-      width: auto;
-      display: block;
-      margin: auto; 
-    }
-  
-    .slide-text {
-        position: absolute;
-        top: 50%; 
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        padding: 15px 25px;
-        border-radius: 5px;
-        text-align: center;
-        border: 2px solid white;
-        font-family: "Tinos", serif;
-        font-weight: 400;
-        font-style: normal;
-    }
-    
-    .slide-text a {
-        color: white;
-        text-decoration: none;
-        font-size: 30px;
-        font-weight: bold;
-    }
-    
-    .slide-text a:hover {
-        text-decoration: underline;
-    }
-  /*---------------*/
 /* CREATION PAGE */
-/*---------------*/
-
 /*animation*/
 @keyframes scrollLeft {
     from {
@@ -818,11 +567,6 @@ form {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-
-.ingredient-item:hover {
-    background-color: #007BFF;
-    color: white;
 }
 
 .creation .beverage-creation-container {
@@ -878,13 +622,13 @@ form {
 }
 
 .creation .ingredient-item:hover {
-    background-color: #007BFF;
+    background-color: grey;
     color: #fff;
 }
 
 /* Selected ingredients styling */
 .creation #selectedIngredientsList {
-    background-color: #e9f5ff;
+    background-color:lightgray;
     padding: 10px;
     border-radius: 5px;
     min-height: 60px;
@@ -894,12 +638,11 @@ form {
     list-style: none;
     margin: 5px;
     padding: 5px;
-    background-color: #d1e7f7;
+    background-color: grey;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
 
 /* button */
 .creation button[type="submit"] {
@@ -924,10 +667,7 @@ form {
     transform: translateY(-2px);  /*raise*/
 }
 
-/*-----------------------*/
 /*USERPAGE*/
-/*---------------------*/
-
 ul, ol {
     list-style: none;
 
@@ -944,11 +684,8 @@ h2, h3 {
     color: #333;
 }
 
-
-
 .cocktail-card {
     background: white;
-    
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease-in-out;
@@ -966,7 +703,7 @@ h2, h3 {
 
 .cocktail-card h3 {
     padding: 10px 15px;
-    color: #ff6f61;
+    color: var(--primary-color);
 }
 
 .rating {
@@ -975,7 +712,7 @@ h2, h3 {
 }
 
 .remove-favorite-button, button {
-    background: #ff6f61;
+    background: var(--accent-color);
     color: white;
     border: none;
     padding: 8px 12px;
@@ -986,7 +723,7 @@ h2, h3 {
 }
 
 .remove-favorite-button:hover, button:hover {
-    background: #e65c50;
+    background: var(--hover-color);
 }
 
 .modal {
@@ -1011,21 +748,11 @@ h2, h3 {
     cursor: pointer;
 }
 
-p{
-    color:  rgb(235, 94, 63);
-}
-
-
-
-/*-------------*/
 /*EXPLORE PAGE */
-/*-------------*/
 
 .explore h2{
     margin: 55px;
 }
-
-
 
 #search-bar, #filter-select {
     padding: 10px;
@@ -1036,7 +763,6 @@ p{
     display: grid;
     place-items: center;
 }
-
 
 #search-bar {
     margin-left: 55px;
@@ -1072,12 +798,6 @@ p{
     box-shadow: black;
 }
 
-.cocktail-card h3 {
-    font-size: 20px;
-    margin: 10px 0;
-    color: #3e3c3c;
-}
-
 /* Star Rating */
 .rating {
     color: gold;
@@ -1100,21 +820,17 @@ p{
     }
 }
 
-@media (max-width: 768px) {
-    .cocktail-grid {
-        grid-template-columns: repeat(1, 1fr);  /* 1 card per row for small screens */
-    }
+.search-filter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
 
-    .search-filter-container {
-        flex-direction: column;
-        align-items: center;
-    }
 
     #search-bar, #filter-select {
         width: 100%;
         max-width: 300px;
     }
-}
 
   /* Keyframes for pop-up animation */
   @keyframes popUp {
@@ -1135,8 +851,67 @@ p{
     padding: 20px;
   }
 
+/*Community page */
+  .users-card{
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    margin: auto;
+    margin-top: 10px;
+    padding: 10px;
+    width: 90%;
+  }
 
+  .user-info {
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+}
 
+.username {
+    font-size: 20px;
+    font-weight: bold;
+}
 
+.blerb{
+    max-width: 80%;
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+}
 
-  
+.blerb p {
+    color: grey;
+}
+
+/* cocktail grids for community page (scrollable)*/
+.user-cocktail-grid {
+    display: flex;
+    gap: 10px; 
+    overflow-x: auto;
+    max-width: 100%;
+    padding-bottom: 10px;
+    scrollbar-width: thin; 
+}
+
+.user-cocktail-card {
+    flex: 0 0 240px; 
+    min-width: 240px; 
+    max-width: 240px;
+    height: 300px;
+    text-align: center;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.user-cocktail-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.user-cocktail-grid {
+    scroll-behavior: smooth;
+}
