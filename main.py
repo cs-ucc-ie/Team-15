@@ -392,7 +392,6 @@ def userpage():
     followed_user_cocktails = []
     if followed_user_ids:
         followed_user_cocktails = db.execute("SELECT cocktails.* FROM cocktails WHERE cocktails.created_by IN ({})".format(','.join('?' for _ in followed_user_ids)), followed_user_ids).fetchall()
-
     return render_template("userpage.html", user_cocktails=user_cocktails, favorite_cocktails=favorite_cocktails, followed_users=followed_users, followed_user_cocktails=followed_user_cocktails)
 
 # Function to handle editing of the created cocktails
