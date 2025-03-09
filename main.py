@@ -1,5 +1,4 @@
 import sqlite3
-import requests
 import os
 import openai
 from flask import Flask, request, redirect, url_for, render_template, g, session, flash, jsonify
@@ -8,10 +7,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime, date
 from sqlalchemy.orm import scoped_session
-from models import db, Cocktails, UserPreferences, session
+from models import Session  
 from dotenv import load_dotenv
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 
 load_dotenv()
 
@@ -19,8 +16,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///site.db')  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  
 
-db.init_app(app)
-migrate = Migrate(app, db)
 
 app.secret_key = "my_secret_key"
 CORS(app)
@@ -51,7 +46,7 @@ def close_db(e=None):
         db.close()
 
 # Session for SQLAlchemy
-
+db_session = scoped_session(Session)
 
 @app.route('/chat.html')
 def chat_page():
