@@ -375,23 +375,23 @@ def userpage():
 
     # Fetch user's favorite cocktails by joining with cocktails table
     favorite_cocktails = db.execute("""
-        SELECT c.* FROM cocktails as c
-        JOIN favorites as f ON c.id = f.cocktail_id
-        WHERE f.user_id = ?
+        SELECT cocktails.* FROM cocktails 
+        JOIN favorites ON cocktails.id = favorites.cocktail_id
+        WHERE favorites.user_id = ?
     """, (user_id,)).fetchall()
 
     # Get the users that the logged in user is following
     followed_users = db.execute("""
-        SELECT u.id, u.username 
-        FROM users as u 
-        JOIN follows as f ON u.id = f.following_id 
-        WHERE f.follower_id = ?""", (user_id,)).fetchall()
+        SELECT users.id, users.username 
+        FROM users as users 
+        JOIN follows ON users.id = follows.following_id 
+        WHERE follows.follower_id = ?""", (user_id,)).fetchall()
     
     # get the cocktails created by the users that the logged in user is following
     followed_user_ids = [user['id'] for user in followed_users]
     followed_user_cocktails = []
     if followed_user_ids:
-        followed_user_cocktails = db.execute("SELECT c.* FROM cocktails AS c WHERE c.created_by IN ({})".format(','.join('?' for _ in followed_user_ids)), followed_user_ids).fetchall()
+        followed_user_cocktails = db.execute("SELECT cocktails.* FROM cocktails WHERE cocktails.created_by IN ({})".format(','.join('?' for _ in followed_user_ids)), followed_user_ids).fetchall()
 
     return render_template("userpage.html", user_cocktails=user_cocktails, favorite_cocktails=favorite_cocktails, followed_users=followed_users, followed_user_cocktails=followed_user_cocktails)
 
