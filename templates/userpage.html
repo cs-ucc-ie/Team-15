@@ -98,43 +98,35 @@
         <h3>My Following</h3>
         <div class="followed-users">
             {% if followed_users %}
-            <ul>
-                {% for user in followed_users %}
-                <li><strong>{{ user['username'] }}</strong>
-
-                    <div class="user-cocktail-grid">
-                        {% set user_cocktails = [] %}
-                        {% for cocktail in followed_user_cocktails %}
-                            {% if cocktail['created_by'] == user['id'] %}
-                                {% set found = true %}
-                                <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
-                                    <img src="{{ url_for('static', filename = cocktail['image']) }}"
-                                    alt="{{ cocktail['name'] }}">
-                                    <h3>{{ cocktail['name'] }}</h3>
-                                    <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-
-                        <!-- display the cocktails that the users have created followed by the logged-in user -->
-                        {% if user_cocktails %}
-                            {% for cocktail in user_cocktails %}
-                            <div class="user-cocktail-card" onclick="goToExplore({{ cocktail.id }})">
-                                <img src="{{ url_for('static', filename = cocktail['image']) }}"
-                                alt="{{ cocktail['name'] }}">
-                                <h3>{{ cocktail['name'] }}</h3>
-                                <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
-                            </div>
+                <ul>
+                    {% for user in followed_users %}
+                    <li><strong>{{ user['username'] }}</strong>
+                            <form action="{{ url_for('unfollow_user', user_id=user.id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="unfollow-button">Unfollow</button>
+                            </form>
+                        <div class="user-cocktail-grid">
+                            {% set found = false %}
+                            {% for cocktail in followed_user_cocktails %}
+                                {% if cocktail['created_by'] == user['id'] %}
+                                    {% set found = true %}
+                                    <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
+                                        <img src="{{ url_for('static', filename = cocktail['image']) }}"
+                                        alt="{{ cocktail['name'] }}">
+                                        <h3>{{ cocktail['name'] }}</h3>
+                                        <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
+                                    </div>
+                                {% endif %}
                             {% endfor %}
-                        {% else %}
+                            
+                        {% if not found %}
                             <p>No cocktails created by {{ user['username'] }} yet.</p>
                         {% endif %}
                     </div>
-                {% endfor %}
+                    {% endfor %}
                 </ul>
             {% else %}
-            <p>You haven't followed anyone yet.</p>
-            <p>Check out: <a href="community.html"> Our Community.</a></p>
+                <p>You haven't followed anyone yet.</p>
+                <p>Check out: <a href="community.html"> Our Community.</a></p>
             {% endif %}
         </div>
     </div>
