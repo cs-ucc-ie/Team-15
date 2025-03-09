@@ -40,8 +40,6 @@ function checkAge() {
 }
 
 
-//IDK
-
 document.addEventListener("DOMContentLoaded", function () {
     const grid = document.getElementById("cocktail-grid");
     const prevBtn = document.getElementById("prevBtn");
@@ -132,21 +130,24 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateUI() {
         // replaces the current list with list on selected ingredients (with onclick function)
         if (selectedIngredientsList) {
-            selectedIngredientsList.innerHTML = selectedIngredients.map(ing => 
-                `<li onclick="toggleIngredient(${ing.id}, '${ing.name}')">${ing.name}</li>`
+            selectedIngredientsList.innerHTML = selectedIngredients.map(ingredient => 
+                `<li onclick="toggleIngredient(${ingredient.id}, '${ingredient.name}')">${ingredient.name}</li>`
             ).join("");
         }
         //converts input into a string for hidden submission
         if (selectedIngredientsInput) {
-            selectedIngredientsInput.value = selectedIngredients.map(ing => ing.id).join(",");
+            selectedIngredientsInput.value = selectedIngredients.map(ingredient => ingredient.id).join(",");
         }
 
-        // 
+        //#########################################################
+        // In this segment I had to help myself with ChatGPT - Oskar
+        //#########################################################
+        // Fetching the lost of cocktails that match selected ingredients
         if (cocktailList) { 
             fetch("/get_cocktails", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ ingredients: selectedIngredients.map(ing => ing.id) })
+                body: JSON.stringify({ ingredients: selectedIngredients.map(ingredient => ingredient.id) })
             })
             .then(response => response.json())
             .then(cocktails => {cocktailList.innerHTML = cocktails.length 
@@ -157,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     //Removal and addition of a ingredient to the list
     window.toggleIngredient = function (id, name) {
-        const index = selectedIngredients.findIndex(ing => ing.id === id);
+        const index = selectedIngredients.findIndex(ingredient => ingredient.id === id);
         if (index > -1) {
             selectedIngredients.splice(index, 1);
         } else {
