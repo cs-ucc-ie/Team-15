@@ -98,9 +98,8 @@
         <h3>My Following</h3>
         <div class="followed-users">
             {% if followed_users %}
-                <ul>
                     {% for user in followed_users %}
-                    <li><strong>{{ user['username'] }}</strong>
+                    <strong>{{ user['username'] }}</strong>
                             <form action="{{ url_for('unfollow_user', user_id=user.id) }}" method="POST" style="display: inline;">
                             <button type="submit" class="unfollow-button">Unfollow</button>
                             </form>
@@ -109,7 +108,7 @@
                             {% for cocktail in followed_user_cocktails %}
                                 {% if cocktail['created_by'] == user['id'] %}
                                     {% set found = true %}
-                                    <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
+                                    <div class="user-cocktail-card" onclick="goToExplore({{ cocktail.id }})">
                                         <img src="{{ url_for('static', filename = cocktail['image']) }}"
                                         alt="{{ cocktail['name'] }}">
                                         <h3>{{ cocktail['name'] }}</h3>
@@ -123,7 +122,6 @@
                         {% endif %}
                     </div>
                     {% endfor %}
-                </ul>
             {% else %}
                 <p>You haven't followed anyone yet.</p>
                 <p>Check out: <a href="community.html"> Our Community.</a></p>
