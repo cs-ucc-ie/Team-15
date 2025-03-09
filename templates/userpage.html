@@ -14,7 +14,9 @@
     {% include 'navbar.html' %}
 
     <div class="profile-container">
-        <h2>Welcome, {{ session['username'] }}</h2>
+        <div class="hello">
+            <h2>Welcome, {{ session['username'] }}</h2>
+        </div>
 
         <!-- cocktails what the user has created/uploaded -->
         <h3>My Created Cocktails</h3>
@@ -22,10 +24,20 @@
             <!-- display all cocktails created by the user -->
 
             {% for cocktail in user_cocktails %}
-            <div class="cocktail-card">
+            <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
                 <img src="{{ url_for('static', filename = cocktail['image'])}}" alt="{{ cocktail['name'] }}">
                 <h3>{{ cocktail['name'] }}</h3>
+                <div class="rating">
+                    {% set rating = (cocktail.popularity / cocktail.reviews_number) | round(1) %}
+                    {% for i in range(1, 6) %}
+                    {% if i <= rating %} <span class="star filled">★</span>
+                        {% else %}
+                        <span class="star empty">☆</span>
+                        {% endif %}
+                        {% endfor %}
+                </div>
                 <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
+                <button onclick="event.stopPropagation(); openEditModal({{ cocktail.id }})">Edit</button>
             </div>
 
             <!-- if there are no cocktails created by the user  -->
@@ -33,17 +45,43 @@
             <p>You haven't created any cocktails yet.</p>
             {% endfor %}
         </div>
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h2>Edit Cocktail</h2>
+                <form id="editForm" method="POST" action="{{ url_for('edit_cocktail') }}" enctype="multipart/form-data">
+                    <input type="hidden" name="cocktail_id" id="editCocktailId">
+
+                    <label for="editName">Drink Name</label>
+                    <input type="text" id="editName" name="name" required>
+
+                    <label for="editAlcohol">Alcohol Content</label>
+                    <select id="editAlcohol" name="alcohol_content" required>
+                        <option value="0">Non-Alcoholic</option>
+                        <option value="1">Alcoholic</option>
+                    </select>
+
+                    <label for="editMethod">Preparation Method</label>
+                    <textarea id="editMethod" name="method" rows="4" required></textarea>
+
+                    <label for="editImage">Upload New Image</label>
+                    <input type="file" id="editImage" name="image" accept="image/*">
+
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+
 
         <!-- cocktails what the user has added to the favorites-->
         <h3>My Favorites</h3>
         <div class="cocktail-grid">
             <!-- display all user's favorite cocktails -->
             {% for cocktail in favorite_cocktails %}
-            <div class="cocktail-card">
+            <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
                 <img src="{{ url_for('static', filename = cocktail['image']) }}" alt="{{ cocktail['name'] }}">
                 <h3>{{ cocktail['name'] }}</h3>
                 <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
-                <p>Popularity: {{ cocktail['popularity'] / cocktail['reviews_number'] }}</p>
 
                 <!-- button to remove cocktails -->
                 <form action="{{ url_for('remove_favorite', cocktail_id=cocktail.id) }}" method="POST">
@@ -60,35 +98,32 @@
         <h3>My Following</h3>
         <div class="followed-users">
             {% if followed_users %}
-            <ul>
-                {% for user in followed_users %}
-                <li><strong>{{ user['username'] }}</strong>
-
-                    <div class="cocktail-grid">
-                        {% set user_cocktails = [] %}
+                <ul>
+                    {% for user in followed_users %}
+                    <li><strong>{{ user['username'] }}</strong>
+                        <form action = "{{ url_for('unfollow_user', user_id = user['id']) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="unfollow-button">Unfollow</button>
+                        </form>
+                        <div class="cocktail-grid">
+                        {% set found = false %}
                         {% for cocktail in followed_user_cocktails %}
                             {% if cocktail['created_by'] == user['id'] %}
-                                {% set user_cocktails = user_cocktails + [cocktail] %}
+                                {% set found = true %}
+                                <div class="cocktail-card" onclick="goToExplore({{ cocktail.id }})">
+                                    <img src="{{ url_for('static', filename = cocktail['image']) }}"
+                                    alt="{{ cocktail['name'] }}">
+                                    <h3>{{ cocktail['name'] }}</h3>
+                                    <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
+                                </div>
                             {% endif %}
                         {% endfor %}
-
-                        <!-- display the cocktails that the users have created followed by the logged-in user -->
-                        {% if user_cocktails %}
-                            {% for cocktail in user_cocktails %}
-                            <div class="cocktail-card">
-                                <img src="{{ url_for('static', filename = cocktail['image']) }}"
-                                alt="{{ cocktail['name'] }}">
-                                <h3>{{ cocktail['name'] }}</h3>
-                                <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
-                            </div>
-                            {% endfor %}
-                        {% else %}
+                    
+                        {% if not found %}
                             <p>No cocktails created by {{ user['username'] }} yet.</p>
                         {% endif %}
                     </div>
-                </li>
                 {% endfor %}
-            </ul>
+                </ul>
             {% else %}
             <p>You haven't followed anyone yet.</p>
             <p>Check out <a href="community.html">Community.</a></p>
@@ -96,4 +131,5 @@
         </div>
     </div>
 </body>
+
 </html>

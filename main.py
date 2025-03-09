@@ -378,5 +378,21 @@ def follow_user(user_id):
     flash("You have started following {user_id}!", "success")
     return redirect(url_for("community"))
 
+@app.route('/unfollow/<int:user_id>', methods=['POST'])
+def unfollow_user(user_id):
+    if "user_id" not in session:
+        flash("You need to log in first!", "danger")
+        return redirect(url_for("login"))
+
+    db = get_db()
+    current_user_id = session["user_id"]
+
+    # Delete the follow relationship
+    db.execute("DELETE FROM follows WHERE follower_id = ? AND following_id = ?", (current_user_id, user_id))
+    db.commit()
+
+    flash("You have unfollowed the user.", "success")
+    return redirect(url_for("userpage"))
+
 if __name__ == '__main__':
     app.run(debug = True)
