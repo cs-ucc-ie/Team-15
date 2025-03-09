@@ -17,6 +17,7 @@ app = Flask(__name__)
 app.secret_key = "my_secret_key"
 CORS(app)
 
+# Sets the essential data for image upload
 UPLOAD_FOLDER = 'static'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -36,6 +37,7 @@ client = openai.OpenAI(api_key=OPENAI_API_KEY)
 # SQLite database setup
 DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), "db.db")
 
+# Function for SQLite DB connection
 def get_db():
     if "db" not in g:
         g.db = sqlite3.connect(DATABASE, detect_types=sqlite3.PARSE_DECLTYPES)
@@ -100,12 +102,12 @@ def chat():
 
 
 
-
+# Function for filename check (if extension is allowed)
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-
+# Registration and age check function
 @app.route('/register.html', methods=['GET','POST'])
 def register():
     if request.method == "POST":
@@ -139,6 +141,7 @@ def register():
 
     return render_template("register.html")
 
+# Login function
 @app.route('/login.html', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
@@ -158,26 +161,21 @@ def login():
 
     return render_template("login.html")
 
+# Logout function
 @app.route("/logout")
 def logout():
     session.clear()
     flash("You have been logged out.", "info")
     return redirect(url_for("login"))
 
+# Function for homepage rendering 
 @app.route('/')
-def index():
-    db = get_db()
-    top_cocktails = db.execute(
-        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 5"
-    ).fetchall()
-
-    return render_template('homepage.html', top_cocktails=top_cocktails)
-
 @app.route('/homepage.html')
 def homepage():
     db = get_db()
+    # Displaying 9 most popular cocktail in DB
     top_cocktails = db.execute(
-        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 5"
+        "SELECT * FROM cocktails ORDER BY popularity/reviews_number DESC LIMIT 9"
     ).fetchall()
 
     return render_template('homepage.html', top_cocktails=top_cocktails)
@@ -185,10 +183,18 @@ def homepage():
 @app.route('/explore.html')
 def explore():
     db = get_db()
-    cocktail_id = request.args.get("id") #Debug
+    cocktail_id = request.args.get("id") #Taking data from the user input if card clicked
+    user_id = session.get("user_id") 
     
-    print(cocktail_id)
+    # Taking the list of favorite cocktails form db
+    favorite_cocktail_ids = {
+        row["cocktail_id"] for row in db.execute(
+            "SELECT cocktail_id FROM favorites WHERE user_id = ?", (user_id,)
+        ).fetchall()
+    }
 
+    # Condition to open a selection mode of the explore page
+    # Multiple queries to get all data about the cocktail
     if cocktail_id:
         selected_cocktail = db.execute(
             "SELECT * FROM cocktails WHERE id = ?", (cocktail_id,)
@@ -209,14 +215,18 @@ def explore():
                ORDER BY reviews.created_at DESC""", (cocktail_id,)
         ).fetchall()
 
-        print(reviews) #Debug
+        
 
-        return render_template("explore.html", selected_cocktail=selected_cocktail, ingredients=ingredients, reviews=reviews)
+        return render_template("explore.html", selected_cocktail=selected_cocktail, ingredients=ingredients, reviews=reviews, favorite_cocktail_ids = favorite_cocktail_ids)
 
+
+    # base filter
     filter_option = request.args.get("filter", "all")
+
 
     query = "SELECT * FROM cocktails"
     
+    # conditions for specific filters 
     if filter_option == "alcoholic":
         query += " WHERE alcohol_content > 0"
     elif filter_option == "non-alcoholic":
@@ -226,23 +236,26 @@ def explore():
     elif filter_option == "advanced":
         query += " ORDER BY CAST(popularity AS FLOAT) / reviews_number DESC"
 
+    #applying filter
     cocktails = db.execute(query).fetchall()
 
-    return render_template("explore.html", cocktails=cocktails, filter_option=filter_option)
+    return render_template("explore.html", cocktails=cocktails, filter_option=filter_option, favorite_cocktail_ids = favorite_cocktail_ids)
 
+# Function submitting review
 @app.route('/submit_review', methods=['POST'])
 def submit_review():
     db = get_db()
     
     # Get data from form
-    user_id = session.get("user_id")  # Ensure user is logged in
+    user_id = session.get("user_id") 
     cocktail_id = request.form.get("cocktail_id")
     rating = request.form.get("rating")
     review_text = request.form.get("review_text", "")
 
+    # Check if user is logged in
     if not user_id:
         flash("You must be logged in to submit a review.", "error")
-        return redirect(request.referrer)
+        return redirect(url_for("login"))
 
     # Insert into database
     db.execute(
@@ -261,20 +274,21 @@ def submit_review():
     flash("Review submitted successfully!", "success")
     return redirect(request.referrer)
 
+# Render the pantry page with ingredients and constantlu updated matching cocktail list
 @app.route('/pantry.html', methods=['GET'])
 def pantry():
     db = get_db()
     ingredients = db.execute("SELECT * FROM ingredients").fetchall()
 
     matching_cocktails = db.execute("""
-        SELECT DISTINCT c.id, c.name 
-        FROM cocktails c
-        JOIN cocktail_ingredients ci ON c.id = ci.cocktail_id
+        SELECT DISTINCT cocktails.id, cocktails.name 
+        FROM cocktails 
+        JOIN cocktail_ingredients ON cocktails.id = cocktail_ingredients.cocktail_id
     """).fetchall()
 
     return render_template("pantry.html", ingredients=ingredients, matching_cocktails=matching_cocktails)
 
-
+# Function to provide a list of ingredientsfor pantry and creation page
 @app.route('/get_cocktails', methods=['POST'])
 def get_cocktails():
     selected_ingredients = request.json.get("ingredients", [])
@@ -286,18 +300,19 @@ def get_cocktails():
     placeholders = ",".join("?" * len(selected_ingredients))
 
     query = f"""
-        SELECT c.id, c.name 
-        FROM cocktails c
-        JOIN cocktail_ingredients ci ON c.id = ci.cocktail_id
-        WHERE ci.ingredient_id IN ({placeholders})
-        GROUP BY c.id
-        HAVING COUNT(DISTINCT ci.ingredient_id) >= ?
+        SELECT cocktails.id, cocktails.name 
+        FROM cocktails 
+        JOIN cocktail_ingredients ON cocktails.id = cocktail_ingredients.cocktail_id
+        WHERE cocktail_ingredients.ingredient_id IN ({placeholders})
+        GROUP BY cocktails.id
+        HAVING COUNT(DISTINCT cocktail_ingredients.ingredient_id) >= ?
     """
 
     cocktails = db.execute(query, selected_ingredients + [len(selected_ingredients)]).fetchall()
 
-    return jsonify([{"id": c["id"], "name": c["name"]} for c in cocktails])
+    return jsonify([{"id": cocktail["id"], "name": cocktail["name"]} for cocktail in cocktails])
 
+# function for creation page 
 @app.route('/creation.html', methods=['GET', 'POST'])
 def creation():
     db = get_db()
@@ -380,6 +395,7 @@ def userpage():
 
     return render_template("userpage.html", user_cocktails=user_cocktails, favorite_cocktails=favorite_cocktails, followed_users=followed_users, followed_user_cocktails=followed_user_cocktails)
 
+# Function to handle editing of the created cocktails
 @app.route('/edit_cocktail', methods=['POST'])
 def edit_cocktail():
     db = get_db()
@@ -407,6 +423,7 @@ def edit_cocktail():
     flash("Cocktail updated successfully!", "success")
     return redirect(url_for('userpage'))
 
+# Function to get data for edited cocktail and display it on the input forms
 @app.route('/get_cocktail/<int:cocktail_id>')
 def get_cocktail(cocktail_id):
     db = get_db()
@@ -420,6 +437,7 @@ def get_cocktail(cocktail_id):
             'method': cocktail['method']
         })
     return jsonify({'error': 'Cocktail not found'}), 404
+
 
 # Adding the cocktails to favorites
 @app.route('/add_favorite/<int:cocktail_id>', methods=['POST'])
@@ -445,7 +463,7 @@ def add_favorite(cocktail_id):
     else:
         flash("Already in favorites!", "warning")
     
-    return redirect(url_for("explore"))  
+    return redirect(request.referrer)  
 
 # Removing the cocktails from favorites
 @app.route('/remove_favorite/<int:cocktail_id>', methods=['POST'])  
@@ -463,7 +481,7 @@ def remove_favorite(cocktail_id):
     db.commit()
     flash("Removed from favorites!", "success")
 
-    return redirect(url_for("userpage"))
+    return redirect(request.referrer)
 
 # COMMUNITY PAGE - Displaying all the users where they can follow others
 @app.route('/community.html')

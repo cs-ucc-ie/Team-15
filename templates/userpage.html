@@ -37,7 +37,6 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <p>Recipe by: {{ cocktail['recipe_by'] }}</p>
                 <button onclick="event.stopPropagation(); openEditModal({{ cocktail.id }})">Edit</button>
             </div>
 
@@ -130,7 +129,7 @@
             </ul>
             {% else %}
             <p>You haven't followed anyone yet.</p>
-            <p>Check out <a href="community.html">Community.</a></p>
+            <p>Check out: <a href="community.html"> Our Community.</a></p>
             {% endif %}
         </div>
     </div>

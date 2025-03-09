@@ -247,7 +247,7 @@ a:hover {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.pantry-l1, .pantry-r1, .pantry-r2 {
+.pantry-l1, .pantry-r1 .pantry-r2{
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -258,6 +258,7 @@ a:hover {
     width: 100%;
     position: relative;
 }
+
 
 .pantry-container ul {
     display: flex;
@@ -280,25 +281,8 @@ a:hover {
     background-color: lightgray;
 }
 
-.pantry-r2 li {
-    list-style: none;
-    background-color: white;
-    border-radius: 10px;
-    padding: 10px;
-    width: 80%;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 15px;
-}
 
-.pantry-r2 img {
-    width: 80%;  
-    height: 80%;
-    object-fit: cover; 
-    border-radius: 5px;
-}
+
 
 /* Review stars */
 .rating {
