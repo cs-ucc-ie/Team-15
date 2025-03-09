@@ -9,11 +9,16 @@ from datetime import datetime, date
 from sqlalchemy.orm import scoped_session
 from models import Session, cocktails  
 from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
-# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///site.db')  
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 app.secret_key = "my_secret_key"
 CORS(app)
 
@@ -22,14 +27,9 @@ UPLOAD_FOLDER = 'static'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# OpenAI API key
 # Load API key from .env
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-# Debugging: Check if API key is loaded (REMOVE this after testing)
-if not OPENAI_API_KEY:
-    raise ValueError("Error: OPENAI_API_KEY is not set. Check your .env file.")
 
 # Initialize OpenAI client
 client = openai.OpenAI(api_key=OPENAI_API_KEY)
@@ -89,7 +89,7 @@ def chat():
     AI:
     """
 
-    # Send the prompt to OpenAI
+    
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[
